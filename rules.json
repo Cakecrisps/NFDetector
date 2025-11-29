@@ -1,0 +1,24 @@
+{
+"ddos":{
+"1ip":{
+    "request_limit":10.0,
+    "request_limit_window":2.0
+},
+"nip":{
+    "request_limit":100.0,
+    "request_limit_window":2.0
+}
+},
+"brute_force":{
+
+},
+"flood":{
+
+},
+"C2_analysys":{
+
+},
+"reaction":{
+    "out":["print","example.domain.com"]
+}
+}
