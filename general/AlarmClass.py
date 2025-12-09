@@ -11,7 +11,7 @@ class Alarm:
         return self.message
     
     def log(self,logfile: str,logtypes: list[str]) -> list[str]:
-        #["PRINT","LOG","POST:example.domain.com"]
+        #["PRINT","LOG","example.domain.com"]
         errors = []
 
         logtypes = [x.lower() for x in logtypes.copy()]
@@ -30,10 +30,11 @@ class Alarm:
 
         if len(logtypes) > len(errors):
             try:
-                log_http(self.message,logfile)
+                log_http(self.message,[x for x in logtypes if x not in ["print","log"]])
                 errors.append(False)
             except:
                 errors.append(Exception)
+        return errors
 
 
         

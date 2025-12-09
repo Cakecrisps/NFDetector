@@ -41,7 +41,7 @@
   } 
 },
 "reaction":{
-    "out":["PRINT","LOG","POST:example.domain.com"]
+    "out":["PRINT","LOG","example.domain.com","example2.domain.com"]
 },
 "suspicious_ips": {
   "enabled": true,
