@@ -67,21 +67,18 @@ def validate_arguments(args):
     if not os.path.exists(args.protected_ips):
         print(f"Предупреждение: файл с защищенными IP '{args.protected_ips}' не существует")
     
-    # Исправлено: создаем выходную директорию если её нет
     os.makedirs(args.output_dir, exist_ok=True)
     print(f"Выходная директория: {os.path.abspath(args.output_dir)}")
     
     # Создаем полный путь к файлу логов
     full_log_path = os.path.join(args.output_dir, args.log_file)
     
-    # Создаем файл логов если его нет
     if not os.path.exists(full_log_path):
         with open(full_log_path, "w") as f:
             f.write(f"Лог запуска: {datetime.datetime.now()}\n")
             f.write(f"Режим: {args.mode}\n")
     else:
-        # Если файл существует, дописываем в него
-        with open(full_log_path, "a") as f:
+        with open(full_log_path, "a",encoding="utf-8") as f:
             f.write(f"\n--- Новый запуск: {datetime.datetime.now()} ---\n")
 
 def main():
