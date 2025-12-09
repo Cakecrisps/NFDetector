@@ -1,6 +1,7 @@
 import argparse
 import sys
 import os
+import datetime
 
 def parse_arguments():
     """
@@ -26,14 +27,25 @@ def parse_arguments():
     parser.add_argument(
         '-o', '--output',
         dest='output_dir',
-        default='/out',
-        help='Путь к папке для вывода результатов (по умолчанию: /out)'
+        default='out',
+        help='Путь к папке для вывода результатов (по умолчанию: out)'
     )
     
     parser.add_argument(
         'file_path',
         nargs='?',  
         help='Путь к файлу для анализа (требуется в режиме file)'
+    )
+    
+    # Исправлено: создаем корректное имя файла
+    safe_datetime = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+    default_log_file = f"log_{safe_datetime}.txt"
+    
+    parser.add_argument(
+        '-lf', '--log_file',
+        dest='log_file',
+        default=default_log_file,
+        help='Путь к файлу логирования (по умолчанию: log_YYYY-MM-DD_HH-MM-SS.txt)'
     )
     
     return parser.parse_args()
@@ -55,9 +67,22 @@ def validate_arguments(args):
     if not os.path.exists(args.protected_ips):
         print(f"Предупреждение: файл с защищенными IP '{args.protected_ips}' не существует")
     
-    if not os.path.exists(args.output_dir):
-        print(f"Создание выходной директории: {args.output_dir}")
-        os.makedirs(args.output_dir, exist_ok=True)
+    # Исправлено: создаем выходную директорию если её нет
+    os.makedirs(args.output_dir, exist_ok=True)
+    print(f"Выходная директория: {os.path.abspath(args.output_dir)}")
+    
+    # Создаем полный путь к файлу логов
+    full_log_path = os.path.join(args.output_dir, args.log_file)
+    
+    # Создаем файл логов если его нет
+    if not os.path.exists(full_log_path):
+        with open(full_log_path, "w") as f:
+            f.write(f"Лог запуска: {datetime.datetime.now()}\n")
+            f.write(f"Режим: {args.mode}\n")
+    else:
+        # Если файл существует, дописываем в него
+        with open(full_log_path, "a") as f:
+            f.write(f"\n--- Новый запуск: {datetime.datetime.now()} ---\n")
 
 def main():
     """
@@ -72,6 +97,7 @@ def main():
         print(f"  Режим: {args.mode}")
         print(f"  Защищенные IP: {args.protected_ips}")
         print(f"  Выходная директория: {args.output_dir}")
+        print(f"  Файл логов: {args.log_file}")
         
         if args.mode == 'file' and args.file_path:
             print(f"  Анализируемый файл: {args.file_path}")
@@ -86,6 +112,8 @@ def main():
             
     except Exception as e:
         print(f"Ошибка: {e}")
+        import traceback
+        traceback.print_exc()
         sys.exit(1)
 
 if __name__ == "__main__":
