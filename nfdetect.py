@@ -10,15 +10,12 @@ def parse_arguments():
         description='NFDetect - детектор сетевых аномалий',
         formatter_class=argparse.RawDescriptionHelpFormatter
     )
-    
-    # Обязательный аргумент - режим работы
     parser.add_argument(
         'mode',
         choices=['live', 'file'],
         help='Режим работы: live - реальное время, file - анализ файла'
     )
     
-    # Опциональные аргументы
     parser.add_argument(
         '-pi', '--protected_ips',
         dest='protected_ips',
@@ -33,10 +30,9 @@ def parse_arguments():
         help='Путь к папке для вывода результатов (по умолчанию: /out)'
     )
     
-    # Дополнительный аргумент для пути к файлу (если режим file)
     parser.add_argument(
         'file_path',
-        nargs='?',  # Делаем аргумент опциональным
+        nargs='?',  
         help='Путь к файлу для анализа (требуется в режиме file)'
     )
     
@@ -46,7 +42,6 @@ def validate_arguments(args):
     """
     Валидация аргументов
     """
-    # Проверка режима file
     if args.mode == 'file':
         if not args.file_path:
             print("Ошибка: в режиме 'file' необходимо указать путь к файлу")
@@ -60,7 +55,6 @@ def validate_arguments(args):
     if not os.path.exists(args.protected_ips):
         print(f"Предупреждение: файл с защищенными IP '{args.protected_ips}' не существует")
     
-    # Создание выходной директории, если её нет
     if not os.path.exists(args.output_dir):
         print(f"Создание выходной директории: {args.output_dir}")
         os.makedirs(args.output_dir, exist_ok=True)
@@ -70,13 +64,10 @@ def main():
     Основная функция
     """
     try:
-        # Парсинг аргументов
         args = parse_arguments()
         
-        # Валидация аргументов
         validate_arguments(args)
         
-        # Вывод полученных параметров
         print("Параметры запуска:")
         print(f"  Режим: {args.mode}")
         print(f"  Защищенные IP: {args.protected_ips}")
