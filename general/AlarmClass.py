@@ -10,7 +10,7 @@ class Alarm:
     def __str__(self):
         return self.message
     
-    def log(self,logfile: str,logtypes: list[str]) -> list[str]:
+    def log(self,logfile: str,logtypes: list[str]) -> list[str]:    
         #["PRINT","LOG","example.domain.com"]
         errors = []
 
