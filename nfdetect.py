@@ -2,6 +2,29 @@ import argparse
 import sys
 import os
 import datetime
+import psutil
+from filescan import filescan
+from livescan import livescan
+
+def get_available_interfaces():
+    """
+    Получает список активных сетевых интерфейсов, исключая loopback и виртуальные интерфейсы.
+    
+    Returns:
+        list: Список имен доступных сетевых интерфейсов
+    
+    Note:
+        Фильтрует интерфейсы по префиксам (lo, docker, veth и др.) и проверяет наличие IPv4-адресов.
+    """
+    interfaces = []
+    for interface, addrs in psutil.net_if_addrs().items():
+        if interface.startswith(('lo', 'docker', 'veth', 'br-', 'virbr', 'tun', 'tap')):
+            continue
+        for addr in addrs:
+            if addr.family == 2:  # AF_INET (IPv4)
+                interfaces.append(interface)
+                break
+    return list(set(interfaces))
 
 def parse_arguments():
     """
@@ -58,12 +81,7 @@ def parse_arguments():
         default='ext/protectips.txt',
         help='Файл с IP-адресами для исключения из анализа'
     )
-    parser.add_argument(
-        '-si', '--susp_ips',
-        dest='susp_ips',
-        default='ext/suspips.txt',
-        help='Путь к файлу с подозрительными IP-адресами (по умолчанию: ext/suspips.txt)'
-    )
+    
     parser.add_argument(
         '-r', '--rules',
         dest='rules',
@@ -121,29 +139,33 @@ def validate_arguments(args):
             print(f"Критическая ошибка: файл {config_type} не найден по пути {os.path.abspath(path)}")
             sys.exit(1)
     
-    # Проверка существования файла protected_ips
-    if not os.path.exists(args.protected_ips):
-        print(f"Предупреждение: файл с защищенными IP '{args.protected_ips}' не существует")
-        exit(1)
-    if not os.path.exists(args.susp_ips):
-        print(f"Предупреждение: файл с подозрительными IP '{args.susp_ips}' не существует")
-        exit(1)
-    if not os.path.exists(args.rules):
-        print(f"Предупреждение: файл с правилами '{args.rules}' не существует")
-        exit(1)
+    # Валидация целевого файла в file-режиме
+    if args.mode == 'file' and not os.path.exists(args.file_path):
+        print(f"Критическая ошибка: файл для анализа не существует: {os.path.abspath(args.file_path)}")
+        sys.exit(1)
+    
+    # Настройка файловой системы
     os.makedirs(args.output_dir, exist_ok=True)
     abs_output_dir = os.path.abspath(args.output_dir)
     
-    # Создаем полный путь к файлу логов
-    full_log_path = os.path.join(args.output_dir, args.log_file)
+    # Инициализация логирования
+    log_path = os.path.join(abs_output_dir, args.log_file)
+    header = (
+        f"=== NFDetect Session Start ===\n"
+        f"Время: {datetime.datetime.now()}\n"
+        f"Режим: {args.mode}\n"
+        f"Интерфейс: {args.interface if args.mode == 'live' else 'N/A'}\n"
+        f"Отладка: {'Включена' if args.debug_mode and args.mode == 'live' else 'Выключена'}\n"
+        f"Файл: {args.file_path if args.mode == 'file' else 'N/A'}\n"
+        f"{'='*30}\n\n"
+    )
     
-    if not os.path.exists(full_log_path):
-        with open(full_log_path, "w") as f:
-            f.write(f"Лог запуска: {datetime.datetime.now()}\n")
-            f.write(f"Режим: {args.mode}\n")
-    else:
-        with open(full_log_path, "a",encoding="utf-8") as f:
-            f.write(f"\n--- Новый запуск: {datetime.datetime.now()} ---\n")
+    try:
+        with open(log_path, 'a', encoding='utf-8') as log_file:
+            log_file.write(header)
+    except IOError as e:
+        print(f"Ошибка записи лога: {e}")
+        sys.exit(1)
 
 def main():
     """
@@ -169,28 +191,19 @@ def main():
         args = parse_arguments()
         validate_arguments(args)
         
-        print("Параметры запуска:")
-        print(f"  Режим: {args.mode}")
-        print(f"  Защищенные IP: {args.protected_ips}")
-        print(f"  Выходная директория: {args.output_dir}")
-        print(f"  Файл логов: {args.log_file}")
-        
-        if args.mode == 'file' and args.file_path:
-            print(f"  Анализируемый файл: {args.file_path}")
-        
-        # Здесь ваша основная логика
+        # Запуск выбранного режима
         if args.mode == 'live':
             print(f"[+] Запуск live-мониторинга на интерфейсе: {args.interface}")
             if args.debug_mode:
-                print("[DEBUG] Режим отладки включен: будет выводиться информация о пакетах в live режиме")
+                print("[DEBUG] Режим отладки включен: будет выводиться детальная информация о пакетах")
             
             livescan(
-                args.interface,
-                args.output_dir,
-                args.log_file,
-                args.protected_ips,
-                args.rules,
-                args.debug_mode
+                interface=args.interface,
+                output_dir=args.output_dir,
+                log_file=args.log_file,
+                protected_ips=args.protected_ips,
+                rules_file=args.rules,
+                debug_mode=args.debug_mode
             )
         else:
             print(f"[+] Запуск анализа файла: {args.file_path}")
@@ -211,5 +224,12 @@ def main():
         traceback.print_exc()
         sys.exit(1)
 
-if __name__ == "__main__":   
+if __name__ == "__main__":
+    """Инициализация приложения с проверкой зависимостей"""
+    try:
+        import psutil
+    except ImportError:
+        print("Ошибка: требуется модуль psutil. Установите через 'pip install psutil'")
+        sys.exit(1)
+    
     main()
