@@ -146,8 +146,9 @@ def validate_arguments(args):
     
     # Настройка файловой системы
     os.makedirs(args.output_dir, exist_ok=True)
-    abs_output_dir = os.path.abspath(args.output_dir)
     
+    abs_output_dir = os.path.abspath(args.output_dir)   
+
     # Инициализация логирования
     log_path = os.path.join(abs_output_dir, args.log_file)
     header = (
