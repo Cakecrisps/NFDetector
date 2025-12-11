@@ -26,6 +26,7 @@ class Alarm:
                 log(self.message,logfile)
                 errors.append(False)
             except:
+                print(Exception)
                 errors.append(Exception)
 
         if len(logtypes) > len(errors):

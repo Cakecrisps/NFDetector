@@ -157,7 +157,6 @@ class TrafficAnalyzer:
             Список кортежей (reason, ipdst, ipsrc, is_prot) для создания Alarm
         """
         alarms = []
-        
         if not self.rules.get("ddos", {}).get("enabled", False):
             return alarms
         
@@ -207,7 +206,6 @@ class TrafficAnalyzer:
             Список кортежей (reason, ipdst, ipsrc, is_prot) для создания Alarm
         """
         alarms = []
-        
         if not self.rules.get("ddos", {}).get("enabled", False):
             return alarms
         
@@ -250,7 +248,6 @@ class TrafficAnalyzer:
             reason = f"DDoS_MULTI_IP: {total_protected_packets} total packets (limit: {total_limit}), top: {top_ips_str}"
             alarms.append((reason, "PROTECTED_NETWORK", "MULTIPLE", True))
             self.stats["alarms"]["ddos"] += 1
-        
         return alarms
     
     def analyze_syn_flood(self, window_packets: List) -> List[Tuple[str, str, str, bool]]:
@@ -363,7 +360,6 @@ class TrafficAnalyzer:
             Список кортежей (reason, ipdst, ipsrc, is_prot) для создания Alarm
         """
         alarms = []
-        
         if not self.rules.get("flood", {}).get("enabled", False):
             return alarms
         
@@ -398,7 +394,6 @@ class TrafficAnalyzer:
                 reason = f"HTTP_FLOOD: {src_ip} sent {count} HTTP requests (limit: {http_limit})"
                 alarms.append((reason, "PROTECTED_NETWORK", src_ip, True))
                 self.stats["alarms"]["flood"] += 1
-        
         return alarms
     
     def analyze_bruteforce(self, window_packets: List) -> List[Tuple[str, str, str, bool]]:

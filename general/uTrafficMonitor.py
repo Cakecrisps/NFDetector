@@ -6,6 +6,7 @@ import datetime
 import os
 import threading
 import time
+import asyncio
 from general.trafficanalyzer import TrafficAnalyzer
 from general.AlarmClass import Alarm
 from general.summarygen import generate_summary,generate_full_json_summary
@@ -18,10 +19,9 @@ class NetworkTrafficMonitor:
     Простой монитор трафика с классическими временными окнами.
     
     Особенности:
+    - Загружает подозрительные IP из файла правил
+    - Исправлена проблема с event loop в потоках
     - Нет перекрытия окон - каждое окно имеет строгую длительность
-    - При выходе пакета за пределы окна - старые пакеты удаляются
-    - Минимальная многопоточность - только для live-режима
-    - Простая логика анализа
     """
     
     def __init__(
@@ -38,16 +38,15 @@ class NetworkTrafficMonitor:
         self.log_path = os.path.join(output_dir, log_filename)
         self.debug_mode = debug_mode
         self.alarms = []
-        
         # Загружаем конфигурацию
         self._load_configuration()
         
         # Инициализируем структуры данных
         self.statistics = self._init_statistics()
-        self.windows = self._init_windows()  # Простые окна без перекрытия
+        self.windows = self._init_windows()
         self.analyzer = TrafficAnalyzer(rules_path, protected_ips_path)
         
-        # Для live-режима - один поток для захвата
+        # Для live-режима
         self.stop_flag = False
         self.capture_thread = None
         
@@ -61,17 +60,28 @@ class NetworkTrafficMonitor:
         with open(self.rules_path, 'r') as f:
             self.rules = json.load(f)
         
-        # Загрузка подозрительных IP
+        # Загрузка подозрительных IP из правил
         self.suspicious_ips = set()
-        for path in self.rules["suspicious_ips"]["files_of_susp_ip_list"]:
-            try:
-                with open(path, 'r') as f:
-                    for line in f:
-                        ip = line.strip()
-                        if ip and not ip.startswith('#'):
-                            self.suspicious_ips.add(ip)
-            except Exception as e:
-                print(f"Ошибка загрузки подозрительных IP: {e} in file {path}")
+        self.suspicious_ips_sources = []
+        
+        susp_ips_config = self.rules.get("suspicious_ips", {})
+        if susp_ips_config.get("enabled", False):
+            files_list = susp_ips_config.get("files_of_susp_ip_list", [])
+            for file_path in files_list:
+                self.suspicious_ips_sources.append(file_path)
+                try:
+                    with open(file_path, 'r') as f:
+                        for line in f:
+                            ip = line.strip()
+                            if ip and not ip.startswith('#'):
+                                self.suspicious_ips.add(ip)
+                        if self.debug_mode:
+                            print(f"[DEBUG] Загружено {len(self.suspicious_ips)} подозрительных IP из {file_path}")
+                except Exception as e:
+                    print(f"Ошибка загрузки подозрительных IP из {file_path}: {e}")
+        else:
+            if self.debug_mode:
+                print("[DEBUG] Загрузка подозрительных IP отключена в правилах")
         
         # Загрузка защищенных IP
         self.protected_ips = set()
@@ -82,7 +92,7 @@ class NetworkTrafficMonitor:
                     if ip and not ip.startswith('#'):
                         self.protected_ips.add(ip)
         except Exception as e:
-            print(f"Ошибка загрузки защищенных IP: {e}")
+            print(f"Ошибка загрузки защищенных IP {self.protected_ips_path}: {e}")
     
     def _init_statistics(self) -> Dict[str, Any]:
         """Инициализирует структуру для сбора статистики."""
@@ -107,13 +117,6 @@ class NetworkTrafficMonitor:
     def _init_windows(self) -> Dict[str, Dict]:
         """
         Инициализирует временные окна для всех правил.
-        
-        Структура окна:
-        {
-            'packets': [],       # Список пакетов в окне
-            'window_sec': 10.0,  # Длительность окна в секундах
-            'last_analysis': 0   # Время последнего анализа (для оптимизации)
-        }
         """
         windows = {}
         
@@ -167,6 +170,7 @@ class NetworkTrafficMonitor:
         header = (
             f"=== NFDetect Session Start ===\n"
             f"Время: {datetime.datetime.now()}\n"
+            f"Подозрительные IP: {', '.join(self.suspicious_ips_sources) if self.suspicious_ips_sources else 'отключены'}\n"
             f"Отладка: {'Включена' if self.debug_mode else 'Выключена'}\n"
             f"{'='*30}\n\n"
         )
@@ -176,27 +180,22 @@ class NetworkTrafficMonitor:
     
     def process_packet(self, packet: Packet):
         """
-        Обрабатывает один пакет:
-        1. Обновляет общую статистику
-        2. Для каждого активного окна:
-           - Удаляет старые пакеты вне временного окна
-           - Добавляет новый пакет
-           - Анализирует окно если прошло достаточно времени
+        Обрабатывает один пакет.
         """
         packet_time = float(packet.sniff_timestamp)
         
-        # 1. Обновляем общую статистику
+        # Обновляем общую статистику
         self._update_statistics(packet, packet_time)
         
-        # 2. Обрабатываем каждое окно
+        # Обрабатываем каждое окно
         for window_type, window in self.windows.items():
-            if not window:  # Пропускаем неактивные правила
+            if not window:
                 continue
             
             window_sec = window["window_sec"]
             window_start = packet_time - window_sec
             
-            # Удаляем старые пакеты, которые не входят в текущее окно
+            # Удаляем старые пакеты
             window["packets"] = [
                 p for p in window["packets"]
                 if float(p.sniff_timestamp) >= window_start
@@ -205,12 +204,11 @@ class NetworkTrafficMonitor:
             # Добавляем новый пакет
             window["packets"].append(packet)
             
-            # Анализируем окно (опционально с оптимизацией по времени)
+            # Анализируем окно
             self._analyze_window_if_needed(window_type, window, packet_time)
     
     def _update_statistics(self, packet: Packet, packet_time: float):
         """Обновляет статистику на основе нового пакета."""
-        # Устанавливаем время начала захвата
         if self.statistics["start_time"] is None:
             self.statistics["start_time"] = packet_time
         
@@ -244,10 +242,6 @@ class NetworkTrafficMonitor:
     def _analyze_window_if_needed(self, window_type: str, window: Dict, current_time: float):
         """
         Анализирует окно если прошло достаточно времени с последнего анализа.
-        Это оптимизация чтобы не анализировать окно на каждый пакет.
-        
-        Для окон с длительностью < 5 сек - анализируем каждый пакет
-        Для окон >= 5 сек - анализируем не чаще чем раз в 1 секунду
         """
         window_sec = window["window_sec"]
         
@@ -259,47 +253,47 @@ class NetworkTrafficMonitor:
         
         # Для длинных окон анализируем с периодичностью
         time_since_last_analysis = current_time - window["last_analysis"]
-        if time_since_last_analysis >= 1.0:  # Раз в секунду
+        if time_since_last_analysis >= 1.0:
             self._analyze_window(window_type, window["packets"])
             window["last_analysis"] = current_time
     
     def _analyze_window(self, window_type: str, packets: List[Packet]):
         """
         Анализирует временное окно для конкретного правила.
-        Вызывает соответствующий метод анализатора.
         """
         if not packets:
             return
-        
-        # Определяем тип анализа по названию окна
         try:
             if "brute_force" in window_type:
                 alarm = self.analyzer.analyze_bruteforce(packets)
-            elif "ddos_1ip" in window_type or "ddos_nip" in window_type:
+            elif "ddos_1ip" in window_type:
+                alarm = self.analyzer.analyze_ddos_single_ip(packets)
+            elif "ddos_nip" in window_type:
                 alarm = self.analyzer.analyze_ddos_multi_ip(packets)
             elif "flood_HTTP" in window_type:
-                alarm = self.analyzer.analyze_ddos_multi_ip(packets)  # Используем тот же анализатор
+                alarm = self.analyzer.analyze_ddos_multi_ip(packets)
             elif "flood_SYN" in window_type:
                 alarm = self.analyzer.analyze_syn_flood(packets)
             elif "C2" in window_type:
                 alarm = self.analyzer.analyze_c2_beaconing(packets)
             else:
                 return
+                
+            if len(alarm) == 0:return
             
-            # Логируем тревогу если она есть
-            if alarm and alarm[0]:  # alarm[0] - флаг тревоги
-                Alarm(alarm[0], alarm[1], alarm[2], alarm[3]).log(
+            self.alarms.append(alarm[0])
+            
+            if alarm and len(alarm) != 0:
+                Alarm(alarm[0][0], alarm[0][1], alarm[0][2], alarm[0][3]).log(
                     self.log_path,
                     self.rules["reaction"]["out"]
                 )
-                self.alarms.append(alarm)
                 
                 if self.debug_mode:
-                    print(f"[ALERT] {alarm[1]} в окне {window_type}")
-        
-        except Exception as e:
-            if self.debug_mode:
-                print(f"[ERROR] Ошибка анализа окна {window_type}: {e}")
+                    print(f"[ALERT] {alarm[0][1]} в окне {window_type}")
+        except:
+            if self.debug_mode:print(f"Error in analyze {window_type}")
+                
     
     def analyze_file(self, pcap_path: str) -> Dict[str, Any]:
         """
@@ -334,16 +328,6 @@ class NetworkTrafficMonitor:
     def start_live_capture(self, interface: str, duration: int = 0):
         """
         Запускает live-захват в отдельном потоке.
-        
-        Args:
-            interface: Сетевой интерфейс для захвата
-            duration: Продолжительность захвата в секундах (0 = бесконечно)
-        
-        Почему потоки:
-        - pyshark.LiveCapture блокирует выполнение при sniff_continuously()
-        - Чтобы иметь возможность остановить захват и продолжить выполнение основной программы
-        - Это стандартная практика для сетевых анализаторов
-        - Один поток для захвата, основной поток для управления
         """
         print(f"[+] Запуск live-мониторинга на интерфейсе: {interface}")
         if self.debug_mode:
@@ -364,10 +348,18 @@ class NetworkTrafficMonitor:
     
     def _live_capture_worker(self, interface: str, duration: int):
         """Рабочая функция для live-захвата в отдельном потоке."""
+        # Создаем event loop для этого потока
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        
         start_time = time.time()
         
         try:
-            capture = pyshark.LiveCapture(interface=interface)
+            # Используем event loop в pyshark
+            capture = pyshark.LiveCapture(
+                interface=interface,
+                eventloop=loop
+            )
             
             for packet in capture.sniff_continuously():
                 if self.stop_flag:
@@ -385,25 +377,31 @@ class NetworkTrafficMonitor:
                 if self.debug_mode:
                     src = self._get_src_ip(packet) or "N/A"
                     dst = self._get_dst_ip(packet) or "N/A"
-                    if self.statistics["total"] % 100 == 0:  # Каждые 100 пакетов
+                    if self.statistics["total"] % 100 == 0:
                         print(f"[DEBUG] Пакет #{self.statistics['total']}: {src} -> {dst}")
         
         except Exception as e:
             print(f"[ERROR] Ошибка захвата трафика: {e}")
         finally:
+            # Закрываем event loop
+            loop.close()
+            # Закрываем захват
             if 'capture' in locals():
-                capture.close()
+                try:
+                    capture.close()
+                except Exception as e:
+                    if self.debug_mode:
+                        print(f"[DEBUG] Ошибка закрытия захвата: {e}")
             print("[+] Live-захват остановлен")
     
     def stop_live_capture(self):
         """
         Останавливает live-захват.
-        Устанавливает флаг остановки и ждет завершения потока захвата.
         """
         print("\n[!] Остановка live-захвата...")
         self.stop_flag = True
         
-        # Ждем завершения потока захвата (максимум 2 секунды)
+        # Ждем завершения потока захвата
         if self.capture_thread and self.capture_thread.is_alive():
             self.capture_thread.join(timeout=2.0)
         
@@ -418,6 +416,20 @@ class NetworkTrafficMonitor:
     def _generate_reports(self, source: str):
         """Генерирует отчеты по результатам анализа."""
         try:
+            susp_ips_source = self.suspicious_ips_sources[0] if self.suspicious_ips_sources else "отключены"
+            generate_full_json_summary(
+                self.statistics,
+                self.analyzer.stats,
+                self.alarms,
+                source,
+                self.output_dir,
+                os.path.basename(self.log_path),
+                self.protected_ips_path,
+                susp_ips_source,
+                self.rules_path,
+                len(self.protected_ips),
+                len(self.suspicious_ips),
+                self.rules)
             generate_summary(
                 self.statistics,
                 self.analyzer.get_statistics(),
@@ -425,29 +437,13 @@ class NetworkTrafficMonitor:
                 self.output_dir,
                 os.path.basename(self.log_path),
                 self.protected_ips_path,
-                self.rules["suspicious_ips"]["files_of_susp_ip_list"],
+                susp_ips_source,
                 self.rules_path,
                 len(self.protected_ips),
                 len(self.suspicious_ips)
             )
-        except Exception as e:
-            print(f"[ERROR] Ошибка генерации отчетов: {e}")
-        
-        try:
-            generate_full_json_summary(
-                self.statistics,
-                self.analyzer.get_statistics(),
-                self.alarms,
-                source,
-                self.output_dir,
-                os.path.basename(self.log_path),
-                self.protected_ips_path,
-                self.rules["suspicious_ips"]["files_of_susp_ip_list"],
-                self.rules_path,
-                len(self.protected_ips),
-                len(self.suspicious_ips),
-                self.rules
-            )
+
+            
         except Exception as e:
             print(f"[ERROR] Ошибка генерации отчетов: {e}")
     
@@ -565,5 +561,6 @@ def livescan(
     
     except KeyboardInterrupt:
         print("\n[!] Остановка по запросу пользователя")
+        time.sleep(3)
     finally:
         monitor.stop_live_capture()

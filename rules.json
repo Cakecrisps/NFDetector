@@ -14,7 +14,7 @@
     "request_limit_window": 1.0
   },
   "nip": {
-    "request_limit": 5000.0,        
+    "request_limit": 10.0,        
     "request_limit_window": 1.0,
     "display_ips": 10
   }
@@ -41,7 +41,7 @@
   } 
 },
 "reaction":{
-    "out":["PRINT","LOG","example.domain.com","example2.domain.com"]
+    "out":["PRINT","LOG"]
 },
 "suspicious_ips": {
   "enabled": true,
