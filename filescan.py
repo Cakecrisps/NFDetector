@@ -9,22 +9,6 @@ from general.logs import log
 from general.AlarmClass import Alarm
 from general.summarygen import generate_summary,generate_full_json_summary
 
-def format_top_ips(ip_dict: Dict[str, int], top_n: int = 5) -> str:
-    """Форматирует топ-N IP адресов из словаря"""
-    if not ip_dict:
-        return "  Нет данных"
-    
-    sorted_ips = sorted(ip_dict.items(), key=lambda x: x[1], reverse=True)[:top_n]
-    return "\n".join([f"  {ip}: {count} пакетов" for ip, count in sorted_ips])
-
-def format_dns_queries(dns_dict: Dict[str, int], top_n: int = 5) -> str:
-    """Форматирует топ-N DNS запросов"""
-    if not dns_dict:
-        return "  Нет данных"
-    
-    sorted_dns = sorted(dns_dict.items(), key=lambda x: x[1], reverse=True)[:top_n]
-    return "\n".join([f"  {domain}: {count} запросов" for domain, count in sorted_dns])
-
 def filescan(
     path_to_file: str,
     path_to_output_dir: str,
