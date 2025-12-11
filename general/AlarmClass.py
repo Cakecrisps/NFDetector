@@ -1,5 +1,5 @@
 import datetime
-from logs import log, log_http
+from .logs import log, log_http
 class Alarm:
     def __init__(self, reason: str, ipdst: str, ipsrc: str, is_prot: bool):
         self.reason = reason
