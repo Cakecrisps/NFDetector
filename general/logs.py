@@ -33,6 +33,8 @@ def log_http(msg: str, domens: list[str]) -> None:
         if is_valid_domain(domen):
             r = requests.post(f"http://{domen}",data=json.dumps({"msg": msg}))
             if r.status_code not in list(range(200,300)): print(f"WARNING!! request to {domen} {r.status_code}")
+        else:
+            raise ValueError(f"{domen} not is valid")
 
 
 
