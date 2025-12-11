@@ -115,7 +115,6 @@ def _calculate_statistics(packets: List[pyshark.packet.packet.Packet], suspiciou
             "src_ips": {},
             "dst_ips": {}
         },
-        # Новые секции для HTTP и файловых передач
         "http_requests": [],   # Список HTTP запросов
         "files_transferred": []  # Список переданных файлов (FTP/SMB)
     }
@@ -124,10 +123,8 @@ def _calculate_statistics(packets: List[pyshark.packet.packet.Packet], suspiciou
         return stats
     
     for packet in packets:
-        # Общее количество пакетов
         stats["total"] += 1
         
-        # Общий объем данных (в байтах)
         try:
             if hasattr(packet, 'length'):
                 packet_length = int(packet.length)
@@ -167,7 +164,6 @@ def _calculate_statistics(packets: List[pyshark.packet.packet.Packet], suspiciou
         if is_suspicious:
             stats["suspicious_ips"]["total_packets"] += 1
         
-        # ===== НОВАЯ ЧАСТЬ: Статистика HTTP запросов =====
         try:
             # Проверяем наличие HTTP-слоя и обязательных полей
             if hasattr(packet, 'http') and (
@@ -195,7 +191,6 @@ def _calculate_statistics(packets: List[pyshark.packet.packet.Packet], suspiciou
             # Логируем ошибку или пропускаем проблемный пакет
             continue
         
-        # ===== НОВАЯ ЧАСТЬ: Статистика переданных файлов =====
         try:
             # FTP файлы (проверяем команды передачи)
             if hasattr(packet, 'ftp') and hasattr(packet.ftp, 'request_command') and hasattr(packet.ftp, 'request_arg'):
@@ -227,7 +222,6 @@ def _calculate_statistics(packets: List[pyshark.packet.packet.Packet], suspiciou
                         "protocol": "SMB"
                     })
         except Exception as e:
-            # Логируем ошибку или пропускаем проблемный пакет
             continue
     
     return stats
