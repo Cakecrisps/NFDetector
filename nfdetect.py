@@ -16,14 +16,24 @@ def parse_arguments():
         choices=['live', 'file'],
         help='Режим работы: live - реальное время, file - анализ файла'
     )
-    
     parser.add_argument(
         '-pi', '--protected_ips',
         dest='protected_ips',
         default='ext/protectips.txt',
         help='Путь к файлу с защищенными IP-адресами (по умолчанию: ext/protectips.txt)'
     )
-    
+    parser.add_argument(
+        '-si', '--susp_ips',
+        dest='susp_ips',
+        default='ext/suspips.txt',
+        help='Путь к файлу с подозрительными IP-адресами (по умолчанию: ext/suspips.txt)'
+    )
+    parser.add_argument(
+        '-r', '--rules',
+        dest='rules',
+        default='rules.json',
+        help='Путь к файлу с правилами (по умолчанию: rules.json)'
+    )
     parser.add_argument(
         '-o', '--output',
         dest='output_dir',
@@ -66,7 +76,13 @@ def validate_arguments(args):
     # Проверка существования файла protected_ips
     if not os.path.exists(args.protected_ips):
         print(f"Предупреждение: файл с защищенными IP '{args.protected_ips}' не существует")
-    
+        exit(1)
+    if not os.path.exists(args.susp_ips):
+        print(f"Предупреждение: файл с подозрительными IP '{args.susp_ips}' не существует")
+        exit(1)
+    if not os.path.exists(args.rules):
+        print(f"Предупреждение: файл с правилами '{args.rules}' не существует")
+        exit(1)
     os.makedirs(args.output_dir, exist_ok=True)
     print(f"Выходная директория: {os.path.abspath(args.output_dir)}")
     
