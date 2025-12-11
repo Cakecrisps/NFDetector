@@ -225,11 +225,4 @@ def main():
         sys.exit(1)
 
 if __name__ == "__main__":
-    """Инициализация приложения с проверкой зависимостей"""
-    try:
-        import psutil
-    except ImportError:
-        print("Ошибка: требуется модуль psutil. Установите через 'pip install psutil'")
-        sys.exit(1)
-    
     main()
