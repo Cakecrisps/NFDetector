@@ -23,12 +23,6 @@ def parse_arguments():
         help='Путь к файлу с защищенными IP-адресами (по умолчанию: ext/protectips.txt)'
     )
     parser.add_argument(
-        '-si', '--susp_ips',
-        dest='susp_ips',
-        default='ext/suspips.txt',
-        help='Путь к файлу с подозрительными IP-адресами (по умолчанию: ext/suspips.txt)'
-    )
-    parser.add_argument(
         '-r', '--rules',
         dest='rules',
         default='rules.json',
@@ -77,9 +71,6 @@ def validate_arguments(args):
     if not os.path.exists(args.protected_ips):
         print(f"Предупреждение: файл с защищенными IP '{args.protected_ips}' не существует")
         exit(1)
-    if not os.path.exists(args.susp_ips):
-        print(f"Предупреждение: файл с подозрительными IP '{args.susp_ips}' не существует")
-        exit(1)
     if not os.path.exists(args.rules):
         print(f"Предупреждение: файл с правилами '{args.rules}' не существует")
         exit(1)
@@ -114,7 +105,7 @@ def main():
         
         if args.mode == 'file' and args.file_path:
             print(f"  Анализируемый файл: {args.file_path}")
-            filescan(args.file_path,args.output_dir,args.log_file,args.protected_ips,args.susp_ips,args.rules)
+            filescan(args.file_path,args.output_dir,args.log_file,args.protected_ips,args.rules)
         
         # Здесь ваша основная логика
         if args.mode == 'live':

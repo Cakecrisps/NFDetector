@@ -32,7 +32,6 @@ class TrafficAnalyzer:
         # Статистика - только необходимые поля
         self.stats = {
             "total": 0,
-            "files": [],
             "alarms": {
                 "ddos": 0,
                 "flood": 0,

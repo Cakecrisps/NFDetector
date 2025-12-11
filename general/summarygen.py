@@ -148,6 +148,7 @@ def generate_full_json_summary(
     
     # Формирование структуры JSON с использованием существующих функций форматирования
     full_summary = {
+        "raw_stats":statistics,
         "metadata": {
             "analysis_time": current_time,
             "traffic_file": path_to_file,

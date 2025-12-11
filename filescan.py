@@ -14,7 +14,6 @@ def filescan(
     path_to_output_dir: str,
     output_filename: str,
     path_to_prot_ips: str,
-    path_to_susp_ips: str,
     path_to_rules: str
 ) -> Dict[str, Any]:
     """
@@ -43,13 +42,17 @@ def filescan(
     # Загрузка подозрительных IP
     suspicious_ips: Set[str] = set()
     try:
-        with open(path_to_susp_ips, 'r') as f:
-            for line in f:
-                ip = line.strip()
-                if ip and not ip.startswith('#'):  # Игнорируем пустые строки и комментарии
-                    suspicious_ips.add(ip)
+        for path in rules["suspicious_ips"]["files_of_susp_ip_list"]:
+            try:
+                with open(path, 'r') as f:
+                    for line in f:
+                        ip = line.strip()
+                        if ip and not ip.startswith('#'):  # Игнорируем пустые строки и комментарии
+                            suspicious_ips.add(ip)
+            except:
+                print(f"{Exception} while reading {path}")
     except Exception as e:
-        print(f"Ошибка при чтении файла подозрительных IP {path_to_susp_ips}: {str(e)}")
+        print(f"Ошибка при чтении файла подозрительных IP {rules}: {str(e)}")
     
     # Загрузка защищенных IP (для информации в сводке)
     protected_ips: Set[str] = set()
@@ -89,15 +92,14 @@ def filescan(
             rules["reaction"]["out"]
         )
 
-    gs = generate_summary(statistics,NFDetector.get_statistics(),path_to_file,path_to_output_dir,output_filename,path_to_prot_ips,path_to_susp_ips,path_to_rules,len(protected_ips),len(suspicious_ips))
-    gjs = generate_full_json_summary(statistics,NFDetector.get_statistics(),alarms,path_to_file,path_to_output_dir,output_filename,path_to_prot_ips,path_to_susp_ips,path_to_rules,len(protected_ips),len(suspicious_ips),rules)
+    gs = generate_summary(statistics,NFDetector.get_statistics(),path_to_file,path_to_output_dir,output_filename,path_to_prot_ips,rules["suspicious_ips"]["files_of_susp_ip_list"],path_to_rules,len(protected_ips),len(suspicious_ips))
+    gjs = generate_full_json_summary(statistics,NFDetector.get_statistics(),alarms,path_to_file,path_to_output_dir,output_filename,path_to_prot_ips,rules["suspicious_ips"]["files_of_susp_ip_list"],path_to_rules,len(protected_ips),len(suspicious_ips),rules)
     
     print(gs,gjs)
         
     return statistics
-
 def _calculate_statistics(packets: List[pyshark.packet.packet.Packet], suspicious_ips: Set[str]) -> Dict[str, Any]:
-    """Подсчитывает общую статистику по всем пакетам, включая статистику по подозрительным IP."""
+    """Подсчитывает общую статистику по всем пакетам, включая статистику по подозрительным IP, HTTP запросам и переданным файлам."""
     
     stats = {
         "total": 0,
@@ -112,7 +114,10 @@ def _calculate_statistics(packets: List[pyshark.packet.packet.Packet], suspiciou
             "dst_count": 0,
             "src_ips": {},
             "dst_ips": {}
-        }
+        },
+        # Новые секции для HTTP и файловых передач
+        "http_requests": [],   # Список HTTP запросов
+        "files_transferred": []  # Список переданных файлов (FTP/SMB)
     }
     
     if not packets:
@@ -146,27 +151,86 @@ def _calculate_statistics(packets: List[pyshark.packet.packet.Packet], suspiciou
         # Статистика по DNS запросам
         _update_dns_stats(packet, stats["dns"])
         
-        # ===== НОВАЯ ЧАСТЬ: Статистика по подозрительным IP =====
+        # ===== Статистика по подозрительным IP =====
         is_suspicious = False
         
-        # Проверка source IP
         if src_ip and src_ip in suspicious_ips:
             is_suspicious = True
             stats["suspicious_ips"]["src_count"] += 1
             stats["suspicious_ips"]["src_ips"][src_ip] = stats["suspicious_ips"]["src_ips"].get(src_ip, 0) + 1
         
-        # Проверка destination IP
         if dst_ip and dst_ip in suspicious_ips:
             is_suspicious = True
             stats["suspicious_ips"]["dst_count"] += 1
             stats["suspicious_ips"]["dst_ips"][dst_ip] = stats["suspicious_ips"]["dst_ips"].get(dst_ip, 0) + 1
         
-        # Общий счетчик пакетов с подозрительными IP
         if is_suspicious:
             stats["suspicious_ips"]["total_packets"] += 1
+        
+        # ===== НОВАЯ ЧАСТЬ: Статистика HTTP запросов =====
+        try:
+            # Проверяем наличие HTTP-слоя и обязательных полей
+            if hasattr(packet, 'http') and (
+                hasattr(packet.http, 'request_full_uri') or 
+                hasattr(packet.http, 'request_uri')
+            ):
+                # Извлекаем URI (отдаем предпочтение полному URI)
+                uri = (
+                    packet.http.request_full_uri 
+                    if hasattr(packet.http, 'request_full_uri')
+                    else packet.http.request_uri
+                )
+                
+                # Форматируем время в требуемый формат
+                timestamp = packet.sniff_time.strftime("%Y-%m-%d %H:%M:%S.%f")
+                
+                # Добавляем запись в статистику
+                stats["http_requests"].append({
+                    "uri": uri,
+                    "time": timestamp,
+                    "ipsrc": src_ip,
+                    "ipdst": dst_ip
+                })
+        except Exception as e:
+            # Логируем ошибку или пропускаем проблемный пакет
+            continue
+        
+        # ===== НОВАЯ ЧАСТЬ: Статистика переданных файлов =====
+        try:
+            # FTP файлы (проверяем команды передачи)
+            if hasattr(packet, 'ftp') and hasattr(packet.ftp, 'request_command') and hasattr(packet.ftp, 'request_arg'):
+                cmd = packet.ftp.request_command.strip().upper()
+                if cmd in ['RETR', 'STOR']:  # RETR - скачивание, STOR - загрузка
+                    filename = packet.ftp.request_arg
+                    timestamp = packet.sniff_time.strftime("%Y-%m-%d %H:%M:%S.%f")
+                    
+                    stats["files_transferred"].append({
+                        "filename": filename,
+                        "time": timestamp,
+                        "ipsrc": src_ip,
+                        "ipdst": dst_ip,
+                        "protocol": "FTP"
+                    })
+            
+            # SMB файлы (обрабатываем SMB2 Create requests)
+            elif hasattr(packet, 'smb2') and hasattr(packet.smb2, 'cmd'):
+                # 0x0005 - команда SMB2_CREATE
+                if packet.smb2.cmd == '0x0005' and hasattr(packet.smb2, 'filename'):
+                    filename = packet.smb2.filename
+                    timestamp = packet.sniff_time.strftime("%Y-%m-%d %H:%M:%S.%f")
+                    
+                    stats["files_transferred"].append({
+                        "filename": filename,
+                        "time": timestamp,
+                        "ipsrc": src_ip,
+                        "ipdst": dst_ip,
+                        "protocol": "SMB"
+                    })
+        except Exception as e:
+            # Логируем ошибку или пропускаем проблемный пакет
+            continue
     
     return stats
-
 
 def _update_protocol_stats(packet: pyshark.packet.packet.Packet, protos_dict: Dict[str, int]) -> None:
     """Обновляет статистику по протоколам."""
