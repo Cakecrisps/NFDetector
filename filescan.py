@@ -99,20 +99,18 @@ def filescan(
     alarms += [NFDetector.analyze_c2_beaconing(x) for x in windows_dict["C2_min_interval"] + windows_dict["C2_max_interval"]]
     
     for alarm in alarms:
+        if len(alarm) == 0:continue
         Alarm(alarm[0], alarm[1], alarm[2], alarm[3]).log(
             path_to_output_dir + output_filename,
             rules["reaction"]["out"]
         )
 
     gs = generate_summary(statistics,NFDetector.get_statistics(),path_to_file,path_to_output_dir,output_filename,path_to_prot_ips,path_to_susp_ips,path_to_rules,len(protected_ips),len(suspicious_ips))
-    gjs = generate_summary(statistics,NFDetector.get_statistics(),path_to_file,path_to_output_dir,output_filename,path_to_prot_ips,path_to_susp_ips,path_to_rules,len(protected_ips),len(suspicious_ips))
+    gjs = generate_full_json_summary(statistics,NFDetector.get_statistics(),alarms,path_to_file,path_to_output_dir,output_filename,path_to_prot_ips,path_to_susp_ips,path_to_rules,len(protected_ips),len(suspicious_ips),rules)
     
     print(gs,gjs)
         
-    return {
-        "windows": windows_dict,
-        "statistics": statistics
-    }
+    return statistics
 
 def _calculate_statistics(packets: List[pyshark.packet.packet.Packet], suspicious_ips: Set[str]) -> Dict[str, Any]:
     """Подсчитывает общую статистику по всем пакетам, включая статистику по подозрительным IP."""

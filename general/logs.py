@@ -25,7 +25,7 @@ def is_valid_domain(domain_string: str) -> bool:
 
 
 def log(msg: str, pathtofile: str) -> None:
-    with open(pathtofile,"a") as f:
+    with open(pathtofile,"a",encoding="utf-8") as f:
         f.write(msg)
 
 def log_http(msg: str, domens: list[str]) -> None:

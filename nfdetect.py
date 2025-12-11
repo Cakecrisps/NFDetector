@@ -2,7 +2,7 @@ import argparse
 import sys
 import os
 import datetime
-
+from filescan import filescan
 def parse_arguments():
     """
     Парсинг аргументов командной строки
@@ -90,7 +90,7 @@ def validate_arguments(args):
     full_log_path = os.path.join(args.output_dir, args.log_file)
     
     if not os.path.exists(full_log_path):
-        with open(full_log_path, "w") as f:
+        with open(full_log_path, "w",encoding="utf-8") as f:
             f.write(f"Лог запуска: {datetime.datetime.now()}\n")
             f.write(f"Режим: {args.mode}\n")
     else:
@@ -114,6 +114,7 @@ def main():
         
         if args.mode == 'file' and args.file_path:
             print(f"  Анализируемый файл: {args.file_path}")
+            filescan(args.file_path,args.output_dir,args.log_file,args.protected_ips,args.susp_ips,args.rules)
         
         # Здесь ваша основная логика
         if args.mode == 'live':

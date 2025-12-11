@@ -45,6 +45,6 @@
 },
 "suspicious_ips": {
   "enabled": true,
-  "files_of_susp_ip_list": ["/ext/suspicious_ips.txt"]
+  "files_of_susp_ip_list": ["ext/suspips.txt"]
 }
 }
