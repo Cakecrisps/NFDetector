@@ -3,8 +3,7 @@ import sys
 import os
 import datetime
 import psutil
-from filescan import filescan
-from livescan import livescan
+from general.uTrafficMonitor import filescan,livescan
 
 def get_available_interfaces():
     """
@@ -146,7 +145,7 @@ def validate_arguments(args):
     
     # Настройка файловой системы
     os.makedirs(args.output_dir, exist_ok=True)
-    
+
     abs_output_dir = os.path.abspath(args.output_dir)   
 
     # Инициализация логирования
@@ -209,11 +208,11 @@ def main():
         else:
             print(f"[+] Запуск анализа файла: {args.file_path}")
             filescan(
-                pcap_path=args.file_path,
-                output_dir=args.output_dir,
-                log_file=args.log_file,
-                protected_ips=args.protected_ips,
-                rules_file=args.rules
+                path_to_file=args.file_path,
+                path_to_output_dir=args.output_dir,
+                output_filename=args.log_file,
+                path_to_prot_ips=args.protected_ips,
+                path_to_rules=args.rules
             )
             
     except KeyboardInterrupt:
