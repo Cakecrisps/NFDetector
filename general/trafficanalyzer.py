@@ -29,14 +29,9 @@ class TrafficAnalyzer:
         with open(protectips, 'r') as f:
             self.protectips = [line.strip() for line in f if line.strip()]
         
-        # Статистика
+        # Статистика - только необходимые поля
         self.stats = {
             "total": 0,
-            "total_bytes": 0,
-            "protos": {},
-            "src_ips": {},
-            "dst_ips": {},
-            "dns": {},
             "files": [],
             "alarms": {
                 "ddos": 0,
@@ -116,17 +111,6 @@ class TrafficAnalyzer:
                 src_port = None
                 dst_port = None
             
-            # Проверяем application протоколы
-            for proto in ['http', 'https', 'dns', 'ssh', 'ftp', 'smb', 'telnet', 'rdp']:
-                if hasattr(packet, proto):
-                    protocol = proto.upper()
-                    break
-            
-            # Извлекаем DNS запрос если есть
-            dns_query = None
-            if hasattr(packet, 'dns') and hasattr(packet.dns, 'qry_name'):
-                dns_query = packet.dns.qry_name
-            
             # Анализируем TCP флаги
             tcp_flags = None
             is_syn = False
@@ -146,8 +130,6 @@ class TrafficAnalyzer:
                 "dst_port": dst_port,
                 "timestamp": timestamp,
                 "protocol": protocol,
-                "dns_query": dns_query,
-                "tcp_flags": tcp_flags,
                 "is_syn": is_syn,
                 "is_syn_ack": is_syn_ack,
                 "is_http": is_http,
@@ -200,7 +182,7 @@ class TrafficAnalyzer:
             # Проверяем, что цель защищается
             if dst_ip in self.protectips:
                 self._increment_counter(src_counts, src_ip)
-                self.update_statistics(packet_info)
+                self.stats["total"] += 1
         
         # Проверяем превышение лимита
         for src_ip, count in src_counts.items():
@@ -239,6 +221,7 @@ class TrafficAnalyzer:
         
         # Фильтруем только пакеты к защищаемым IP
         src_counts = {}
+        total_protected_packets = 0
         
         for packet in window_packets:
             packet_info = self._get_packet_info(packet)
@@ -251,11 +234,10 @@ class TrafficAnalyzer:
             # Проверяем, что цель защищается
             if dst_ip in self.protectips:
                 self._increment_counter(src_counts, src_ip)
-                self.update_statistics(packet_info)
+                total_protected_packets += 1
+                self.stats["total"] += 1
         
-        total_packets = sum(src_counts.values())
-        
-        if total_packets >= total_limit:
+        if total_protected_packets >= total_limit:
             # Находим топ IP по количеству пакетов
             sorted_ips = sorted(
                 src_counts.items(),
@@ -266,7 +248,7 @@ class TrafficAnalyzer:
             top_ips = [f"{ip}({count})" for ip, count in sorted_ips]
             top_ips_str = ", ".join(top_ips)
             
-            reason = f"DDoS_MULTI_IP: {total_packets} total packets (limit: {total_limit}), top: {top_ips_str}"
+            reason = f"DDoS_MULTI_IP: {total_protected_packets} total packets (limit: {total_limit}), top: {top_ips_str}"
             alarms.append((reason, "PROTECTED_NETWORK", "MULTIPLE", True))
             self.stats["alarms"]["ddos"] += 1
         
@@ -326,7 +308,7 @@ class TrafficAnalyzer:
             if dst_ip not in self.protectips:
                 continue
             
-            self.update_statistics(packet_info)
+            self.stats["total"] += 1
             
             # Анализируем TCP флаги
             is_syn = packet_info.get("is_syn", False)
@@ -409,7 +391,7 @@ class TrafficAnalyzer:
             # Проверяем, что цель защищается и это HTTP запрос
             if dst_ip in self.protectips and is_http:
                 self._increment_counter(src_counts, src_ip)
-                self.update_statistics(packet_info)
+                self.stats["total"] += 1
         
         # Проверяем превышение лимита
         for src_ip, count in src_counts.items():
@@ -469,7 +451,7 @@ class TrafficAnalyzer:
             is_auth, protocol = is_auth_attempt(packet)
             
             if is_auth and protocol in proto_list:
-                self.update_statistics(packet_info)
+                self.stats["total"] += 1
                 
                 # Группируем по источнику, цели и протоколу
                 key = f"{src_ip}_{dst_ip}_{protocol}"
@@ -545,7 +527,7 @@ class TrafficAnalyzer:
             if dst_ip not in self.protectips:
                 continue
             
-            self.update_statistics(packet_info)
+            self.stats["total"] += 1
             
             # Группируем по паре источник-цель
             pair_key = f"{src_ip}_{dst_ip}"
@@ -630,7 +612,7 @@ class TrafficAnalyzer:
             src_ip = packet_info.get("src_ip")
             dst_ip = packet_info.get("dst_ip")
             
-            self.update_statistics(packet_info)
+            self.stats["total"] += 1
             
             # Проверяем, что цель защищается
             if dst_ip not in self.protectips:
@@ -651,56 +633,6 @@ class TrafficAnalyzer:
                 self.stats["alarms"]["susp_ips"] += 1
         
         return alarms
-    
-    def update_statistics(self, packet_info: Dict) -> None:
-        """
-        Обновляет статистику из информации о пакете.
-        
-        Parameters
-        ----------
-        packet_info : Dict
-            Информация о пакете из _get_packet_info
-        """
-        self.stats["total"] += 1
-        
-        # Обновляем счетчики IP
-        src_ip = packet_info.get("src_ip")
-        dst_ip = packet_info.get("dst_ip")
-        
-        if src_ip:
-            self._increment_counter(self.stats["src_ips"], src_ip)
-        if dst_ip:
-            self._increment_counter(self.stats["dst_ips"], dst_ip)
-        
-        # Обновляем протоколы
-        protocol = packet_info.get("protocol")
-        if protocol:
-            self._increment_counter(self.stats["protos"], protocol)
-        
-        # Обновляем DNS
-        dns_query = packet_info.get("dns_query")
-        if dns_query:
-            self._increment_counter(self.stats["dns"], dns_query)
-    
-    def get_top_n(self, counter_dict: dict, n: int = 5) -> List[tuple]:
-        """
-        Получает топ-N элементов из словаря-счетчика.
-        
-        Parameters
-        ----------
-        counter_dict : dict
-            Словарь с подсчитанными элементами
-        n : int
-            Количество элементов для возврата
-            
-        Returns
-        -------
-        List[tuple]
-            Список кортежей (элемент, количество)
-        """
-        items = list(counter_dict.items())
-        items.sort(key=lambda x: x[1], reverse=True)
-        return items[:n]
     
     def get_statistics(self) -> Dict:
         """
@@ -734,58 +666,3 @@ class TrafficAnalyzer:
             Список защищаемых IP
         """
         return self.protectips
-    
-    def generate_short_report(self) -> str:
-        """Генерация короткой текстовой сводки."""
-        report_lines = []
-        report_lines.append("=" * 60)
-        report_lines.append("NETFREAK DETECTOR - SHORT REPORT")
-        report_lines.append("=" * 60)
-        report_lines.append(f"Generated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
-        report_lines.append(f"Total packets analyzed: {self.stats['total']}")
-        report_lines.append(f"Protected IPs monitored: {len(self.protectips)}")
-        report_lines.append("")
-        
-        # Топ-5 source IP
-        report_lines.append("TOP 5 SOURCE IPs:")
-        report_lines.append("-" * 40)
-        for ip, count in self.get_top_n(self.stats["src_ips"], 5):
-            report_lines.append(f"{ip}: {count} packets")
-        
-        report_lines.append("")
-        
-        # Топ-5 destination IP
-        report_lines.append("TOP 5 DESTINATION IPs:")
-        report_lines.append("-" * 40)
-        for ip, count in self.get_top_n(self.stats["dst_ips"], 5):
-            report_lines.append(f"{ip}: {count} packets")
-        
-        report_lines.append("")
-        
-        # Топ-5 DNS запросов
-        if self.stats["dns"]:
-            report_lines.append("TOP 5 DNS QUERIES:")
-            report_lines.append("-" * 40)
-            for domain, count in self.get_top_n(self.stats["dns"], 5):
-                report_lines.append(f"{domain}: {count} queries")
-            report_lines.append("")
-        
-        # Статистика протоколов
-        if self.stats["protos"]:
-            report_lines.append("PROTOCOL DISTRIBUTION:")
-            report_lines.append("-" * 40)
-            for proto, count in self.get_top_n(self.stats["protos"], 10):
-                report_lines.append(f"{proto}: {count}")
-            report_lines.append("")
-        
-        # Алармы
-        report_lines.append("SECURITY ALARMS:")
-        report_lines.append("-" * 40)
-        for alarm_type, count in self.stats["alarms"].items():
-            if count > 0:
-                report_lines.append(f"{alarm_type.upper()}: {count}")
-        
-        if sum(self.stats["alarms"].values()) == 0:
-            report_lines.append("No security alarms detected")
-        
-        return "\n".join(report_lines)
