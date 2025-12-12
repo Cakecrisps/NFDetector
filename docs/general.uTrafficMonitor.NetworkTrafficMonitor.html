@@ -599,7 +599,39 @@
         </div>
 
         <div class="moduleDocstring">
-          <div><p>Монитор сетевого трафика с временными окнами.</p></div>
+          <div><p class="pre">Монитор сетевого трафика с поддержкой временных окон для обнаружения аномалий.
+
+Класс обеспечивает захват и анализ сетевого трафика в реальном времени или из файлов PCAP,
+используя систему временных окон для обнаружения различных типов атак (DDoS, brute force,
+flood атаки, C2-коммуникации и др.).
+
+Attributes:
+    rules_path (str): Путь к файлу с правилами обнаружения аномалий.
+    protected_ips_path (str): Путь к файлу с защищенными IP-адресами.
+    output_dir (str): Директория для сохранения отчетов и логов.
+    log_path (str): Полный путь к файлу лога.
+    debug_mode (bool): Флаг режима отладки.
+    alarms (List): Список обнаруженных тревог.
+    rules (Dict): Загруженные правила обнаружения.
+    suspicious_ips (Set): Множество подозрительных IP-адресов.
+    protected_ips (Set): Множество защищенных IP-адресов.
+    statistics (Dict): Статистика по анализируемому трафику.
+    windows (Dict): Словарь временных окон для разных типов анализа.
+    analyzer (TrafficAnalyzer): Анализатор трафика.
+    stop_flag (bool): Флаг для остановки захвата трафика.
+    capture_thread (threading.Thread): Поток захвата трафика.
+
+Args:
+    rules_path (str): Путь к JSON-файлу с правилами обнаружения.
+    protected_ips_path (str): Путь к файлу со списком защищенных IP.
+    output_dir (str): Директория для выходных файлов.
+    log_filename (str): Имя файла лога.
+    debug_mode (bool): Включить режим отладки (по умолчанию False).
+
+Raises:
+    FileNotFoundError: Если не найден файл с правилами или защищенными IP.
+    ValueError: Если файл правил содержит невалидный JSON.
+    RuntimeError: При ошибках инициализации компонентов монитора.</p></div>
         </div>
 
         <div id="split-tables">
@@ -620,17 +652,17 @@
     
     <td>Method</td>
     <td><code><a href="#process_packet" class="internal-link" title="general.uTrafficMonitor.NetworkTrafficMonitor.process_packet">process<wbr></wbr>_packet</a></code></td>
-    <td>Обрабатывает один пакет.</td>
+    <td>Обрабатывает один сетевой пакет.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#start_live_capture" class="internal-link" title="general.uTrafficMonitor.NetworkTrafficMonitor.start_live_capture">start<wbr></wbr>_live<wbr></wbr>_capture</a></code></td>
-    <td>Запускает live-захват в отдельном потоке.</td>
+    <td>Запускает live-захват сетевого трафика в отдельном потоке.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#stop_live_capture" class="internal-link" title="general.uTrafficMonitor.NetworkTrafficMonitor.stop_live_capture">stop<wbr></wbr>_live<wbr></wbr>_capture</a></code></td>
-    <td>Останавливает live-захват.</td>
+    <td>Останавливает live-захват и генерирует финальные отчеты.</td>
   </tr><tr class="instancevariable">
     
     <td>Instance Variable</td>
@@ -840,7 +872,17 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Анализирует PCAP-файл полностью в синхронном режиме.</p></div>
+    <div><p class="pre">Анализирует PCAP-файл полностью в синхронном режиме.
+
+Args:
+    pcap_path (str): Путь к файлу PCAP для анализа.
+
+Returns:
+    Dict[str, Any]: Результаты анализа, включая статистику и окна.
+
+Raises:
+    FileNotFoundError: Если указанный PCAP-файл не существует.
+    RuntimeError: При ошибках во время анализа файла.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -864,7 +906,18 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Обрабатывает один пакет.</p></div>
+    <div><p class="pre">Обрабатывает один сетевой пакет.
+
+Обновляет статистику и проверяет наличие аномалий во всех активных
+временных окнах. Пакет добавляется во все окна, после чего для каждого
+окна выполняется анализ при необходимости.
+
+Args:
+    packet (Packet): Сетевой пакет для обработки.
+
+Note:
+    В случае ошибок при обработке пакета, информация выводится только
+    в режиме отладки.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -888,7 +941,15 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Запускает live-захват в отдельном потоке.</p></div>
+    <div><p class="pre">Запускает live-захват сетевого трафика в отдельном потоке.
+
+Args:
+    interface (str): Имя сетевого интерфейса для захвата.
+    duration (int, optional): Длительность захвата в секундах.
+        Если 0 - захват продолжается до ручной остановки. По умолчанию 0.
+
+Note:
+    Для остановки захвата используйте метод stop_live_capture() или нажмите Ctrl+C.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -912,7 +973,11 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Останавливает live-захват.</p></div>
+    <div><p class="pre">Останавливает live-захват и генерирует финальные отчеты.
+
+Note:
+    Метод завершает поток захвата, выполняет финальный анализ
+    всех временных окон и генерирует итоговые отчеты.</p></div>
   </div>
 </div><div class="baseinstancevariable">
   
@@ -1416,7 +1481,12 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Возвращает результаты анализа.</p></div>
+    <div><p class="pre">Возвращает результаты анализа.
+
+Returns:
+    Dict[str, Any]: Словарь с результатами анализа, содержащий:
+        - windows: текущие состояния временных окон
+        - statistics: собранная статистика</p></div>
   </div>
 </div><div class="basemethod private">
   
@@ -1488,7 +1558,10 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Инициализирует структуру для сбора статистики.</p></div>
+    <div><p class="pre">Инициализирует структуру для сбора статистики.
+
+Returns:
+    Dict[str, Any]: Словарь с начальной структурой статистики.</p></div>
   </div>
 </div><div class="basemethod private">
   
@@ -1512,7 +1585,10 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Инициализирует временные окна для всех правил.</p></div>
+    <div><p class="pre">Инициализирует временные окна для всех правил.
+
+Returns:
+    Dict[str, Dict]: Словарь временных окон для различных типов анализа.</p></div>
   </div>
 </div><div class="basemethod private">
   
@@ -1670,7 +1746,7 @@
   <div class="container-fluid">
     <a href="index.html">API Documentation</a> for general,
   generated by <a href="https://github.com/twisted/pydoctor/">pydoctor</a>
-    25.10.1 at 2025-12-12 17:37:50.
+    25.10.1 at 2025-12-13 00:01:15.
   </div>
 
   <!-- Search related scripts needs to be loaded at the end of HTML 

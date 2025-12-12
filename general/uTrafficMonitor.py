@@ -19,7 +19,39 @@ from pyshark.packet.packet import Packet
 
 class NetworkTrafficMonitor:
     """
-    Монитор сетевого трафика с временными окнами.
+    Монитор сетевого трафика с поддержкой временных окон для обнаружения аномалий.
+    
+    Класс обеспечивает захват и анализ сетевого трафика в реальном времени или из файлов PCAP,
+    используя систему временных окон для обнаружения различных типов атак (DDoS, brute force,
+    flood атаки, C2-коммуникации и др.).
+
+    Attributes:
+        rules_path (str): Путь к файлу с правилами обнаружения аномалий.
+        protected_ips_path (str): Путь к файлу с защищенными IP-адресами.
+        output_dir (str): Директория для сохранения отчетов и логов.
+        log_path (str): Полный путь к файлу лога.
+        debug_mode (bool): Флаг режима отладки.
+        alarms (List): Список обнаруженных тревог.
+        rules (Dict): Загруженные правила обнаружения.
+        suspicious_ips (Set): Множество подозрительных IP-адресов.
+        protected_ips (Set): Множество защищенных IP-адресов.
+        statistics (Dict): Статистика по анализируемому трафику.
+        windows (Dict): Словарь временных окон для разных типов анализа.
+        analyzer (TrafficAnalyzer): Анализатор трафика.
+        stop_flag (bool): Флаг для остановки захвата трафика.
+        capture_thread (threading.Thread): Поток захвата трафика.
+
+    Args:
+        rules_path (str): Путь к JSON-файлу с правилами обнаружения.
+        protected_ips_path (str): Путь к файлу со списком защищенных IP.
+        output_dir (str): Директория для выходных файлов.
+        log_filename (str): Имя файла лога.
+        debug_mode (bool): Включить режим отладки (по умолчанию False).
+
+    Raises:
+        FileNotFoundError: Если не найден файл с правилами или защищенными IP.
+        ValueError: Если файл правил содержит невалидный JSON.
+        RuntimeError: При ошибках инициализации компонентов монитора.
     """
 
     def __init__(
@@ -93,7 +125,12 @@ class NetworkTrafficMonitor:
             raise RuntimeError(f"Ошибка загрузки защищенных IP: {e}")
 
     def _init_statistics(self) -> Dict[str, Any]:
-        """Инициализирует структуру для сбора статистики."""
+        """
+        Инициализирует структуру для сбора статистики.
+
+        Returns:
+            Dict[str, Any]: Словарь с начальной структурой статистики.
+        """
         return {
             "total": 0,
             "total_bytes": 0,
@@ -115,6 +152,9 @@ class NetworkTrafficMonitor:
     def _init_windows(self) -> Dict[str, Dict]:
         """
         Инициализирует временные окна для всех правил.
+
+        Returns:
+            Dict[str, Dict]: Словарь временных окон для различных типов анализа.
         """
         windows = {}
 
@@ -184,7 +224,18 @@ class NetworkTrafficMonitor:
 
     def process_packet(self, packet: Packet):
         """
-        Обрабатывает один пакет.
+        Обрабатывает один сетевой пакет.
+
+        Обновляет статистику и проверяет наличие аномалий во всех активных
+        временных окнах. Пакет добавляется во все окна, после чего для каждого
+        окна выполняется анализ при необходимости.
+
+        Args:
+            packet (Packet): Сетевой пакет для обработки.
+
+        Note:
+            В случае ошибок при обработке пакета, информация выводится только
+            в режиме отладки.
         """
         try:
             packet_time = float(packet.sniff_timestamp)
@@ -292,6 +343,16 @@ class NetworkTrafficMonitor:
     def analyze_file(self, pcap_path: str) -> Dict[str, Any]:
         """
         Анализирует PCAP-файл полностью в синхронном режиме.
+
+        Args:
+            pcap_path (str): Путь к файлу PCAP для анализа.
+
+        Returns:
+            Dict[str, Any]: Результаты анализа, включая статистику и окна.
+
+        Raises:
+            FileNotFoundError: Если указанный PCAP-файл не существует.
+            RuntimeError: При ошибках во время анализа файла.
         """
         print(f"Начало анализа файла: {pcap_path}")
 
@@ -319,7 +380,15 @@ class NetworkTrafficMonitor:
 
     def start_live_capture(self, interface: str, duration: int = 0):
         """
-        Запускает live-захват в отдельном потоке.
+        Запускает live-захват сетевого трафика в отдельном потоке.
+
+        Args:
+            interface (str): Имя сетевого интерфейса для захвата.
+            duration (int, optional): Длительность захвата в секундах.
+                Если 0 - захват продолжается до ручной остановки. По умолчанию 0.
+
+        Note:
+            Для остановки захвата используйте метод stop_live_capture() или нажмите Ctrl+C.
         """
         print(f"Запуск live-мониторинга на интерфейсе: {interface}")
         if self.debug_mode:
@@ -377,7 +446,11 @@ class NetworkTrafficMonitor:
 
     def stop_live_capture(self):
         """
-        Останавливает live-захват.
+        Останавливает live-захват и генерирует финальные отчеты.
+
+        Note:
+            Метод завершает поток захвата, выполняет финальный анализ
+            всех временных окон и генерирует итоговые отчеты.
         """
         print("Остановка live-захвата...")
         self.stop_flag = True
@@ -424,7 +497,14 @@ class NetworkTrafficMonitor:
             print(f"Ошибка генерации отчетов: {e}")
 
     def _get_results(self) -> Dict[str, Any]:
-        """Возвращает результаты анализа."""
+        """
+        Возвращает результаты анализа.
+
+        Returns:
+            Dict[str, Any]: Словарь с результатами анализа, содержащий:
+                - windows: текущие состояния временных окон
+                - statistics: собранная статистика
+        """
         return {
             "windows": {k: v["packets"] for k, v in self.windows.items()},
             "statistics": self.statistics,
@@ -501,8 +581,24 @@ def filescan(
     output_filename: str,
     path_to_prot_ips: str,
     path_to_rules: str
-):
-    """Анализирует PCAP-файл."""
+) -> Dict[str, Any]:
+    """
+    Анализирует PCAP-файл на наличие сетевых аномалий.
+
+    Args:
+        path_to_file (str): Путь к файлу PCAP для анализа.
+        path_to_output_dir (str): Директория для сохранения отчетов.
+        output_filename (str): Имя файла лога.
+        path_to_prot_ips (str): Путь к файлу с защищенными IP-адресами.
+        path_to_rules (str): Путь к файлу с правилами обнаружения.
+
+    Returns:
+        Dict[str, Any]: Результаты анализа или пустой словарь в случае ошибки.
+
+    Note:
+        Функция создает экземпляр NetworkTrafficMonitor, анализирует файл
+        и возвращает результаты анализа.
+    """
     try:
         monitor = NetworkTrafficMonitor(
             rules_path=path_to_rules,
@@ -524,8 +620,23 @@ def livescan(
     rules_file: str,
     debug_mode: bool = False,
     duration: int = 0
-):
-    """Запускает live-мониторинг."""
+) -> None:
+    """
+    Запускает live-мониторинг сетевого трафика.
+
+    Args:
+        interface (str): Имя сетевого интерфейса для захвата трафика.
+        output_dir (str): Директория для сохранения отчетов.
+        log_file (str): Имя файла лога.
+        protected_ips (str): Путь к файлу с защищенными IP-адресами.
+        rules_file (str): Путь к файлу с правилами обнаружения.
+        debug_mode (bool, optional): Включить режим отладки. По умолчанию False.
+        duration (int, optional): Длительность захвата в секундах. 0 - бесконечно.
+
+    Note:
+        Функция запускает мониторинг и работает до ручной остановки (Ctrl+C)
+        или до истечения указанной длительности.
+    """
     try:
         monitor = NetworkTrafficMonitor(
             rules_path=rules_file,
