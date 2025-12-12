@@ -1,6 +1,10 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+"""
 
+Модуль для анализа трафика и скользящих окон.
+
+"""
 import json
 from typing import Dict, List, Tuple, Optional, Set
 import time

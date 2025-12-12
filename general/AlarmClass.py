@@ -1,6 +1,10 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+"""
 
+Модуль для создания/логирования оповещений.Класс Alarm
+
+"""
 import datetime
 from typing import List, Optional
 from .logs import log, log_http

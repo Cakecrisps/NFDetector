@@ -1,6 +1,10 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+"""
 
+Модуль для определение авторизаций.
+
+"""
 from typing import Optional, Tuple
 import re
 
