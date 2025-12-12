@@ -1,0 +1,165 @@
+{
+  "raw_stats": {
+    "total": 0,
+    "total_bytes": 0,
+    "start_time": null,
+    "end_time": null,
+    "protos": {},
+    "src_ips": {},
+    "dst_ips": {},
+    "dns": {},
+    "suspicious_ips": {
+      "total_packets": 0,
+      "src_count": 0,
+      "dst_count": 0,
+      "src_ips": {},
+      "dst_ips": {}
+    }
+  },
+  "metadata": {
+    "analysis_time": "2025-12-13 00:27:37",
+    "traffic_file": "live_capture",
+    "analysis_duration_seconds": 0.0
+  },
+  "files": {
+    "protected_ips": {
+      "path": "ext/protectips.txt",
+      "count": 2,
+      "content_sample": []
+    },
+    "suspicious_ips": {
+      "path": "ext/suspips.txt",
+      "count": 2646,
+      "content_sample": []
+    },
+    "rules": {
+      "path": "rules.json",
+      "content": {
+        "brute_force": {
+          "enabled": true,
+          "auth_proto": [
+            "SMB",
+            "SMB2",
+            "SSH",
+            "FTP",
+            "TELNET"
+          ],
+          "tryes_limit": 10.0,
+          "tryes_limit_window": 20.0,
+          "warn_tryes_limit_window": 100.0
+        },
+        "ddos": {
+          "enabled": true,
+          "1ip": {
+            "request_limit": 1000.0,
+            "request_limit_window": 1.0
+          },
+          "nip": {
+            "request_limit": 2.0,
+            "request_limit_window": 1.0,
+            "display_ips": 10
+          }
+        },
+        "flood": {
+          "enabled": true,
+          "SYN": {
+            "syn_only_limit": 50.0,
+            "syn_only_window": 5.0
+          },
+          "HTTP": {
+            "request_rate_limit": 80.0,
+            "request_rate_window": 1.0
+          }
+        },
+        "C2_analysys": {
+          "enabled": true,
+          "beaconing_detection": {
+            "enabled": true,
+            "jitter_sec": 5,
+            "interval_min_sec": 10,
+            "interval_max_sec": 300,
+            "min_consistent_connections": 5
+          }
+        },
+        "reaction": {
+          "out": [
+            "PRINT",
+            "LOG"
+          ]
+        },
+        "suspicious_ips": {
+          "enabled": true,
+          "files_of_susp_ip_list": [
+            "ext/suspips.txt"
+          ]
+        }
+      }
+    }
+  },
+  "traffic_statistics": {
+    "total_packets": 0,
+    "total_bytes": 0,
+    "protocols_distribution": {},
+    "top_source_ips_formatted": "  Нет данных",
+    "top_destination_ips_formatted": "  Нет данных",
+    "dns_statistics_formatted": "  Нет данных",
+    "packet_size_average": 0
+  },
+  "suspicious_activity": {
+    "total_suspicious_packets": 0,
+    "suspicious_sources_formatted": "  Нет данных",
+    "suspicious_destinations_formatted": "  Нет данных",
+    "threat_correlation": []
+  },
+  "detailed_threat_analysis": {
+    "brute_force": {
+      "detected": false,
+      "attempts_count": 0,
+      "target_ips": [],
+      "source_ips": [],
+      "time_window": 20.0
+    },
+    "ddos_attacks": {
+      "multi_ip": {
+        "detected": false,
+        "source_ips": [],
+        "target_ips": [],
+        "packet_rate": 0,
+        "threshold": 2.0
+      },
+      "single_ip": {
+        "detected": false,
+        "source_ip": "",
+        "target_ips": [],
+        "packet_rate": 0,
+        "threshold": 1000.0
+      },
+      "http_flood": {
+        "detected": false,
+        "source_ips": [],
+        "request_rate": 0,
+        "threshold": 80.0
+      }
+    },
+    "flood_attacks": {
+      "syn_flood": {
+        "detected": false,
+        "source_ips": [],
+        "syn_ack_ratio": 0,
+        "threshold": 0.3
+      }
+    },
+    "c2_activity": {
+      "detected": false,
+      "beaconing_ips": [],
+      "interval_seconds": 0,
+      "min_interval": 10,
+      "max_interval": 300
+    }
+  },
+  "alarms_summary": {
+    "total_alarms": 0,
+    "alarms_by_type": {},
+    "raw_alarms": []
+  }
+}
