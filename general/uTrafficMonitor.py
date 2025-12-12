@@ -1,21 +1,19 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-
 Модуль для мониторинга трафика + создание плавающих окон и сбор поверхностной статистики.
-
 """
-
-
+import asyncio
 import json
 import pyshark
-from typing import List, Dict, Any, Set, Optional
-import math
+from typing import List, Dict, Any, Set, Optional, Tuple
 import datetime
 import os
 import threading
 import time
-import asyncio
+from collections import defaultdict
+import re
+
 from general.trafficanalyzer import TrafficAnalyzer
 from general.AlarmClass import Alarm
 from general.summarygen import generate_summary, generate_full_json_summary
@@ -23,43 +21,30 @@ from general.summarygen import generate_summary, generate_full_json_summary
 from pyshark.packet.packet import Packet
 
 
-class NetworkTrafficMonitor:
-    """
-    Монитор сетевого трафика с поддержкой временных окон для обнаружения аномалий.
+class TrafficWindow:
+    def __init__(self, window_sec: float):
+        self.window_sec = window_sec
+        self.packets = []
+        self.last_analysis = 0
+        
+    def add_packet(self, packet: Packet, timestamp: float) -> None:
+        self.packets.append((packet, timestamp))
+        
+    def cleanup_old(self, current_time: float) -> None:
+        cutoff_time = current_time - self.window_sec
+        self.packets = [(pkt, ts) for pkt, ts in self.packets if ts >= cutoff_time]
+        
+    def size(self) -> int:
+        return len(self.packets)
     
-    Класс обеспечивает захват и анализ сетевого трафика в реальном времени или из файлов PCAP,
-    используя систему временных окон для обнаружения различных типов атак (DDoS, brute force,
-    flood атаки, C2-коммуникации и др.).
+    def get_packets(self) -> List[Packet]:
+        return [pkt for pkt, _ in self.packets]
+    
+    def clear(self) -> None:
+        self.packets.clear()
 
-    Attributes:
-        rules_path (str): Путь к файлу с правилами обнаружения аномалий.
-        protected_ips_path (str): Путь к файлу с защищенными IP-адресами.
-        output_dir (str): Директория для сохранения отчетов и логов.
-        log_path (str): Полный путь к файлу лога.
-        debug_mode (bool): Флаг режима отладки.
-        alarms (List): Список обнаруженных тревог.
-        rules (Dict): Загруженные правила обнаружения.
-        suspicious_ips (Set): Множество подозрительных IP-адресов.
-        protected_ips (Set): Множество защищенных IP-адресов.
-        statistics (Dict): Статистика по анализируемому трафику.
-        windows (Dict): Словарь временных окон для разных типов анализа.
-        analyzer (TrafficAnalyzer): Анализатор трафика.
-        stop_flag (bool): Флаг для остановки захвата трафика.
-        capture_thread (threading.Thread): Поток захвата трафика.
 
-    Args:
-        rules_path (str): Путь к JSON-файлу с правилами обнаружения.
-        protected_ips_path (str): Путь к файлу со списком защищенных IP.
-        output_dir (str): Директория для выходных файлов.
-        log_filename (str): Имя файла лога.
-        debug_mode (bool): Включить режим отладки (по умолчанию False).
-
-    Raises:
-        FileNotFoundError: Если не найден файл с правилами или защищенными IP.
-        ValueError: Если файл правил содержит невалидный JSON.
-        RuntimeError: При ошибках инициализации компонентов монитора.
-    """
-
+class NetworkTrafficMonitor:
     def __init__(
         self,
         rules_path: str,
@@ -74,6 +59,8 @@ class NetworkTrafficMonitor:
         self.log_path = os.path.join(output_dir, log_filename)
         self.debug_mode = debug_mode
         self.alarms = []
+        self.http_requests = []
+        self.downloaded_files = []
 
         try:
             self._load_configuration()
@@ -88,7 +75,6 @@ class NetworkTrafficMonitor:
             raise RuntimeError(f"Ошибка инициализации монитора: {e}")
 
     def _load_configuration(self):
-        """Загружает правила и списки IP-адресов из файлов."""
         try:
             with open(self.rules_path, 'r', encoding='utf-8') as f:
                 self.rules = json.load(f)
@@ -111,12 +97,10 @@ class NetworkTrafficMonitor:
                             ip = line.strip()
                             if ip and not ip.startswith('#'):
                                 self.suspicious_ips.add(ip)
-                        if self.debug_mode:
-                            print(f"Загружено {len(self.suspicious_ips)} подозрительных IP")
-                except FileNotFoundError as e:
-                    print(f"Файл с подозрительными IP не найден: {file_path}")
-                except Exception as e:
-                    print(f"Ошибка загрузки подозрительных IP: {e}")
+                except FileNotFoundError:
+                    pass
+                except Exception:
+                    pass
 
         try:
             self.protected_ips = set()
@@ -131,68 +115,54 @@ class NetworkTrafficMonitor:
             raise RuntimeError(f"Ошибка загрузки защищенных IP: {e}")
 
     def _init_statistics(self) -> Dict[str, Any]:
-        """
-        Инициализирует структуру для сбора статистики.
-
-        Returns:
-            Dict[str, Any]: Словарь с начальной структурой статистики.
-        """
         return {
             "total": 0,
             "total_bytes": 0,
             "start_time": None,
             "end_time": None,
-            "protos": {},
-            "src_ips": {},
-            "dst_ips": {},
-            "dns": {},
+            "protos": defaultdict(int),
+            "src_ips": defaultdict(int),
+            "dst_ips": defaultdict(int),
+            "dns": defaultdict(int),
+            "http_endp": [],
+            "downloaded_files": [],
             "suspicious_ips": {
                 "total_packets": 0,
                 "src_count": 0,
                 "dst_count": 0,
-                "src_ips": {},
-                "dst_ips": {}
+                "src_ips": defaultdict(int),
+                "dst_ips": defaultdict(int)
             }
         }
 
-    def _init_windows(self) -> Dict[str, Dict]:
-        """
-        Инициализирует временные окна для всех правил.
-
-        Returns:
-            Dict[str, Dict]: Словарь временных окон для различных типов анализа.
-        """
+    def _init_windows(self) -> Dict[str, TrafficWindow]:
         windows = {}
 
         if self.rules.get("brute_force", {}).get("enabled", False):
             window_sec = self.rules["brute_force"].get("tryes_limit_window", 20.0)
-            windows["brute_force_tryes_limit"] = {
-                "packets": [],
-                "window_sec": window_sec,
-                "last_analysis": 0
-            }
+            windows["brute_force_tryes_limit"] = TrafficWindow(window_sec)
 
         if self.rules.get("ddos", {}).get("enabled", False):
             ddos_rules = self.rules["ddos"]
 
             if "1ip" in ddos_rules:
                 window_sec = ddos_rules["1ip"].get("request_limit_window", 1.0)
-                windows["ddos_1ip"] = {"packets": [], "window_sec": window_sec, "last_analysis": 0}
+                windows["ddos_1ip"] = TrafficWindow(window_sec)
 
             if "nip" in ddos_rules:
                 window_sec = ddos_rules["nip"].get("request_limit_window", 1.0)
-                windows["ddos_nip"] = {"packets": [], "window_sec": window_sec, "last_analysis": 0}
+                windows["ddos_nip"] = TrafficWindow(window_sec)
 
         if self.rules.get("flood", {}).get("enabled", False):
             flood_rules = self.rules["flood"]
 
             if "SYN" in flood_rules:
                 window_sec = flood_rules["SYN"].get("syn_only_window", 5.0)
-                windows["flood_SYN"] = {"packets": [], "window_sec": window_sec, "last_analysis": 0}
+                windows["flood_SYN"] = TrafficWindow(window_sec)
 
             if "HTTP" in flood_rules:
                 window_sec = flood_rules["HTTP"].get("request_rate_window", 1.0)
-                windows["flood_HTTP"] = {"packets": [], "window_sec": window_sec, "last_analysis": 0}
+                windows["flood_HTTP"] = TrafficWindow(window_sec)
 
         if self.rules.get("C2_analysys", {}).get("enabled", False):
             c2_rules = self.rules["C2_analysys"]
@@ -200,21 +170,12 @@ class NetworkTrafficMonitor:
                 min_interval = c2_rules["beaconing_detection"].get("interval_min_sec", 10)
                 max_interval = c2_rules["beaconing_detection"].get("interval_max_sec", 300)
 
-                windows["C2_min_interval"] = {
-                    "packets": [],
-                    "window_sec": min_interval,
-                    "last_analysis": 0
-                }
-                windows["C2_max_interval"] = {
-                    "packets": [],
-                    "window_sec": max_interval,
-                    "last_analysis": 0
-                }
+                windows["C2_min_interval"] = TrafficWindow(min_interval)
+                windows["C2_max_interval"] = TrafficWindow(max_interval)
 
         return windows
 
     def _init_log_file(self):
-        """Инициализирует лог-файл заголовком сессии."""
         try:
             header = (
                 f"=== NFDetect Session Start ===\n"
@@ -228,43 +189,194 @@ class NetworkTrafficMonitor:
         except Exception as e:
             print(f"Ошибка инициализации лог-файла: {e}")
 
+    def _get_src_ip(self, packet: Packet) -> str:
+        try:
+            if hasattr(packet, 'ip'):
+                return packet.ip.src
+            elif hasattr(packet, 'ipv6'):
+                return packet.ipv6.src
+        except:
+            pass
+        return ""
+
+    def _get_dst_ip(self, packet: Packet) -> str:
+        try:
+            if hasattr(packet, 'ip'):
+                return packet.ip.dst
+            elif hasattr(packet, 'ipv6'):
+                return packet.ipv6.dst
+        except:
+            pass
+        return ""
+
+    def _extract_http_info(self, packet: Packet) -> Optional[Dict[str, Any]]:
+        try:
+            if hasattr(packet, 'http'):
+                http_layer = packet.http
+                
+                http_info = {
+                    'src_ip': self._get_src_ip(packet),
+                    'dst_ip': self._get_dst_ip(packet),
+                    'timestamp': float(packet.sniff_timestamp),
+                    'method': getattr(http_layer, 'request_method', 'UNKNOWN'),
+                    'uri': getattr(http_layer, 'request_uri', '/'),
+                    'version': getattr(http_layer, 'request_version', 'HTTP/1.1'),
+                    'host': getattr(http_layer, 'host', ''),
+                    'user_agent': getattr(http_layer, 'user_agent', ''),
+                    'referer': getattr(http_layer, 'referer', ''),
+                    'content_type': getattr(http_layer, 'content_type', ''),
+                    'content_length': getattr(http_layer, 'content_length', '0'),
+                    'status_code': getattr(http_layer, 'response_code', ''),
+                    'response_phrase': getattr(http_layer, 'response_phrase', ''),
+                    'full_url': '',
+                    'packet_length': int(packet.length) if hasattr(packet, 'length') else 0
+                }
+                
+                if http_info['host'] and http_info['uri']:
+                    scheme = 'https' if hasattr(packet, 'tls') else 'http'
+                    http_info['full_url'] = f"{scheme}://{http_info['host']}{http_info['uri']}"
+                
+                try:
+                    dt = datetime.datetime.fromtimestamp(http_info['timestamp'])
+                    http_info['time_str'] = dt.strftime("%Y-%m-%d %H:%M:%S.%f")[:-3]
+                except:
+                    http_info['time_str'] = str(http_info['timestamp'])
+                
+                if hasattr(http_layer, 'content_disposition'):
+                    content_disp = str(http_layer.content_disposition)
+                    http_info['content_disposition'] = content_disp
+                    
+                    filename = self._extract_filename_from_content_disposition(content_disp)
+                    if filename:
+                        http_info['filename'] = filename
+                
+                return http_info
+        except Exception as e:
+            if self.debug_mode:
+                print(f"Ошибка извлечения HTTP информации: {e}")
+        return None
+
+    def _extract_filename_from_content_disposition(self, content_disposition: str) -> Optional[str]:
+        try:
+            patterns = [
+                r'filename="([^"]+)"',
+                r"filename='([^']+)'",
+                r'filename=([^\s;]+)',
+            ]
+            
+            for pattern in patterns:
+                match = re.search(pattern, content_disposition, re.IGNORECASE)
+                if match:
+                    filename = match.group(1)
+                    filename = filename.replace('\\"', '"').replace("\\'", "'")
+                    return filename
+            
+            if 'attachment' in content_disposition.lower():
+                utf8_pattern = r"filename\*=UTF-8''([^\s;]+)"
+                match = re.search(utf8_pattern, content_disposition, re.IGNORECASE)
+                if match:
+                    import urllib.parse
+                    filename_encoded = match.group(1)
+                    try:
+                        filename = urllib.parse.unquote(filename_encoded)
+                        return filename
+                    except:
+                        return filename_encoded
+                        
+        except:
+            pass
+        return None
+
+    def _extract_filename_from_uri(self, uri: str) -> Optional[str]:
+        try:
+            path = uri.split('?')[0] if '?' in uri else uri
+            
+            filename = path.split('/')[-1]
+            
+            if filename and '.' in filename and not filename.endswith('/'):
+                file_extensions = [
+                    '.exe', '.dll', '.zip', '.rar', '.7z', '.tar', '.gz', 
+                    '.pdf', '.doc', '.docx', '.xls', '.xlsx', '.ppt', '.pptx',
+                    '.jpg', '.jpeg', '.png', '.gif', '.bmp', '.tiff',
+                    '.mp3', '.mp4', '.avi', '.mkv', '.mov',
+                    '.txt', '.log', '.csv', '.json', '.xml',
+                    '.iso', '.img', '.bin',
+                    '.msi', '.bat', '.sh', '.ps1', '.py', '.js', '.html', '.php'
+                ]
+                
+                if any(filename.lower().endswith(ext) for ext in file_extensions):
+                    return filename
+                    
+                if '.' in filename and len(filename.split('.')[-1]) > 0:
+                    return filename
+                    
+        except:
+            pass
+        return None
+
+    def _is_file_download(self, http_info: Dict[str, Any]) -> bool:
+        if http_info.get('filename'):
+            return True
+            
+        if http_info.get('status_code') == '200':
+            content_type = http_info.get('content_type', '').lower()
+            file_content_types = [
+                'application/', 'image/', 'video/', 'audio/', 
+                'text/plain', 'text/html', 'text/xml', 'application/json',
+                'application/zip', 'application/x-rar-compressed', 'application/x-7z-compressed',
+                'application/x-tar', 'application/gzip',
+                'application/pdf', 'application/msword', 'application/vnd.openxmlformats',
+                'application/vnd.ms-excel', 'application/vnd.ms-powerpoint',
+                'application/x-msdownload',
+                'application/x-msi',
+            ]
+            
+            if any(ct in content_type for ct in file_content_types):
+                uri = http_info.get('uri', '')
+                if self._extract_filename_from_uri(uri):
+                    return True
+                    
+        if http_info.get('method') == 'GET':
+            uri = http_info.get('uri', '')
+            if self._extract_filename_from_uri(uri):
+                return True
+                
+        if http_info.get('method') in ['POST', 'PUT']:
+            try:
+                content_length = int(http_info.get('content_length', 0))
+                if content_length > 10240:
+                    return True
+            except:
+                pass
+                
+        return False
+
     def process_packet(self, packet: Packet):
-        """
-        Обрабатывает один сетевой пакет.
-
-        Обновляет статистику и проверяет наличие аномалий во всех активных
-        временных окнах. Пакет добавляется во все окна, после чего для каждого
-        окна выполняется анализ при необходимости.
-
-        Args:
-            packet (Packet): Сетевой пакет для обработки.
-
-        Note:
-            В случае ошибок при обработке пакета, информация выводится только
-            в режиме отладки.
-        """
         try:
             packet_time = float(packet.sniff_timestamp)
             self._update_statistics(packet, packet_time)
 
             for window_type, window in self.windows.items():
-                if not window:
-                    continue
-
-                window_sec = window["window_sec"]
-                window_start = packet_time - window_sec
-                window["packets"] = [
-                    p for p in window["packets"]
-                    if float(p.sniff_timestamp) >= window_start
-                ]
-                window["packets"].append(packet)
-                self._analyze_window_if_needed(window_type, window, packet_time)
+                window.add_packet(packet, packet_time)
+                window.cleanup_old(packet_time)
+                
+                current_time = time.time()
+                time_since_last_analysis = current_time - window.last_analysis
+                
+                if window.window_sec < 5.0:
+                    analysis_interval = 0.5
+                else:
+                    analysis_interval = 1.0
+                    
+                if time_since_last_analysis >= analysis_interval and window.size() > 0:
+                    self._analyze_window(window_type, window.get_packets())
+                    window.last_analysis = current_time
+                    
         except Exception as e:
             if self.debug_mode:
                 print(f"Ошибка обработки пакета: {e}")
 
     def _update_statistics(self, packet: Packet, packet_time: float):
-        """Обновляет статистику на основе нового пакета."""
         if self.statistics["start_time"] is None:
             self.statistics["start_time"] = packet_time
 
@@ -273,7 +385,7 @@ class NetworkTrafficMonitor:
 
         try:
             self.statistics["total_bytes"] += int(packet.length)
-        except (AttributeError, ValueError):
+        except:
             pass
 
         self._update_protocol_stats(packet)
@@ -281,36 +393,141 @@ class NetworkTrafficMonitor:
         dst_ip = self._get_dst_ip(packet)
 
         if src_ip:
-            self.statistics["src_ips"][src_ip] = self.statistics["src_ips"].get(src_ip, 0) + 1
+            self.statistics["src_ips"][src_ip] += 1
         if dst_ip:
-            self.statistics["dst_ips"][dst_ip] = self.statistics["dst_ips"].get(dst_ip, 0) + 1
+            self.statistics["dst_ips"][dst_ip] += 1
 
         self._update_dns_stats(packet)
+        self._update_http_stats(packet, packet_time, src_ip, dst_ip)
+        self._update_file_stats(packet, packet_time, src_ip, dst_ip)
         self._update_suspicious_ip_stats(packet, src_ip, dst_ip)
 
-    def _analyze_window_if_needed(self, window_type: str, window: Dict, current_time: float):
-        """
-        Анализирует окно если прошло достаточно времени.
-        """
-        try:
-            window_sec = window["window_sec"]
-            if window_sec < 5.0:
-                self._analyze_window(window_type, window["packets"])
-                window["last_analysis"] = current_time
-                return
+    def _update_http_stats(self, packet: Packet, packet_time: float, src_ip: str, dst_ip: str):
+        http_info = self._extract_http_info(packet)
+        if http_info:
+            self.statistics["protos"]["HTTP"] += 1
+            
+            http_record = {
+                "src_ip": src_ip or http_info['src_ip'],
+                "dst_ip": dst_ip or http_info['dst_ip'],
+                "time": http_info['time_str'],
+                "timestamp": packet_time,
+                "method": http_info['method'],
+                "uri": http_info['uri'],
+                "host": http_info['host'],
+                "full_url": http_info['full_url'],
+                "user_agent": http_info['user_agent'],
+                "referer": http_info['referer'],
+                "content_type": http_info['content_type'],
+                "content_length": int(http_info['content_length']) if http_info['content_length'].isdigit() else 0,
+                "status_code": http_info['status_code'],
+                "response_phrase": http_info['response_phrase'],
+                "packet_length": http_info['packet_length']
+            }
+            
+            if 'filename' in http_info:
+                http_record['filename'] = http_info['filename']
+            if 'content_disposition' in http_info:
+                http_record['content_disposition'] = http_info['content_disposition']
+            
+            self.http_requests.append(http_record)
+            if len(self.http_requests) > 1000:
+                self.http_requests = self.http_requests[-500:]
+            
+            self.statistics["http_endp"].append(http_record)
 
-            time_since_last_analysis = current_time - window["last_analysis"]
-            if time_since_last_analysis >= 1.0:
-                self._analyze_window(window_type, window["packets"])
-                window["last_analysis"] = current_time
-        except Exception as e:
-            if self.debug_mode:
-                print(f"Ошибка анализа окна {window_type}: {e}")
+    def _update_file_stats(self, packet: Packet, packet_time: float, src_ip: str, dst_ip: str):
+        try:
+            if hasattr(packet, 'http'):
+                http_info = self._extract_http_info(packet)
+                if http_info and self._is_file_download(http_info):
+                    
+                    filename = None
+                    
+                    if 'filename' in http_info:
+                        filename = http_info['filename']
+                    
+                    if not filename and http_info.get('uri'):
+                        filename = self._extract_filename_from_uri(http_info['uri'])
+                    
+                    if filename:
+                        file_type = self._get_file_type(filename)
+                        
+                        file_record = {
+                            "src_ip": src_ip or http_info['src_ip'],
+                            "dst_ip": dst_ip or http_info['dst_ip'],
+                            "time": http_info['time_str'],
+                            "timestamp": packet_time,
+                            "filename": filename,
+                            "file_type": file_type,
+                            "url": http_info['full_url'] if http_info['full_url'] else http_info['uri'],
+                            "method": http_info['method'],
+                            "content_type": http_info['content_type'],
+                            "content_length": int(http_info['content_length']) if http_info['content_length'].isdigit() else 0,
+                            "status_code": http_info['status_code'],
+                            "user_agent": http_info.get('user_agent', ''),
+                            "direction": self._get_file_direction(http_info, src_ip, dst_ip)
+                        }
+                        
+                        self.downloaded_files.append(file_record)
+                        
+                        if len(self.downloaded_files) > 500:
+                            self.downloaded_files = self.downloaded_files[-250:]
+                        
+                        self.statistics["downloaded_files"].append(file_record)
+        except:
+            pass
+
+    def _get_file_type(self, filename: str) -> str:
+        filename_lower = filename.lower()
+        
+        executables = ['.exe', '.dll', '.so', '.bat', '.cmd', '.ps1', '.sh', '.bin', '.msi']
+        if any(filename_lower.endswith(ext) for ext in executables):
+            return "executable"
+        
+        archives = ['.zip', '.rar', '.7z', '.tar', '.gz', '.bz2', '.xz', '.iso', '.img']
+        if any(filename_lower.endswith(ext) for ext in archives):
+            return "archive"
+        
+        documents = ['.pdf', '.doc', '.docx', '.xls', '.xlsx', '.ppt', '.pptx', '.txt', '.rtf']
+        if any(filename_lower.endswith(ext) for ext in documents):
+            return "document"
+        
+        images = ['.jpg', '.jpeg', '.png', '.gif', '.bmp', '.tiff', '.svg', '.webp']
+        if any(filename_lower.endswith(ext) for ext in images):
+            return "image"
+        
+        videos = ['.mp4', '.avi', '.mkv', '.mov', '.wmv', '.flv', '.webm']
+        if any(filename_lower.endswith(ext) for ext in videos):
+            return "video"
+        
+        audios = ['.mp3', '.wav', '.flac', '.aac', '.ogg', '.wma']
+        if any(filename_lower.endswith(ext) for ext in audios):
+            return "audio"
+        
+        scripts = ['.py', '.js', '.php', '.html', '.htm', '.css', '.java', '.cpp', '.c', '.cs']
+        if any(filename_lower.endswith(ext) for ext in scripts):
+            return "script"
+        
+        data_files = ['.log', '.csv', '.json', '.xml', '.yml', '.yaml', '.ini', '.cfg', '.conf']
+        if any(filename_lower.endswith(ext) for ext in data_files):
+            return "data"
+        
+        return "other"
+
+    def _get_file_direction(self, http_info: Dict[str, Any], src_ip: str, dst_ip: str) -> str:
+        method = http_info.get('method', '').upper()
+        status_code = http_info.get('status_code', '')
+        
+        if status_code == '200':
+            return 'download'
+        
+        if method in ['POST', 'PUT']:
+            return 'upload'
+        
+        return 'download'
 
     def _analyze_window(self, window_type: str, packets: List[Packet]):
-        """
-        Анализирует временное окно для конкретного правила.
-        """
         if not packets:
             return
 
@@ -346,56 +563,136 @@ class NetworkTrafficMonitor:
             if self.debug_mode:
                 print(f"Error in analyze {window_type}: {e}")
 
+    def _get_packet_count(self, pcap_path: str) -> int:
+        try:
+            file_size = os.path.getsize(pcap_path)
+            estimated_packets = file_size // 1000
+            return max(estimated_packets, 1)
+        except:
+            return 1000
+
     def analyze_file(self, pcap_path: str) -> Dict[str, Any]:
-        """
-        Анализирует PCAP-файл полностью в синхронном режиме.
-
-        Args:
-            pcap_path (str): Путь к файлу PCAP для анализа.
-
-        Returns:
-            Dict[str, Any]: Результаты анализа, включая статистику и окна.
-
-        Raises:
-            FileNotFoundError: Если указанный PCAP-файл не существует.
-            RuntimeError: При ошибках во время анализа файла.
-        """
         print(f"Начало анализа файла: {pcap_path}")
-
+        
+        total_packets = self._get_packet_count(pcap_path)
+        print(f"Приблизительное количество пакетов: {total_packets:,}")
+        
+        http_count = 0
+        file_count = 0
+        
         try:
             capture = pyshark.FileCapture(pcap_path)
+            packets_processed = 0
+            start_time = time.time()
+            last_update_time = start_time
+            
+            # Новый улучшенный прогресс-бар
+            print("\n[Прогресс анализа]")
+            print("┌────────────────────────────────────────────────────────────┐")
+            
             for packet in capture:
+                if self.stop_flag:
+                    break
+                    
                 self.process_packet(packet)
+                packets_processed += 1
+                if hasattr(packet, 'http'):
+                    http_count += 1
+                
+                file_count = len(self.downloaded_files)
+                
+                # Обновляем прогресс каждые 0.5 секунды или 100 пакетов
+                current_time = time.time()
+                if current_time - last_update_time >= 0.5 or packets_processed % 100 == 0:
+                    
+                    # Процент выполнения
+                    if total_packets > 0:
+                        percent = min(100, int((packets_processed / total_packets) * 100))
+                    else:
+                        percent = 0
+                    
+                    # Расчет оставшегося времени
+                    elapsed_time = current_time - start_time
+                    if packets_processed > 0 and elapsed_time > 0:
+                        speed = packets_processed / elapsed_time
+                        if total_packets > 0 and percent < 100:
+                            remaining_packets = total_packets - packets_processed
+                            remaining_time = remaining_packets / speed if speed > 0 else 0
+                            
+                            # Форматируем оставшееся время
+                            if remaining_time < 60:
+                                time_str = f"{remaining_time:.1f} сек"
+                            elif remaining_time < 3600:
+                                minutes = remaining_time / 60
+                                time_str = f"{minutes:.1f} мин"
+                            else:
+                                hours = remaining_time / 3600
+                                time_str = f"{hours:.1f} час"
+                        else:
+                            time_str = "завершается..."
+                            speed_str = f"{speed:.0f} пак/сек"
+                    else:
+                        time_str = "расчет..."
+                        speed_str = "---"
+                    
+                    # Прогресс-бар с процентом
+                    bar_width = 50
+                    filled = int(bar_width * percent / 100)
+                    bar = "█" * filled + "░" * (bar_width - filled)
+                    
+                    # Форматируем числа
+                    packets_str = f"{packets_processed:,}"
+                    if total_packets > 0:
+                        total_str = f"{total_packets:,}"
+                        percent_str = f"{percent:3d}%"
+                    else:
+                        total_str = "???"
+                        percent_str = "??%"
+                    
+                    # Выводим прогресс
+                    print(f"\r│[{bar}] {percent_str} │ {packets_str}/{total_str} пакетов │", end="")
+                    
+                    # Добавляем скорость и оставшееся время
+                    if packets_processed > 0 and elapsed_time > 0:
+                        speed = packets_processed / elapsed_time
+                        print(f" {speed:.0f} пак/сек │ осталось: {time_str} ", end="")
+                    
+                    last_update_time = current_time
+                
+                if packets_processed >= total_packets and total_packets > 0:
+                    break
+            
             capture.close()
+            
+            # Завершаем строку прогресса
+            print("\n└────────────────────────────────────────────────────────────┘")
+            
+            elapsed_time = time.time() - start_time
+            print(f"\n✓ Обработано пакетов: {packets_processed:,}")
+            print(f"✓ HTTP запросов: {http_count:,}")
+            print(f"✓ Обнаружено файлов: {file_count:,}")
+            print(f"✓ Время анализа: {elapsed_time:.2f} сек")
+            if packets_processed > 0:
+                print(f"✓ Скорость обработки: {packets_processed/elapsed_time:.1f} пак/сек")
+                
         except FileNotFoundError:
             raise FileNotFoundError(f"PCAP файл не найден: {pcap_path}")
         except Exception as e:
             raise RuntimeError(f"Ошибка анализа файла: {e}")
 
         self._analyze_all_windows()
+        
         self._generate_reports(pcap_path)
 
-        print("Анализ файла завершен")
+        print("✓ Анализ файла завершен")
         return self._get_results()
 
     def _analyze_all_windows(self):
-        """Принудительно анализирует все окна перед завершением."""
         for window_type, window in self.windows.items():
-            if window["packets"]:
-                self._analyze_window(window_type, window["packets"])
+            if window.size() > 0:
+                self._analyze_window(window_type, window.get_packets())
 
     def start_live_capture(self, interface: str, duration: int = 0):
-        """
-        Запускает live-захват сетевого трафика в отдельном потоке.
-
-        Args:
-            interface (str): Имя сетевого интерфейса для захвата.
-            duration (int, optional): Длительность захвата в секундах.
-                Если 0 - захват продолжается до ручной остановки. По умолчанию 0.
-
-        Note:
-            Для остановки захвата используйте метод stop_live_capture() или нажмите Ctrl+C.
-        """
         print(f"Запуск live-мониторинга на интерфейсе: {interface}")
         if self.debug_mode:
             print("Режим отладки включен")
@@ -411,54 +708,77 @@ class NetworkTrafficMonitor:
         print("Live-захват запущен (нажмите Ctrl+C для остановки)")
 
     def _live_capture_worker(self, interface: str, duration: int):
-        """Рабочая функция для live-захвата в отдельном потоке."""
-        loop = asyncio.new_event_loop()
-        asyncio.set_event_loop(loop)
-
         start_time = time.time()
+        last_stats_time = time.time()
+        http_count = 0
+        file_count = 0
+        capture = None
 
         try:
-            capture = pyshark.LiveCapture(
-                interface=interface,
-                eventloop=loop
-            )
+            # Создаем новый event loop для этого потока
+            loop = asyncio.new_event_loop()
+            asyncio.set_event_loop(loop)
+            
+            capture = pyshark.LiveCapture(interface=interface)
 
+            print("\n[Live мониторинг]")
+            print("┌────────────────────────────────────────────────────────────┐")
+            
             for packet in capture.sniff_continuously():
                 if self.stop_flag:
                     break
 
                 if duration > 0 and (time.time() - start_time) >= duration:
-                    print(f"Достигнуто время захвата: {duration} сек")
+                    print(f"\n✓ Достигнуто время захвата: {duration} сек")
                     break
 
                 self.process_packet(packet)
+                
+                if hasattr(packet, 'http'):
+                    http_count += 1
+                
+                file_count = len(self.downloaded_files)
+
+                current_time = time.time()
+                if current_time - last_stats_time >= 2.0:
+                    elapsed = current_time - start_time
+                    
+                    # Форматируем статистику
+                    stats_line = f"\r│ Пакеты: {self.statistics['total']:,} │ HTTP: {http_count:,} │ Файлы: {file_count:,} │ Тревоги: {len(self.alarms)} "
+                    
+                    # Добавляем скорость
+                    if elapsed > 0:
+                        speed = self.statistics['total'] / elapsed
+                        stats_line += f"│ {speed:.0f} пак/сек "
+                    
+                    # Добавляем время работы
+                    if duration > 0:
+                        remaining = duration - elapsed
+                        if remaining > 0:
+                            if remaining < 60:
+                                stats_line += f"│ Осталось: {remaining:.0f} сек "
+                            else:
+                                stats_line += f"│ Осталось: {remaining/60:.1f} мин "
+                    
+                    print(stats_line + " ", end="")
+                    
+                    last_stats_time = current_time
 
                 if self.debug_mode and self.statistics["total"] % 100 == 0:
                     src = self._get_src_ip(packet) or "N/A"
                     dst = self._get_dst_ip(packet) or "N/A"
-                    print(f"Пакет #{self.statistics['total']}: {src} -> {dst}")
+                    print(f"\n│ Пакет #{self.statistics['total']}: {src} → {dst}")
 
         except Exception as e:
-            print(f"Ошибка захвата трафика: {e}")
+            print(f"\n✗ Ошибка захвата трафика: {e}")
         finally:
-            loop.close()
-            if 'capture' in locals():
-                try:
-                    capture.close()
-                except Exception as e:
-                    if self.debug_mode:
-                        print(f"Ошибка закрытия захвата: {e}")
+            # Закрываем capture если он был создан
+            if capture is not None:
+                capture.close()
+            print("\n└────────────────────────────────────────────────────────────┘")
             print("Live-захват остановлен")
-
     def stop_live_capture(self):
-        """
-        Останавливает live-захват и генерирует финальные отчеты.
-
-        Note:
-            Метод завершает поток захвата, выполняет финальный анализ
-            всех временных окон и генерирует итоговые отчеты.
-        """
-        print("Остановка live-захвата...")
+        print("\nОстановка live-захвата...")
         self.stop_flag = True
 
         if self.capture_thread and self.capture_thread.is_alive():
@@ -467,17 +787,37 @@ class NetworkTrafficMonitor:
         self._analyze_all_windows()
         self._generate_reports("live_capture")
 
-        print("Live-мониторинг завершен")
+        print("✓ Live-мониторинг завершен")
 
     def _generate_reports(self, source: str):
-        """Генерирует отчеты по результатам анализа."""
         try:
             susp_ips_source = self.suspicious_ips_sources[0] if self.suspicious_ips_sources else "отключены"
+            
+            if source == "live_capture":
+                safe_source = "live_capture"
+            else:
+                base_name = os.path.basename(source)
+                safe_source = os.path.splitext(base_name)[0]
+                safe_source = re.sub(r'[<>:"/\\|?*]', '_', safe_source)
+            
+            self.statistics["http_summary"] = {
+                "total_requests": len(self.http_requests),
+                "unique_hosts": len(set(r.get('host', '') for r in self.http_requests if r.get('host'))),
+                "sample_requests": self.http_requests[:100] if self.http_requests else []
+            }
+            
+            self.statistics["files_summary"] = {
+                "total_files": len(self.downloaded_files),
+                "file_types": self._get_file_type_distribution(),
+                "top_files": self._get_top_files(20),
+                "sample_files": self.downloaded_files[:50] if self.downloaded_files else []
+            }
+            
             generate_full_json_summary(
                 self.statistics,
                 self.analyzer.stats,
                 self.alarms,
-                source,
+                safe_source,
                 self.output_dir,
                 os.path.basename(self.log_path),
                 self.protected_ips_path,
@@ -487,10 +827,11 @@ class NetworkTrafficMonitor:
                 len(self.suspicious_ips),
                 self.rules
             )
+            
             generate_summary(
                 self.statistics,
                 self.analyzer.get_statistics(),
-                source,
+                safe_source,
                 self.output_dir,
                 os.path.basename(self.log_path),
                 self.protected_ips_path,
@@ -499,62 +840,69 @@ class NetworkTrafficMonitor:
                 len(self.protected_ips),
                 len(self.suspicious_ips)
             )
+            
         except Exception as e:
             print(f"Ошибка генерации отчетов: {e}")
 
-    def _get_results(self) -> Dict[str, Any]:
-        """
-        Возвращает результаты анализа.
+    def _get_file_type_distribution(self) -> Dict[str, int]:
+        distribution = defaultdict(int)
+        for file_record in self.downloaded_files:
+            file_type = file_record.get('file_type', 'unknown')
+            distribution[file_type] += 1
+        return dict(distribution)
 
-        Returns:
-            Dict[str, Any]: Словарь с результатами анализа, содержащий:
-                - windows: текущие состояния временных окон
-                - statistics: собранная статистика
-        """
+    def _get_top_files(self, top_n: int = 10) -> List[Dict[str, Any]]:
+        file_counts = defaultdict(int)
+        for file_record in self.downloaded_files:
+            filename = file_record.get('filename', '')
+            if filename:
+                file_counts[filename] += 1
+        
+        sorted_files = sorted(file_counts.items(), key=lambda x: x[1], reverse=True)[:top_n]
+        
+        result = []
+        for filename, count in sorted_files:
+            for file_record in self.downloaded_files:
+                if file_record.get('filename') == filename:
+                    result.append({
+                        "filename": filename,
+                        "count": count,
+                        "file_type": file_record.get('file_type', 'unknown'),
+                        "last_seen": file_record.get('time', ''),
+                        "last_src": file_record.get('src_ip', ''),
+                        "last_dst": file_record.get('dst_ip', '')
+                    })
+                    break
+        
+        return result
+
+    def _get_results(self) -> Dict[str, Any]:
         return {
-            "windows": {k: v["packets"] for k, v in self.windows.items()},
+            "windows": {k: v.get_packets() for k, v in self.windows.items()},
             "statistics": self.statistics,
+            "http_requests": self.http_requests[:200],
+            "downloaded_files": self.downloaded_files[:200],
         }
 
     def _update_protocol_stats(self, packet: Packet):
         try:
             if hasattr(packet, 'highest_layer'):
                 proto = packet.highest_layer
-                self.statistics["protos"][proto] = self.statistics["protos"].get(proto, 0) + 1
+                self.statistics["protos"][proto] += 1
 
             if hasattr(packet, 'transport_layer'):
                 transport = packet.transport_layer
-                self.statistics["protos"][transport] = self.statistics["protos"].get(transport, 0) + 1
-        except (AttributeError, ValueError):
+                self.statistics["protos"][transport] += 1
+        except:
             pass
-
-    def _get_src_ip(self, packet: Packet) -> str:
-        try:
-            if hasattr(packet, 'ip'):
-                return packet.ip.src
-            elif hasattr(packet, 'ipv6'):
-                return packet.ipv6.src
-        except (AttributeError, ValueError):
-            pass
-        return ""
-
-    def _get_dst_ip(self, packet: Packet) -> str:
-        try:
-            if hasattr(packet, 'ip'):
-                return packet.ip.dst
-            elif hasattr(packet, 'ipv6'):
-                return packet.ipv6.dst
-        except (AttributeError, ValueError):
-            pass
-        return ""
 
     def _update_dns_stats(self, packet: Packet):
         try:
             if hasattr(packet, 'dns') and hasattr(packet.dns, 'qry_name'):
                 query = str(packet.dns.qry_name)
                 if query:
-                    self.statistics["dns"][query] = self.statistics["dns"].get(query, 0) + 1
-        except (AttributeError, ValueError):
+                    self.statistics["dns"][query] += 1
+        except:
             pass
 
     def _update_suspicious_ip_stats(
@@ -568,14 +916,12 @@ class NetworkTrafficMonitor:
         if src_ip and src_ip in self.suspicious_ips:
             is_suspicious = True
             self.statistics["suspicious_ips"]["src_count"] += 1
-            self.statistics["suspicious_ips"]["src_ips"][src_ip] = \
-                self.statistics["suspicious_ips"]["src_ips"].get(src_ip, 0) + 1
+            self.statistics["suspicious_ips"]["src_ips"][src_ip] += 1
 
         if dst_ip and dst_ip in self.suspicious_ips:
             is_suspicious = True
             self.statistics["suspicious_ips"]["dst_count"] += 1
-            self.statistics["suspicious_ips"]["dst_ips"][dst_ip] = \
-                self.statistics["suspicious_ips"]["dst_ips"].get(dst_ip, 0) + 1
+            self.statistics["suspicious_ips"]["dst_ips"][dst_ip] += 1
 
         if is_suspicious:
             self.statistics["suspicious_ips"]["total_packets"] += 1
@@ -588,23 +934,6 @@ def filescan(
     path_to_prot_ips: str,
     path_to_rules: str
 ) -> Dict[str, Any]:
-    """
-    Анализирует PCAP-файл на наличие сетевых аномалий.
-
-    Args:
-        path_to_file (str): Путь к файлу PCAP для анализа.
-        path_to_output_dir (str): Директория для сохранения отчетов.
-        output_filename (str): Имя файла лога.
-        path_to_prot_ips (str): Путь к файлу с защищенными IP-адресами.
-        path_to_rules (str): Путь к файлу с правилами обнаружения.
-
-    Returns:
-        Dict[str, Any]: Результаты анализа или пустой словарь в случае ошибки.
-
-    Note:
-        Функция создает экземпляр NetworkTrafficMonitor, анализирует файл
-        и возвращает результаты анализа.
-    """
     try:
         monitor = NetworkTrafficMonitor(
             rules_path=path_to_rules,
@@ -627,22 +956,6 @@ def livescan(
     debug_mode: bool = False,
     duration: int = 0
 ) -> None:
-    """
-    Запускает live-мониторинг сетевого трафика.
-
-    Args:
-        interface (str): Имя сетевого интерфейса для захвата трафика.
-        output_dir (str): Директория для сохранения отчетов.
-        log_file (str): Имя файла лога.
-        protected_ips (str): Путь к файлу с защищенными IP-адресами.
-        rules_file (str): Путь к файлу с правилами обнаружения.
-        debug_mode (bool, optional): Включить режим отладки. По умолчанию False.
-        duration (int, optional): Длительность захвата в секундах. 0 - бесконечно.
-
-    Note:
-        Функция запускает мониторинг и работает до ручной остановки (Ctrl+C)
-        или до истечения указанной длительности.
-    """
     try:
         monitor = NetworkTrafficMonitor(
             rules_path=rules_file,
@@ -658,8 +971,8 @@ def livescan(
             time.sleep(0.5)
 
     except KeyboardInterrupt:
-        print("Остановка по запросу пользователя")
-        time.sleep(3)
+        print("\n✓ Остановка по запросу пользователя")
+        time.sleep(1)
     except Exception as e:
         print(f"Ошибка при запуске live-мониторинга: {e}")
     finally:
