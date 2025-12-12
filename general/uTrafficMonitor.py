@@ -586,7 +586,6 @@ class NetworkTrafficMonitor:
             start_time = time.time()
             last_update_time = start_time
             
-            # Новый улучшенный прогресс-бар
             print("\n[Прогресс анализа]")
             print("┌────────────────────────────────────────────────────────────┐")
             
@@ -601,17 +600,14 @@ class NetworkTrafficMonitor:
                 
                 file_count = len(self.downloaded_files)
                 
-                # Обновляем прогресс каждые 0.5 секунды или 100 пакетов
                 current_time = time.time()
                 if current_time - last_update_time >= 0.5 or packets_processed % 100 == 0:
                     
-                    # Процент выполнения
                     if total_packets > 0:
                         percent = min(100, int((packets_processed / total_packets) * 100))
                     else:
                         percent = 0
                     
-                    # Расчет оставшегося времени
                     elapsed_time = current_time - start_time
                     if packets_processed > 0 and elapsed_time > 0:
                         speed = packets_processed / elapsed_time
@@ -619,7 +615,6 @@ class NetworkTrafficMonitor:
                             remaining_packets = total_packets - packets_processed
                             remaining_time = remaining_packets / speed if speed > 0 else 0
                             
-                            # Форматируем оставшееся время
                             if remaining_time < 60:
                                 time_str = f"{remaining_time:.1f} сек"
                             elif remaining_time < 3600:
