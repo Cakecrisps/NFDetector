@@ -10,6 +10,13 @@ from datetime import datetime
 class TrafficAnalyzer:
     """
     Анализатор сетевого трафика для обнаружения угроз безопасности.
+    
+    Attributes:
+        rules (Dict): Загруженные правила обнаружения угроз из JSON файла.
+        protectips (List[str]): Список защищаемых IP-адресов.
+        stats (Dict): Словарь со статистикой анализа.
+        suspicious_ips (Set[str]): Множество подозрительных IP-адресов.
+        pending_syns (Dict): Словарь для отслеживания полуоткрытых соединений.
     """
     
     def __init__(self, rules_file: str, protectips: str):
@@ -19,6 +26,10 @@ class TrafficAnalyzer:
         Args:
             rules_file: Путь к файлу с правилами (JSON)
             protectips: Путь к файлу с IP для мониторинга
+            
+        Raises:
+            FileNotFoundError: Если не найден файл правил или файл с IP
+            ValueError: Если файл правил имеет неверный формат JSON
         """
         try:
             with open(rules_file, 'r', encoding='utf-8') as f:
@@ -65,7 +76,13 @@ class TrafficAnalyzer:
         self.pending_syns = {}
     
     def _increment_counter(self, counter_dict: dict, key: str) -> None:
-        """Увеличивает счетчик в словаре."""
+        """
+        Увеличивает счетчик в словаре.
+        
+        Args:
+            counter_dict (dict): Словарь с счетчиками
+            key (str): Ключ для инкремента
+        """
         if key in counter_dict:
             counter_dict[key] += 1
         else:
@@ -79,7 +96,10 @@ class TrafficAnalyzer:
             packet: Пакет для анализа
             
         Returns:
-            Словарь с информацией о пакете
+            Dict: Словарь с информацией о пакете или пустой словарь в случае ошибки
+            
+        Note:
+            Ожидается, что пакет имеет атрибуты pyshark
         """
         try:
             if not hasattr(packet, 'ip'):
@@ -133,18 +153,33 @@ class TrafficAnalyzer:
             return {}
     
     def _get_connection_id(self, src_ip: str, dst_ip: str, src_port: str, dst_port: str) -> str:
-        """Генерирует уникальный идентификатор соединения."""
+        """
+        Генерирует уникальный идентификатор соединения.
+        
+        Args:
+            src_ip (str): IP-адрес источника
+            dst_ip (str): IP-адрес назначения
+            src_port (str): Порт источника
+            dst_port (str): Порт назначения
+            
+        Returns:
+            str: Уникальный идентификатор соединения в формате "src_ip:src_port-dst_ip:dst_port"
+        """
         return f"{src_ip}:{src_port}-{dst_ip}:{dst_port}"
     
     def analyze_ddos_single_ip(self, window_packets: List) -> List[Tuple[str, str, str, bool]]:
         """
-        Анализ DDoS от одного IP.
+        Анализ DDoS атаки от одного IP-адреса.
         
         Args:
-            window_packets: Окно пакетов для анализа
+            window_packets: Список пакетов в анализируемом временном окне
             
         Returns:
-            Список кортежей (reason, ipdst, ipsrc, is_prot)
+            List[Tuple[str, str, str, bool]]: Список триггеров атак в формате 
+            (причина, цель, источник, является_ли_защищаемым)
+            
+        Note:
+            Правило должно быть включено в конфигурации. По умолчанию лимит: 1000 пакетов
         """
         alarms = []
         if not self.rules.get("ddos", {}).get("enabled", False):
@@ -175,20 +210,23 @@ class TrafficAnalyzer:
                     alarms.append((reason, f"PROTECTED_NETWORK:{dst_ip}", src_ip, True))
                     self.stats["alarms"]["ddos"] += 1
         except Exception as e:
-
             print(f"Ошибка при анализе DDoS от одного IP: {e}")
         
         return alarms
     
     def analyze_ddos_multi_ip(self, window_packets: List) -> List[Tuple[str, str, str, bool]]:
         """
-        Анализ DDoS от множества IP.
+        Анализ DDoS атаки от множества IP-адресов.
         
         Args:
-            window_packets: Окно пакетов для анализа
+            window_packets: Список пакетов в анализируемом временном окне
             
         Returns:
-            Список кортежей (reason, ipdst, ipsrc, is_prot)
+            List[Tuple[str, str, str, bool]]: Список триггеров атак в формате 
+            (причина, цель, источник, является_ли_защищаемым)
+            
+        Note:
+            Правило должно быть включено в конфигурации. По умолчанию лимит: 5000 пакетов
         """
         alarms = []
         if not self.rules.get("ddos", {}).get("enabled", False):
@@ -244,15 +282,20 @@ class TrafficAnalyzer:
             print(f"Ошибка при анализе DDoS от множества IP: {e}")
         
         return alarms
+    
     def analyze_syn_flood(self, window_packets: List) -> List[Tuple[str, str, str, bool]]:
         """
         Анализ SYN flood атаки.
         
         Args:
-            window_packets: Окно пакетов для анализа
+            window_packets: Список пакетов в анализируемом временном окне
             
         Returns:
-            Список кортежей (reason, ipdst, ipsrc, is_prot)
+            List[Tuple[str, str, str, bool]]: Список триггеров атак в формате 
+            (причина, цель, источник, является_ли_защищаемым)
+            
+        Note:
+            Правило должно быть включено в конфигурации. По умолчанию лимит: 50 полуоткрытых соединений
         """
         alarms = []
         if not self.rules.get("flood", {}).get("enabled", False):
@@ -325,10 +368,14 @@ class TrafficAnalyzer:
         Анализ HTTP flood атаки.
         
         Args:
-            window_packets: Окно пакетов для анализа
+            window_packets: Список пакетов в анализируемом временном окне
             
         Returns:
-            Список кортежей (reason, ipdst, ipsrc, is_prot)
+            List[Tuple[str, str, str, bool]]: Список триггеров атак в формате 
+            (причина, цель, источник, является_ли_защищаемым)
+            
+        Note:
+            Правило должно быть включено в конфигурации. По умолчанию лимит: 80 HTTP запросов
         """
         alarms = []
         if not self.rules.get("flood", {}).get("enabled", False):
@@ -369,13 +416,17 @@ class TrafficAnalyzer:
     
     def analyze_bruteforce(self, window_packets: List) -> List[Tuple[str, str, str, bool]]:
         """
-        Анализ brute-force атак.
+        Анализ brute-force атак на аутентификацию.
         
         Args:
-            window_packets: Окно пакетов для анализа
+            window_packets: Список пакетов в анализируемом временном окне
             
         Returns:
-            Список кортежей (reason, ipdst, ipsrc, is_prot)
+            List[Tuple[str, str, str, bool]]: Список триггеров атак в формате 
+            (причина, цель, источник, является_ли_защищаемым)
+            
+        Note:
+            Требуется модуль general.authdetect. По умолчанию лимит: 10 попыток
         """
         alarms = []
         if not self.rules.get("brute_force", {}).get("enabled", False):
@@ -440,13 +491,17 @@ class TrafficAnalyzer:
     
     def analyze_c2_beaconing(self, window_packets: List) -> List[Tuple[str, str, str, bool]]:
         """
-        Анализ C2 beaconing.
+        Анализ C2 beaconing (командно-контрольного трафика).
         
         Args:
-            window_packets: Окно пакетов для анализа
+            window_packets: Список пакетов в анализируемом временном окне
             
         Returns:
-            Список кортежей (reason, ipdst, ipsrc, is_prot)
+            List[Tuple[str, str, str, bool]]: Список триггеров атак в формате 
+            (причина, цель, источник, является_ли_защищаемым)
+            
+        Note:
+            Обнаруживает периодические соединения с малым джиттером
         """
         alarms = []
         if not self.rules.get("C2_analysys", {}).get("enabled", False):
@@ -528,13 +583,17 @@ class TrafficAnalyzer:
     
     def analyze_suspicious_ips(self, window_packets: List) -> List[Tuple[str, str, str, bool]]:
         """
-        Анализ подозрительных IP.
+        Анализ трафика с участием подозрительных IP-адресов.
         
         Args:
-            window_packets: Окно пакетов для анализа
+            window_packets: Список пакетов в анализируемом временном окне
             
         Returns:
-            Список кортежей (reason, ipdst, ipsrc, is_prot)
+            List[Tuple[str, str, str, bool]]: Список триггеров атак в формате 
+            (причина, цель, источник, является_ли_защищаемым)
+            
+        Note:
+            Проверяет как источник, так и назначение на наличие в списке подозрительных IP
         """
         alarms = []
         if not self.rules.get("suspicious_ips", {}).get("enabled", False):
@@ -572,27 +631,28 @@ class TrafficAnalyzer:
     
     def get_statistics(self) -> Dict:
         """
-        Возвращает текущую статистику.
+        Возвращает текущую статистику анализа.
         
         Returns:
-            Текущая статистика
+            Dict: Словарь со статистикой, включая общее количество пакетов,
+                  количество срабатываний по типам атак, подозрительные IP и т.д.
         """
         return self.stats
     
     def get_rules(self) -> Dict:
         """
-        Возвращает загруженные правила.
+        Возвращает загруженные правила обнаружения.
         
         Returns:
-            Правила обнаружения
+            Dict: Правила обнаружения угроз в формате словаря
         """
         return self.rules
     
     def get_protectips(self) -> List[str]:
         """
-        Возвращает список защищаемых IP.
+        Возвращает список защищаемых IP-адресов.
         
         Returns:
-            Список защищаемых IP
+            List[str]: Список IP-адресов, которые находятся под защитой
         """
         return self.protectips
