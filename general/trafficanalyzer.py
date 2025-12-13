@@ -270,18 +270,15 @@ class TrafficAnalyzer:
                 top_ips = [f"{ip}({count})" for ip, count in sorted_ips]
                 top_ips_str = ", ".join(top_ips)
                 
-                # Создаем аларм для каждого топ IP
                 for ip, count in sorted_ips:
                     target_ip_str = ", ".join(target_ips) if target_ips else "PROTECTED_NETWORK"
                     reason = f"DDoS_MULTI_IP: {ip} sent {count} packets, total: {total_protected_packets} (limit: {total_limit})"
                     alarms.append((reason, target_ip_str, ip, True))
                     self.stats["alarms"]["ddos"] += 1
                 
-                # Также добавляем общий аларм с перечислением всех топ IP
                 if sorted_ips:
                     target_ip_str = ", ".join(target_ips) if target_ips else "PROTECTED_NETWORK"
                     reason = f"DDoS_MULTI_IP: Total {total_protected_packets} packets (limit: {total_limit}), top attackers: {top_ips_str}"
-                    # Здесь не добавляем аларм, чтобы избежать дублирования, но оставим для логирования
         except Exception as e:
             print(f"Ошибка при анализе DDoS от множества IP: {e}")
         
