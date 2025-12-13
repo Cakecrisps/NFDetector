@@ -1,0 +1,2313 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+          "DTD/xhtml1-strict.dtd">
+<html>
+  
+
+  <head>
+    
+    <title>NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor</title>
+    <meta name="generator" content="pydoctor 25.10.1"> 
+        
+    </meta>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1 maximum-scale=1" />
+    <link rel="stylesheet" type="text/css" href="bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="apidocs.css" />
+    <link rel="stylesheet" type="text/css" href="extra.css" />
+    
+</head>
+
+  <body>
+
+    
+
+    <nav class="navbar navbar-default mainnavbar">
+      
+  
+  <div class="container-fluid">
+
+
+    <div class="navbar-header">
+      
+      <div class="navlinks">
+        <span class="navbar-brand">
+          NFDetector <a href="index.html">API Documentation</a>
+        </span>
+
+        <a href="moduleIndex.html">
+          Modules
+        </a>
+
+        <a href="classIndex.html">
+          Classes
+        </a>
+
+        <a href="nameIndex.html">
+          Names
+        </a>
+
+        <div id="search-box-container">
+          <div class="input-group">
+            <input id="search-box" type="search" name="search-query" placeholder="Search..." aria-label="Search" minlength="2" class="form-control" autocomplete="off" />
+            
+            <span class="input-group-btn">
+              <a style="display: none;" class="btn btn-default" id="search-clear-button" title="Clear" onclick="clearSearch()"><img src="fonts/x-circle.svg" alt="Clear" /></a>
+              <a class="btn btn-default" id="apidocs-help-button" title="Help" href="apidocs-help.html"><img src="fonts/info.svg" alt="Help" /></a>
+            </span>
+          </div>
+        </div>
+
+      </div>
+
+      <div id="search-results-container" style="display: none;">
+        
+        <div id="search-buttons">
+          <span class="label label-default" id="search-docstrings-button">
+          <label class="checkbox-inline">
+            <input type="checkbox" id="toggle-search-in-docstrings-checkbox" value="false" onclick="toggleSearchInDocstrings()">
+              search in docstrings
+            </input>
+          </label>
+          </span>
+          
+        </div>
+        
+        <noscript>
+            <h1>Cannot search: JavaScript is not supported/enabled in your browser.</h1>
+        </noscript>
+
+        <div id="search-status"> </div>
+
+        <div class="warning" id="search-warn-box" style="display: none;">
+          <p class="rst-last"><span id="search-warn"></span></p>
+        </div>
+
+        <table id="search-results">
+          <!-- Filled dynamically by JS -->
+        </table>
+        
+        <div style="margin-top: 10px;">
+          <p>For more information on the search, visit the <a href="apidocs-help.html#rst-search">help page</a>.</p>
+        </div>
+      </div>
+
+    </div>
+
+
+  </div>
+</nav>
+    
+    <div class="container-fluid">
+
+      <!-- Side navigation -->
+      <div class="sidebarcontainer" style="display: none;">
+        
+        <div class="sidebar"><nav class="sidebar">
+  
+
+  <div>
+
+      <div class="thingTitle">
+        <span>Class</span>
+        <code class="thisobject"><a href="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor.html" class="internal-link" title="This class"><wbr></wbr>Network<wbr></wbr>Traffic<wbr></wbr>Monitor</a></code> 
+      </div>
+      
+      <div>
+        
+
+        
+         
+
+        
+        
+
+        <div class="childrenKindTitle">Methods</div>
+        <ul>
+    
+    <li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#__init__" class="internal-link" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor.__init__">__init__</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#analyze_file" class="internal-link" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor.analyze_file">analyze<wbr></wbr>_file</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#get_auth_summary" class="internal-link" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor.get_auth_summary">get<wbr></wbr>_auth<wbr></wbr>_summary</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#process_packet" class="internal-link" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor.process_packet">process<wbr></wbr>_packet</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#start_live_capture" class="internal-link" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor.start_live_capture">start<wbr></wbr>_live<wbr></wbr>_capture</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#stop_live_capture" class="internal-link" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor.stop_live_capture">stop<wbr></wbr>_live<wbr></wbr>_capture</a></code>
+            </div>
+        
+
+    </li><li class="private">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#_analyze_all_windows" class="internal-link" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor._analyze_all_windows">_analyze<wbr></wbr>_all<wbr></wbr>_windows</a></code>
+            </div>
+        
+
+    </li><li class="private">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#_analyze_auth_attempt" class="internal-link" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor._analyze_auth_attempt">_analyze<wbr></wbr>_auth<wbr></wbr>_attempt</a></code>
+            </div>
+        
+
+    </li><li class="private">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#_analyze_window" class="internal-link" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor._analyze_window">_analyze<wbr></wbr>_window</a></code>
+            </div>
+        
+
+    </li><li class="private">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#_extract_filename_from_content_disposition" class="internal-link" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor._extract_filename_from_content_disposition">_extract<wbr></wbr>_filename<wbr></wbr>_from<wbr></wbr>_content<wbr></wbr>_disposition</a></code>
+            </div>
+        
+
+    </li><li class="private">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#_extract_filename_from_uri" class="internal-link" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor._extract_filename_from_uri">_extract<wbr></wbr>_filename<wbr></wbr>_from<wbr></wbr>_uri</a></code>
+            </div>
+        
+
+    </li><li class="private">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#_extract_http_info" class="internal-link" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor._extract_http_info">_extract<wbr></wbr>_http<wbr></wbr>_info</a></code>
+            </div>
+        
+
+    </li><li class="private">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#_generate_reports" class="internal-link" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor._generate_reports">_generate<wbr></wbr>_reports</a></code>
+            </div>
+        
+
+    </li><li class="private">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#_get_dst_ip" class="internal-link" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor._get_dst_ip">_get<wbr></wbr>_dst<wbr></wbr>_ip</a></code>
+            </div>
+        
+
+    </li><li class="private">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#_get_file_direction" class="internal-link" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor._get_file_direction">_get<wbr></wbr>_file<wbr></wbr>_direction</a></code>
+            </div>
+        
+
+    </li><li class="private">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#_get_file_type" class="internal-link" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor._get_file_type">_get<wbr></wbr>_file<wbr></wbr>_type</a></code>
+            </div>
+        
+
+    </li><li class="private">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#_get_file_type_distribution" class="internal-link" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor._get_file_type_distribution">_get<wbr></wbr>_file<wbr></wbr>_type<wbr></wbr>_distribution</a></code>
+            </div>
+        
+
+    </li><li class="private">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#_get_packet_count" class="internal-link" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor._get_packet_count">_get<wbr></wbr>_packet<wbr></wbr>_count</a></code>
+            </div>
+        
+
+    </li><li class="private">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#_get_results" class="internal-link" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor._get_results">_get<wbr></wbr>_results</a></code>
+            </div>
+        
+
+    </li><li class="private">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#_get_src_ip" class="internal-link" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor._get_src_ip">_get<wbr></wbr>_src<wbr></wbr>_ip</a></code>
+            </div>
+        
+
+    </li><li class="private">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#_get_top_files" class="internal-link" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor._get_top_files">_get<wbr></wbr>_top<wbr></wbr>_files</a></code>
+            </div>
+        
+
+    </li><li class="private">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#_init_log_file" class="internal-link" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor._init_log_file">_init<wbr></wbr>_log<wbr></wbr>_file</a></code>
+            </div>
+        
+
+    </li><li class="private">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#_init_statistics" class="internal-link" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor._init_statistics">_init<wbr></wbr>_statistics</a></code>
+            </div>
+        
+
+    </li><li class="private">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#_init_windows" class="internal-link" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor._init_windows">_init<wbr></wbr>_windows</a></code>
+            </div>
+        
+
+    </li><li class="private">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#_is_file_download" class="internal-link" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor._is_file_download">_is<wbr></wbr>_file<wbr></wbr>_download</a></code>
+            </div>
+        
+
+    </li><li class="private">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#_live_capture_worker" class="internal-link" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor._live_capture_worker">_live<wbr></wbr>_capture<wbr></wbr>_worker</a></code>
+            </div>
+        
+
+    </li><li class="private">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#_load_configuration" class="internal-link" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor._load_configuration">_load<wbr></wbr>_configuration</a></code>
+            </div>
+        
+
+    </li><li class="private">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#_update_dns_stats" class="internal-link" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor._update_dns_stats">_update<wbr></wbr>_dns<wbr></wbr>_stats</a></code>
+            </div>
+        
+
+    </li><li class="private">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#_update_file_stats" class="internal-link" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor._update_file_stats">_update<wbr></wbr>_file<wbr></wbr>_stats</a></code>
+            </div>
+        
+
+    </li><li class="private">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#_update_http_stats" class="internal-link" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor._update_http_stats">_update<wbr></wbr>_http<wbr></wbr>_stats</a></code>
+            </div>
+        
+
+    </li><li class="private">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#_update_protocol_stats" class="internal-link" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor._update_protocol_stats">_update<wbr></wbr>_protocol<wbr></wbr>_stats</a></code>
+            </div>
+        
+
+    </li><li class="private">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#_update_statistics" class="internal-link" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor._update_statistics">_update<wbr></wbr>_statistics</a></code>
+            </div>
+        
+
+    </li><li class="private">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#_update_suspicious_ip_stats" class="internal-link" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor._update_suspicious_ip_stats">_update<wbr></wbr>_suspicious<wbr></wbr>_ip<wbr></wbr>_stats</a></code>
+            </div>
+        
+
+    </li>
+</ul> 
+
+        
+         
+
+        <div class="childrenKindTitle">Attributes</div>
+        <ul>
+    
+    <li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#alarms" class="internal-link" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor.alarms">alarms</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#analyzer" class="internal-link" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor.analyzer">analyzer</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#auth_attempts_raw" class="internal-link" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor.auth_attempts_raw">auth<wbr></wbr>_attempts<wbr></wbr>_raw</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#capture_thread" class="internal-link" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor.capture_thread">capture<wbr></wbr>_thread</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#debug_mode" class="internal-link" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor.debug_mode">debug<wbr></wbr>_mode</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#downloaded_files" class="internal-link" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor.downloaded_files">downloaded<wbr></wbr>_files</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#http_requests" class="internal-link" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor.http_requests">http<wbr></wbr>_requests</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#log_path" class="internal-link" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor.log_path">log<wbr></wbr>_path</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#output_dir" class="internal-link" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor.output_dir">output<wbr></wbr>_dir</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#protected_ips" class="internal-link" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor.protected_ips">protected<wbr></wbr>_ips</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#protected_ips_path" class="internal-link" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor.protected_ips_path">protected<wbr></wbr>_ips<wbr></wbr>_path</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#rules" class="internal-link" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor.rules">rules</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#rules_path" class="internal-link" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor.rules_path">rules<wbr></wbr>_path</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#statistics" class="internal-link" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor.statistics">statistics</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#stop_flag" class="internal-link" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor.stop_flag">stop<wbr></wbr>_flag</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#suspicious_ips" class="internal-link" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor.suspicious_ips">suspicious<wbr></wbr>_ips</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#suspicious_ips_sources" class="internal-link" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor.suspicious_ips_sources">suspicious<wbr></wbr>_ips<wbr></wbr>_sources</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#windows" class="internal-link" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor.windows">windows</a></code>
+            </div>
+        
+
+    </li>
+</ul> 
+
+        
+         
+        
+      </div>
+  </div><div>
+
+      <div class="thingTitle">
+        <span>Module</span>
+        <code><a href="NFDetector.general.uTrafficMonitor.html" class="internal-link" title="The parent of this class">u<wbr></wbr>Traffic<wbr></wbr>Monitor</a></code> 
+      </div>
+      
+      <div>
+        
+
+        
+         
+
+        <div class="childrenKindTitle">Classes</div>
+        <ul>
+    
+    <li class=" thisobject">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor.html" class="internal-link" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor"><wbr></wbr>Network<wbr></wbr>Traffic<wbr></wbr>Monitor</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="NFDetector.general.uTrafficMonitor.TrafficWindow.html" class="internal-link" title="NFDetector.general.uTrafficMonitor.TrafficWindow"><wbr></wbr>Traffic<wbr></wbr>Window</a></code>
+            </div>
+        
+
+    </li>
+</ul>
+
+        <div class="childrenKindTitle">Functions</div>
+        <ul>
+    
+    <li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="NFDetector.general.uTrafficMonitor.html#filescan" class="internal-link" title="NFDetector.general.uTrafficMonitor.filescan">filescan</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="NFDetector.general.uTrafficMonitor.html#livescan" class="internal-link" title="NFDetector.general.uTrafficMonitor.livescan">livescan</a></code>
+            </div>
+        
+
+    </li>
+</ul> 
+
+        
+         
+
+        
+         
+
+        
+         
+        
+      </div>
+  </div>
+
+</nav>
+        </div>
+        <div id="collapse-sidebar">
+          <a class="btn btn-link" onclick="toggleSideBarCollapse()" title="Toggle Sidebar Collapse">
+          </a>
+        </div> 
+        <script src="sidebartoggle.js" type="text/javascript"></script>
+       
+      </div>
+
+      <main class="">
+        
+
+        
+
+        <div class="page-header">
+          <h1 class="class"><code><code><a href="index.html" class="internal-link">NFDetector</a></code><wbr></wbr>.<code><a href="NFDetector.general.html" class="internal-link" title="NFDetector.general">general</a></code><wbr></wbr>.<code><a href="NFDetector.general.uTrafficMonitor.html" class="internal-link" title="NFDetector.general.uTrafficMonitor">uTrafficMonitor</a></code><wbr></wbr>.<code><a href="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor.html" class="internal-link" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor">NetworkTrafficMonitor</a></code></code></h1>
+          <div id="show-private">
+            <button class="btn btn-link" onclick="togglePrivate()">Toggle Private API</button>
+          </div>
+        </div>
+
+        <div class="categoryHeader">
+          class documentation
+        </div>
+
+        <div class="extrasDocstring">
+          <p class="class-signature"><code><span class="py-keyword">class</span> <span class="py-defname">NetworkTrafficMonitor</span>:</code></p><p>Constructor: <code><a href="#__init__" class="internal-link" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor.__init__">NetworkTrafficMonitor(rules_path, protected_ips_path, output_dir, log_filename, debug_mode)</a></code></p><p><a href="classIndex.html#NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor">View In Hierarchy</a></p>
+        </div>
+
+        <div class="moduleDocstring">
+          <div><p>Основной класс для мониторинга сетевого трафика.</p></div>
+        </div>
+
+        <div id="split-tables">
+          <table class="children sortable" id="id23">
+  
+  
+  <tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#__init__" class="internal-link" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor.__init__">__init__</a></code></td>
+    <td>Инициализирует монитор трафика.</td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#analyze_file" class="internal-link" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor.analyze_file">analyze<wbr></wbr>_file</a></code></td>
+    <td>Анализирует трафик из PCAP файла.</td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#get_auth_summary" class="internal-link" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor.get_auth_summary">get<wbr></wbr>_auth<wbr></wbr>_summary</a></code></td>
+    <td>Возвращает сводку по попыткам аутентификации.</td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#process_packet" class="internal-link" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor.process_packet">process<wbr></wbr>_packet</a></code></td>
+    <td>Обрабатывает один пакет.</td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#start_live_capture" class="internal-link" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor.start_live_capture">start<wbr></wbr>_live<wbr></wbr>_capture</a></code></td>
+    <td>Запускает live-мониторинг трафика.</td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#stop_live_capture" class="internal-link" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor.stop_live_capture">stop<wbr></wbr>_live<wbr></wbr>_capture</a></code></td>
+    <td>Останавливает live-мониторинг трафика.</td>
+  </tr><tr class="instancevariable">
+    
+    <td>Instance Variable</td>
+    <td><code><a href="#alarms" class="internal-link" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor.alarms">alarms</a></code></td>
+    <td><span class="rst-undocumented">Undocumented</span></td>
+  </tr><tr class="instancevariable">
+    
+    <td>Instance Variable</td>
+    <td><code><a href="#analyzer" class="internal-link" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor.analyzer">analyzer</a></code></td>
+    <td><span class="rst-undocumented">Undocumented</span></td>
+  </tr><tr class="instancevariable">
+    
+    <td>Instance Variable</td>
+    <td><code><a href="#auth_attempts_raw" class="internal-link" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor.auth_attempts_raw">auth<wbr></wbr>_attempts<wbr></wbr>_raw</a></code></td>
+    <td><span class="rst-undocumented">Undocumented</span></td>
+  </tr><tr class="instancevariable">
+    
+    <td>Instance Variable</td>
+    <td><code><a href="#capture_thread" class="internal-link" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor.capture_thread">capture<wbr></wbr>_thread</a></code></td>
+    <td><span class="rst-undocumented">Undocumented</span></td>
+  </tr><tr class="instancevariable">
+    
+    <td>Instance Variable</td>
+    <td><code><a href="#debug_mode" class="internal-link" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor.debug_mode">debug<wbr></wbr>_mode</a></code></td>
+    <td><span class="rst-undocumented">Undocumented</span></td>
+  </tr><tr class="instancevariable">
+    
+    <td>Instance Variable</td>
+    <td><code><a href="#downloaded_files" class="internal-link" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor.downloaded_files">downloaded<wbr></wbr>_files</a></code></td>
+    <td><span class="rst-undocumented">Undocumented</span></td>
+  </tr><tr class="instancevariable">
+    
+    <td>Instance Variable</td>
+    <td><code><a href="#http_requests" class="internal-link" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor.http_requests">http<wbr></wbr>_requests</a></code></td>
+    <td><span class="rst-undocumented">Undocumented</span></td>
+  </tr><tr class="instancevariable">
+    
+    <td>Instance Variable</td>
+    <td><code><a href="#log_path" class="internal-link" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor.log_path">log<wbr></wbr>_path</a></code></td>
+    <td><span class="rst-undocumented">Undocumented</span></td>
+  </tr><tr class="instancevariable">
+    
+    <td>Instance Variable</td>
+    <td><code><a href="#output_dir" class="internal-link" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor.output_dir">output<wbr></wbr>_dir</a></code></td>
+    <td><span class="rst-undocumented">Undocumented</span></td>
+  </tr><tr class="instancevariable">
+    
+    <td>Instance Variable</td>
+    <td><code><a href="#protected_ips" class="internal-link" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor.protected_ips">protected<wbr></wbr>_ips</a></code></td>
+    <td><span class="rst-undocumented">Undocumented</span></td>
+  </tr><tr class="instancevariable">
+    
+    <td>Instance Variable</td>
+    <td><code><a href="#protected_ips_path" class="internal-link" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor.protected_ips_path">protected<wbr></wbr>_ips<wbr></wbr>_path</a></code></td>
+    <td><span class="rst-undocumented">Undocumented</span></td>
+  </tr><tr class="instancevariable">
+    
+    <td>Instance Variable</td>
+    <td><code><a href="#rules" class="internal-link" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor.rules">rules</a></code></td>
+    <td><span class="rst-undocumented">Undocumented</span></td>
+  </tr><tr class="instancevariable">
+    
+    <td>Instance Variable</td>
+    <td><code><a href="#rules_path" class="internal-link" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor.rules_path">rules<wbr></wbr>_path</a></code></td>
+    <td><span class="rst-undocumented">Undocumented</span></td>
+  </tr><tr class="instancevariable">
+    
+    <td>Instance Variable</td>
+    <td><code><a href="#statistics" class="internal-link" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor.statistics">statistics</a></code></td>
+    <td><span class="rst-undocumented">Undocumented</span></td>
+  </tr><tr class="instancevariable">
+    
+    <td>Instance Variable</td>
+    <td><code><a href="#stop_flag" class="internal-link" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor.stop_flag">stop<wbr></wbr>_flag</a></code></td>
+    <td><span class="rst-undocumented">Undocumented</span></td>
+  </tr><tr class="instancevariable">
+    
+    <td>Instance Variable</td>
+    <td><code><a href="#suspicious_ips" class="internal-link" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor.suspicious_ips">suspicious<wbr></wbr>_ips</a></code></td>
+    <td><span class="rst-undocumented">Undocumented</span></td>
+  </tr><tr class="instancevariable">
+    
+    <td>Instance Variable</td>
+    <td><code><a href="#suspicious_ips_sources" class="internal-link" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor.suspicious_ips_sources">suspicious<wbr></wbr>_ips<wbr></wbr>_sources</a></code></td>
+    <td><span class="rst-undocumented">Undocumented</span></td>
+  </tr><tr class="instancevariable">
+    
+    <td>Instance Variable</td>
+    <td><code><a href="#windows" class="internal-link" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor.windows">windows</a></code></td>
+    <td><span class="rst-undocumented">Undocumented</span></td>
+  </tr><tr class="method private">
+    
+    <td>Method</td>
+    <td><code><a href="#_analyze_all_windows" class="internal-link" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor._analyze_all_windows">_analyze<wbr></wbr>_all<wbr></wbr>_windows</a></code></td>
+    <td>Анализирует все окна трафика.</td>
+  </tr><tr class="method private">
+    
+    <td>Method</td>
+    <td><code><a href="#_analyze_auth_attempt" class="internal-link" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor._analyze_auth_attempt">_analyze<wbr></wbr>_auth<wbr></wbr>_attempt</a></code></td>
+    <td>Анализирует пакет на предмет попыток аутентификации.</td>
+  </tr><tr class="method private">
+    
+    <td>Method</td>
+    <td><code><a href="#_analyze_window" class="internal-link" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor._analyze_window">_analyze<wbr></wbr>_window</a></code></td>
+    <td>Анализирует содержимое окна.</td>
+  </tr><tr class="method private">
+    
+    <td>Method</td>
+    <td><code><a href="#_extract_filename_from_content_disposition" class="internal-link" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor._extract_filename_from_content_disposition">_extract<wbr></wbr>_filename<wbr></wbr>_from<wbr></wbr>_content<wbr></wbr>_disposition</a></code></td>
+    <td>Извлекает имя файла из заголовка Content-Disposition.</td>
+  </tr><tr class="method private">
+    
+    <td>Method</td>
+    <td><code><a href="#_extract_filename_from_uri" class="internal-link" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor._extract_filename_from_uri">_extract<wbr></wbr>_filename<wbr></wbr>_from<wbr></wbr>_uri</a></code></td>
+    <td>Извлекает имя файла из URI.</td>
+  </tr><tr class="method private">
+    
+    <td>Method</td>
+    <td><code><a href="#_extract_http_info" class="internal-link" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor._extract_http_info">_extract<wbr></wbr>_http<wbr></wbr>_info</a></code></td>
+    <td>Извлекает HTTP информацию из пакета.</td>
+  </tr><tr class="method private">
+    
+    <td>Method</td>
+    <td><code><a href="#_generate_reports" class="internal-link" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor._generate_reports">_generate<wbr></wbr>_reports</a></code></td>
+    <td>Генерирует отчеты по результатам анализа.</td>
+  </tr><tr class="method private">
+    
+    <td>Method</td>
+    <td><code><a href="#_get_dst_ip" class="internal-link" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor._get_dst_ip">_get<wbr></wbr>_dst<wbr></wbr>_ip</a></code></td>
+    <td>Извлекает целевой IP из пакета.</td>
+  </tr><tr class="method private">
+    
+    <td>Method</td>
+    <td><code><a href="#_get_file_direction" class="internal-link" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor._get_file_direction">_get<wbr></wbr>_file<wbr></wbr>_direction</a></code></td>
+    <td>Определяет направление передачи файла.</td>
+  </tr><tr class="method private">
+    
+    <td>Method</td>
+    <td><code><a href="#_get_file_type" class="internal-link" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor._get_file_type">_get<wbr></wbr>_file<wbr></wbr>_type</a></code></td>
+    <td>Определяет тип файла по его имени.</td>
+  </tr><tr class="method private">
+    
+    <td>Method</td>
+    <td><code><a href="#_get_file_type_distribution" class="internal-link" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor._get_file_type_distribution">_get<wbr></wbr>_file<wbr></wbr>_type<wbr></wbr>_distribution</a></code></td>
+    <td>Возвращает распределение типов файлов.</td>
+  </tr><tr class="method private">
+    
+    <td>Method</td>
+    <td><code><a href="#_get_packet_count" class="internal-link" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor._get_packet_count">_get<wbr></wbr>_packet<wbr></wbr>_count</a></code></td>
+    <td><span class="rst-undocumented">Undocumented</span></td>
+  </tr><tr class="method private">
+    
+    <td>Method</td>
+    <td><code><a href="#_get_results" class="internal-link" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor._get_results">_get<wbr></wbr>_results</a></code></td>
+    <td>Возвращает результаты анализа.</td>
+  </tr><tr class="method private">
+    
+    <td>Method</td>
+    <td><code><a href="#_get_src_ip" class="internal-link" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor._get_src_ip">_get<wbr></wbr>_src<wbr></wbr>_ip</a></code></td>
+    <td>Извлекает исходный IP из пакета.</td>
+  </tr><tr class="method private">
+    
+    <td>Method</td>
+    <td><code><a href="#_get_top_files" class="internal-link" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor._get_top_files">_get<wbr></wbr>_top<wbr></wbr>_files</a></code></td>
+    <td>Возвращает топ-N наиболее часто встречающихся файлов.</td>
+  </tr><tr class="method private">
+    
+    <td>Method</td>
+    <td><code><a href="#_init_log_file" class="internal-link" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor._init_log_file">_init<wbr></wbr>_log<wbr></wbr>_file</a></code></td>
+    <td>Инициализирует файл лога.</td>
+  </tr><tr class="method private">
+    
+    <td>Method</td>
+    <td><code><a href="#_init_statistics" class="internal-link" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor._init_statistics">_init<wbr></wbr>_statistics</a></code></td>
+    <td>Инициализирует структуру статистики.</td>
+  </tr><tr class="method private">
+    
+    <td>Method</td>
+    <td><code><a href="#_init_windows" class="internal-link" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor._init_windows">_init<wbr></wbr>_windows</a></code></td>
+    <td>Инициализирует окна мониторинга на основе правил.</td>
+  </tr><tr class="method private">
+    
+    <td>Method</td>
+    <td><code><a href="#_is_file_download" class="internal-link" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor._is_file_download">_is<wbr></wbr>_file<wbr></wbr>_download</a></code></td>
+    <td>Проверяет, является ли HTTP запрос загрузкой файла.</td>
+  </tr><tr class="method private">
+    
+    <td>Method</td>
+    <td><code><a href="#_live_capture_worker" class="internal-link" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor._live_capture_worker">_live<wbr></wbr>_capture<wbr></wbr>_worker</a></code></td>
+    <td>Рабочая функция для live-захвата трафика.</td>
+  </tr><tr class="method private">
+    
+    <td>Method</td>
+    <td><code><a href="#_load_configuration" class="internal-link" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor._load_configuration">_load<wbr></wbr>_configuration</a></code></td>
+    <td>Загружает конфигурацию из файлов правил и защищенных IP.</td>
+  </tr><tr class="method private">
+    
+    <td>Method</td>
+    <td><code><a href="#_update_dns_stats" class="internal-link" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor._update_dns_stats">_update<wbr></wbr>_dns<wbr></wbr>_stats</a></code></td>
+    <td>Обновляет DNS статистику.</td>
+  </tr><tr class="method private">
+    
+    <td>Method</td>
+    <td><code><a href="#_update_file_stats" class="internal-link" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor._update_file_stats">_update<wbr></wbr>_file<wbr></wbr>_stats</a></code></td>
+    <td>Обновляет статистику загруженных файлов.</td>
+  </tr><tr class="method private">
+    
+    <td>Method</td>
+    <td><code><a href="#_update_http_stats" class="internal-link" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor._update_http_stats">_update<wbr></wbr>_http<wbr></wbr>_stats</a></code></td>
+    <td>Обновляет статистику HTTP запросов.</td>
+  </tr><tr class="method private">
+    
+    <td>Method</td>
+    <td><code><a href="#_update_protocol_stats" class="internal-link" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor._update_protocol_stats">_update<wbr></wbr>_protocol<wbr></wbr>_stats</a></code></td>
+    <td>Обновляет статистику протоколов.</td>
+  </tr><tr class="method private">
+    
+    <td>Method</td>
+    <td><code><a href="#_update_statistics" class="internal-link" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor._update_statistics">_update<wbr></wbr>_statistics</a></code></td>
+    <td>Обновляет статистику на основе пакета.</td>
+  </tr><tr class="method private">
+    
+    <td>Method</td>
+    <td><code><a href="#_update_suspicious_ip_stats" class="internal-link" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor._update_suspicious_ip_stats">_update<wbr></wbr>_suspicious<wbr></wbr>_ip<wbr></wbr>_stats</a></code></td>
+    <td>Обновляет статистику по подозрительным IP.</td>
+  </tr>
+</table>
+          
+
+            
+        </div>
+
+        <div id="child-list">
+          <div class="basemethod">
+  
+  
+  <a name="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor.__init__">
+    
+  </a>
+  <a name="__init__">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span>&#160;<span class="py-defname">__init__</span><span class="function-signature long-signature">(<span class="rst-sig-param"><span class="rst-undocumented">self</span>, </span><span class="rst-sig-param">rules_path: <code>str</code>, </span><span class="rst-sig-param">protected_ips_path: <code>str</code>, </span><span class="rst-sig-param">output_dir: <code>str</code>, </span><span class="rst-sig-param">log_filename: <code>str</code>, </span><span class="rst-sig-param">debug_mode: <code>bool</code> = False</span>):</span>
+    
+    <a class="headerLink" href="#__init__" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor.__init__">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p class="pre">Инициализирует монитор трафика.
+
+Args:
+    rules_path: Путь к файлу правил
+    protected_ips_path: Путь к файлу защищенных IP
+    output_dir: Директория для вывода
+    log_filename: Имя файла лога
+    debug_mode: Режим отладки
+
+Raises:
+    FileNotFoundError: Если файлы конфигурации не найдены
+    RuntimeError: При ошибках инициализации</p></div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor.analyze_file">
+    
+  </a>
+  <a name="analyze_file">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span>&#160;<span class="py-defname">analyze_file</span><span class="function-signature">(<span class="rst-sig-param"><span class="rst-undocumented">self</span>, </span><span class="rst-sig-param">pcap_path: <code>str</code></span>) -&gt; <code>dict[<wbr></wbr>str, <wbr></wbr>Any]</code>:</span>
+    
+    <a class="headerLink" href="#analyze_file" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor.analyze_file">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p class="pre">Анализирует трафик из PCAP файла.
+
+Args:
+    pcap_path: Путь к PCAP файлу
+
+Returns:
+    Словарь с результатами анализа
+
+Raises:
+    FileNotFoundError: Если файл не найден
+    RuntimeError: При ошибках анализа</p></div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor.get_auth_summary">
+    
+  </a>
+  <a name="get_auth_summary">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span>&#160;<span class="py-defname">get_auth_summary</span><span class="function-signature">(<span class="rst-sig-param"><span class="rst-undocumented">self</span></span>) -&gt; <code>dict[<wbr></wbr>str, <wbr></wbr>Any]</code>:</span>
+    
+    <a class="headerLink" href="#get_auth_summary" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor.get_auth_summary">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p class="pre">Возвращает сводку по попыткам аутентификации.
+
+Returns:
+    Словарь со статистикой аутентификации</p></div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor.process_packet">
+    
+  </a>
+  <a name="process_packet">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span>&#160;<span class="py-defname">process_packet</span><span class="function-signature">(<span class="rst-sig-param"><span class="rst-undocumented">self</span>, </span><span class="rst-sig-param">packet: <code>Packet</code></span>):</span>
+    
+    <a class="headerLink" href="#process_packet" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor.process_packet">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p>Обрабатывает один пакет.</p></div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor.start_live_capture">
+    
+  </a>
+  <a name="start_live_capture">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span>&#160;<span class="py-defname">start_live_capture</span><span class="function-signature">(<span class="rst-sig-param"><span class="rst-undocumented">self</span>, </span><span class="rst-sig-param">interface: <code>str</code>, </span><span class="rst-sig-param">duration: <code>int</code> = 0</span>) -&gt; <code>threading.Thread</code>:</span>
+    
+    <a class="headerLink" href="#start_live_capture" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor.start_live_capture">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p class="pre">Запускает live-мониторинг трафика.
+
+Args:
+    interface: Сетевой интерфейс
+    duration: Продолжительность захвата в секундах (0 - бесконечно)
+
+Returns:
+    Поток захвата трафика</p></div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor.stop_live_capture">
+    
+  </a>
+  <a name="stop_live_capture">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span>&#160;<span class="py-defname">stop_live_capture</span><span class="function-signature">(<span class="rst-sig-param"><span class="rst-undocumented">self</span></span>):</span>
+    
+    <a class="headerLink" href="#stop_live_capture" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor.stop_live_capture">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p>Останавливает live-мониторинг трафика.</p></div>
+  </div>
+</div><div class="baseinstancevariable">
+  
+  
+  <a name="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor.alarms">
+    
+  </a>
+  <a name="alarms">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">alarms</span>: <code>list</code> =
+    
+    <a class="headerLink" href="#alarms" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor.alarms">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    
+  </div>
+</div><div class="baseinstancevariable">
+  
+  
+  <a name="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor.analyzer">
+    
+  </a>
+  <a name="analyzer">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">analyzer</span> =
+    
+    <a class="headerLink" href="#analyzer" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor.analyzer">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    
+  </div>
+</div><div class="baseinstancevariable">
+  
+  
+  <a name="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor.auth_attempts_raw">
+    
+  </a>
+  <a name="auth_attempts_raw">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">auth_attempts_raw</span> =
+    
+    <a class="headerLink" href="#auth_attempts_raw" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor.auth_attempts_raw">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    
+  </div>
+</div><div class="baseinstancevariable">
+  
+  
+  <a name="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor.capture_thread">
+    
+  </a>
+  <a name="capture_thread">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">capture_thread</span> =
+    
+    <a class="headerLink" href="#capture_thread" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor.capture_thread">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    
+  </div>
+</div><div class="baseinstancevariable">
+  
+  
+  <a name="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor.debug_mode">
+    
+  </a>
+  <a name="debug_mode">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">debug_mode</span> =
+    
+    <a class="headerLink" href="#debug_mode" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor.debug_mode">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    
+  </div>
+</div><div class="baseinstancevariable">
+  
+  
+  <a name="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor.downloaded_files">
+    
+  </a>
+  <a name="downloaded_files">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">downloaded_files</span> =
+    
+    <a class="headerLink" href="#downloaded_files" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor.downloaded_files">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    
+  </div>
+</div><div class="baseinstancevariable">
+  
+  
+  <a name="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor.http_requests">
+    
+  </a>
+  <a name="http_requests">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">http_requests</span> =
+    
+    <a class="headerLink" href="#http_requests" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor.http_requests">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    
+  </div>
+</div><div class="baseinstancevariable">
+  
+  
+  <a name="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor.log_path">
+    
+  </a>
+  <a name="log_path">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">log_path</span> =
+    
+    <a class="headerLink" href="#log_path" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor.log_path">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    
+  </div>
+</div><div class="baseinstancevariable">
+  
+  
+  <a name="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor.output_dir">
+    
+  </a>
+  <a name="output_dir">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">output_dir</span> =
+    
+    <a class="headerLink" href="#output_dir" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor.output_dir">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    
+  </div>
+</div><div class="baseinstancevariable">
+  
+  
+  <a name="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor.protected_ips">
+    
+  </a>
+  <a name="protected_ips">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">protected_ips</span>: <code>set</code> =
+    
+    <a class="headerLink" href="#protected_ips" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor.protected_ips">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    
+  </div>
+</div><div class="baseinstancevariable">
+  
+  
+  <a name="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor.protected_ips_path">
+    
+  </a>
+  <a name="protected_ips_path">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">protected_ips_path</span> =
+    
+    <a class="headerLink" href="#protected_ips_path" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor.protected_ips_path">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    
+  </div>
+</div><div class="baseinstancevariable">
+  
+  
+  <a name="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor.rules">
+    
+  </a>
+  <a name="rules">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">rules</span> =
+    
+    <a class="headerLink" href="#rules" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor.rules">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    
+  </div>
+</div><div class="baseinstancevariable">
+  
+  
+  <a name="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor.rules_path">
+    
+  </a>
+  <a name="rules_path">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">rules_path</span> =
+    
+    <a class="headerLink" href="#rules_path" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor.rules_path">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    
+  </div>
+</div><div class="baseinstancevariable">
+  
+  
+  <a name="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor.statistics">
+    
+  </a>
+  <a name="statistics">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">statistics</span> =
+    
+    <a class="headerLink" href="#statistics" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor.statistics">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    
+  </div>
+</div><div class="baseinstancevariable">
+  
+  
+  <a name="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor.stop_flag">
+    
+  </a>
+  <a name="stop_flag">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">stop_flag</span>: <code>bool</code> =
+    
+    <a class="headerLink" href="#stop_flag" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor.stop_flag">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    
+  </div>
+</div><div class="baseinstancevariable">
+  
+  
+  <a name="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor.suspicious_ips">
+    
+  </a>
+  <a name="suspicious_ips">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">suspicious_ips</span>: <code>set</code> =
+    
+    <a class="headerLink" href="#suspicious_ips" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor.suspicious_ips">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    
+  </div>
+</div><div class="baseinstancevariable">
+  
+  
+  <a name="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor.suspicious_ips_sources">
+    
+  </a>
+  <a name="suspicious_ips_sources">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">suspicious_ips_sources</span>: <code>list</code> =
+    
+    <a class="headerLink" href="#suspicious_ips_sources" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor.suspicious_ips_sources">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    
+  </div>
+</div><div class="baseinstancevariable">
+  
+  
+  <a name="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor.windows">
+    
+  </a>
+  <a name="windows">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">windows</span> =
+    
+    <a class="headerLink" href="#windows" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor.windows">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    
+  </div>
+</div><div class="basemethod private">
+  
+  
+  <a name="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor._analyze_all_windows">
+    
+  </a>
+  <a name="_analyze_all_windows">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span>&#160;<span class="py-defname">_analyze_all_windows</span><span class="function-signature">(<span class="rst-sig-param"><span class="rst-undocumented">self</span></span>):</span>
+    
+    <a class="headerLink" href="#_analyze_all_windows" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor._analyze_all_windows">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p>Анализирует все окна трафика.</p></div>
+  </div>
+</div><div class="basemethod private">
+  
+  
+  <a name="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor._analyze_auth_attempt">
+    
+  </a>
+  <a name="_analyze_auth_attempt">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span>&#160;<span class="py-defname">_analyze_auth_attempt</span><span class="function-signature">(<span class="rst-sig-param"><span class="rst-undocumented">self</span>, </span><span class="rst-sig-param">packet: <code>Packet</code>, </span><span class="rst-sig-param">packet_time: <code>float</code></span>):</span>
+    
+    <a class="headerLink" href="#_analyze_auth_attempt" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor._analyze_auth_attempt">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p>Анализирует пакет на предмет попыток аутентификации.</p></div>
+  </div>
+</div><div class="basemethod private">
+  
+  
+  <a name="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor._analyze_window">
+    
+  </a>
+  <a name="_analyze_window">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span>&#160;<span class="py-defname">_analyze_window</span><span class="function-signature">(<span class="rst-sig-param"><span class="rst-undocumented">self</span>, </span><span class="rst-sig-param">window_type: <code>str</code>, </span><span class="rst-sig-param">packets: <code>list[<wbr></wbr>Packet]</code></span>):</span>
+    
+    <a class="headerLink" href="#_analyze_window" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor._analyze_window">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p>Анализирует содержимое окна.</p></div>
+  </div>
+</div><div class="basemethod private">
+  
+  
+  <a name="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor._extract_filename_from_content_disposition">
+    
+  </a>
+  <a name="_extract_filename_from_content_disposition">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span>&#160;<span class="py-defname">_extract_filename_from_content_disposition</span><span class="function-signature">(<span class="rst-sig-param"><span class="rst-undocumented">self</span>, </span><span class="rst-sig-param">content_disposition: <code>str</code></span>) -&gt; <code>str | None</code>:</span>
+    
+    <a class="headerLink" href="#_extract_filename_from_content_disposition" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor._extract_filename_from_content_disposition">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p>Извлекает имя файла из заголовка Content-Disposition.</p></div>
+  </div>
+</div><div class="basemethod private">
+  
+  
+  <a name="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor._extract_filename_from_uri">
+    
+  </a>
+  <a name="_extract_filename_from_uri">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span>&#160;<span class="py-defname">_extract_filename_from_uri</span><span class="function-signature">(<span class="rst-sig-param"><span class="rst-undocumented">self</span>, </span><span class="rst-sig-param">uri: <code>str</code></span>) -&gt; <code>str | None</code>:</span>
+    
+    <a class="headerLink" href="#_extract_filename_from_uri" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor._extract_filename_from_uri">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p>Извлекает имя файла из URI.</p></div>
+  </div>
+</div><div class="basemethod private">
+  
+  
+  <a name="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor._extract_http_info">
+    
+  </a>
+  <a name="_extract_http_info">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span>&#160;<span class="py-defname">_extract_http_info</span><span class="function-signature">(<span class="rst-sig-param"><span class="rst-undocumented">self</span>, </span><span class="rst-sig-param">packet: <code>Packet</code></span>) -&gt; <code>dict[<wbr></wbr>str, <wbr></wbr>Any] | None</code>:</span>
+    
+    <a class="headerLink" href="#_extract_http_info" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor._extract_http_info">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p>Извлекает HTTP информацию из пакета.</p></div>
+  </div>
+</div><div class="basemethod private">
+  
+  
+  <a name="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor._generate_reports">
+    
+  </a>
+  <a name="_generate_reports">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span>&#160;<span class="py-defname">_generate_reports</span><span class="function-signature">(<span class="rst-sig-param"><span class="rst-undocumented">self</span>, </span><span class="rst-sig-param">source: <code>str</code></span>):</span>
+    
+    <a class="headerLink" href="#_generate_reports" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor._generate_reports">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p>Генерирует отчеты по результатам анализа.</p></div>
+  </div>
+</div><div class="basemethod private">
+  
+  
+  <a name="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor._get_dst_ip">
+    
+  </a>
+  <a name="_get_dst_ip">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span>&#160;<span class="py-defname">_get_dst_ip</span><span class="function-signature">(<span class="rst-sig-param"><span class="rst-undocumented">self</span>, </span><span class="rst-sig-param">packet: <code>Packet</code></span>) -&gt; <code>str</code>:</span>
+    
+    <a class="headerLink" href="#_get_dst_ip" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor._get_dst_ip">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p>Извлекает целевой IP из пакета.</p></div>
+  </div>
+</div><div class="basemethod private">
+  
+  
+  <a name="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor._get_file_direction">
+    
+  </a>
+  <a name="_get_file_direction">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span>&#160;<span class="py-defname">_get_file_direction</span><span class="function-signature">(<span class="rst-sig-param"><span class="rst-undocumented">self</span>, </span><span class="rst-sig-param">http_info: <code>dict[<wbr></wbr>str, <wbr></wbr>Any]</code>, </span><span class="rst-sig-param">src_ip: <code>str</code>, </span><span class="rst-sig-param">dst_ip: <code>str</code></span>) -&gt; <code>str</code>:</span>
+    
+    <a class="headerLink" href="#_get_file_direction" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor._get_file_direction">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p>Определяет направление передачи файла.</p></div>
+  </div>
+</div><div class="basemethod private">
+  
+  
+  <a name="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor._get_file_type">
+    
+  </a>
+  <a name="_get_file_type">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span>&#160;<span class="py-defname">_get_file_type</span><span class="function-signature">(<span class="rst-sig-param"><span class="rst-undocumented">self</span>, </span><span class="rst-sig-param">filename: <code>str</code></span>) -&gt; <code>str</code>:</span>
+    
+    <a class="headerLink" href="#_get_file_type" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor._get_file_type">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p>Определяет тип файла по его имени.</p></div>
+  </div>
+</div><div class="basemethod private">
+  
+  
+  <a name="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor._get_file_type_distribution">
+    
+  </a>
+  <a name="_get_file_type_distribution">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span>&#160;<span class="py-defname">_get_file_type_distribution</span><span class="function-signature">(<span class="rst-sig-param"><span class="rst-undocumented">self</span></span>) -&gt; <code>dict[<wbr></wbr>str, <wbr></wbr>int]</code>:</span>
+    
+    <a class="headerLink" href="#_get_file_type_distribution" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor._get_file_type_distribution">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p>Возвращает распределение типов файлов.</p></div>
+  </div>
+</div><div class="basemethod private">
+  
+  
+  <a name="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor._get_packet_count">
+    
+  </a>
+  <a name="_get_packet_count">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span>&#160;<span class="py-defname">_get_packet_count</span><span class="function-signature">(<span class="rst-sig-param"><span class="rst-undocumented">self</span>, </span><span class="rst-sig-param">pcap_path: <code>str</code></span>) -&gt; <code>int</code>:</span>
+    
+    <a class="headerLink" href="#_get_packet_count" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor._get_packet_count">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basemethod private">
+  
+  
+  <a name="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor._get_results">
+    
+  </a>
+  <a name="_get_results">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span>&#160;<span class="py-defname">_get_results</span><span class="function-signature">(<span class="rst-sig-param"><span class="rst-undocumented">self</span></span>) -&gt; <code>dict[<wbr></wbr>str, <wbr></wbr>Any]</code>:</span>
+    
+    <a class="headerLink" href="#_get_results" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor._get_results">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p>Возвращает результаты анализа.</p></div>
+  </div>
+</div><div class="basemethod private">
+  
+  
+  <a name="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor._get_src_ip">
+    
+  </a>
+  <a name="_get_src_ip">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span>&#160;<span class="py-defname">_get_src_ip</span><span class="function-signature">(<span class="rst-sig-param"><span class="rst-undocumented">self</span>, </span><span class="rst-sig-param">packet: <code>Packet</code></span>) -&gt; <code>str</code>:</span>
+    
+    <a class="headerLink" href="#_get_src_ip" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor._get_src_ip">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p>Извлекает исходный IP из пакета.</p></div>
+  </div>
+</div><div class="basemethod private">
+  
+  
+  <a name="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor._get_top_files">
+    
+  </a>
+  <a name="_get_top_files">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span>&#160;<span class="py-defname">_get_top_files</span><span class="function-signature">(<span class="rst-sig-param"><span class="rst-undocumented">self</span>, </span><span class="rst-sig-param">top_n: <code>int</code> = 10</span>) -&gt; <code>list[<wbr></wbr>dict[<wbr></wbr>str, <wbr></wbr>Any]]</code>:</span>
+    
+    <a class="headerLink" href="#_get_top_files" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor._get_top_files">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p>Возвращает топ-N наиболее часто встречающихся файлов.</p></div>
+  </div>
+</div><div class="basemethod private">
+  
+  
+  <a name="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor._init_log_file">
+    
+  </a>
+  <a name="_init_log_file">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span>&#160;<span class="py-defname">_init_log_file</span><span class="function-signature">(<span class="rst-sig-param"><span class="rst-undocumented">self</span></span>):</span>
+    
+    <a class="headerLink" href="#_init_log_file" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor._init_log_file">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p>Инициализирует файл лога.</p></div>
+  </div>
+</div><div class="basemethod private">
+  
+  
+  <a name="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor._init_statistics">
+    
+  </a>
+  <a name="_init_statistics">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span>&#160;<span class="py-defname">_init_statistics</span><span class="function-signature">(<span class="rst-sig-param"><span class="rst-undocumented">self</span></span>) -&gt; <code>dict[<wbr></wbr>str, <wbr></wbr>Any]</code>:</span>
+    
+    <a class="headerLink" href="#_init_statistics" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor._init_statistics">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p>Инициализирует структуру статистики.</p></div>
+  </div>
+</div><div class="basemethod private">
+  
+  
+  <a name="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor._init_windows">
+    
+  </a>
+  <a name="_init_windows">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span>&#160;<span class="py-defname">_init_windows</span><span class="function-signature">(<span class="rst-sig-param"><span class="rst-undocumented">self</span></span>) -&gt; <code>dict[<wbr></wbr>str, <wbr></wbr><a href="NFDetector.general.uTrafficMonitor.TrafficWindow.html" class="internal-link" title="NFDetector.general.uTrafficMonitor.TrafficWindow">TrafficWindow</a>]</code>:</span>
+    
+    <a class="headerLink" href="#_init_windows" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor._init_windows">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p>Инициализирует окна мониторинга на основе правил.</p></div>
+  </div>
+</div><div class="basemethod private">
+  
+  
+  <a name="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor._is_file_download">
+    
+  </a>
+  <a name="_is_file_download">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span>&#160;<span class="py-defname">_is_file_download</span><span class="function-signature">(<span class="rst-sig-param"><span class="rst-undocumented">self</span>, </span><span class="rst-sig-param">http_info: <code>dict[<wbr></wbr>str, <wbr></wbr>Any]</code></span>) -&gt; <code>bool</code>:</span>
+    
+    <a class="headerLink" href="#_is_file_download" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor._is_file_download">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p>Проверяет, является ли HTTP запрос загрузкой файла.</p></div>
+  </div>
+</div><div class="basemethod private">
+  
+  
+  <a name="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor._live_capture_worker">
+    
+  </a>
+  <a name="_live_capture_worker">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span>&#160;<span class="py-defname">_live_capture_worker</span><span class="function-signature">(<span class="rst-sig-param"><span class="rst-undocumented">self</span>, </span><span class="rst-sig-param">interface: <code>str</code>, </span><span class="rst-sig-param">duration: <code>int</code></span>):</span>
+    
+    <a class="headerLink" href="#_live_capture_worker" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor._live_capture_worker">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p>Рабочая функция для live-захвата трафика.</p></div>
+  </div>
+</div><div class="basemethod private">
+  
+  
+  <a name="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor._load_configuration">
+    
+  </a>
+  <a name="_load_configuration">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span>&#160;<span class="py-defname">_load_configuration</span><span class="function-signature">(<span class="rst-sig-param"><span class="rst-undocumented">self</span></span>):</span>
+    
+    <a class="headerLink" href="#_load_configuration" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor._load_configuration">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p>Загружает конфигурацию из файлов правил и защищенных IP.</p></div>
+  </div>
+</div><div class="basemethod private">
+  
+  
+  <a name="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor._update_dns_stats">
+    
+  </a>
+  <a name="_update_dns_stats">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span>&#160;<span class="py-defname">_update_dns_stats</span><span class="function-signature">(<span class="rst-sig-param"><span class="rst-undocumented">self</span>, </span><span class="rst-sig-param">packet: <code>Packet</code></span>):</span>
+    
+    <a class="headerLink" href="#_update_dns_stats" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor._update_dns_stats">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p>Обновляет DNS статистику.</p></div>
+  </div>
+</div><div class="basemethod private">
+  
+  
+  <a name="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor._update_file_stats">
+    
+  </a>
+  <a name="_update_file_stats">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span>&#160;<span class="py-defname">_update_file_stats</span><span class="function-signature">(<span class="rst-sig-param"><span class="rst-undocumented">self</span>, </span><span class="rst-sig-param">packet: <code>Packet</code>, </span><span class="rst-sig-param">packet_time: <code>float</code>, </span><span class="rst-sig-param">src_ip: <code>str</code>, </span><span class="rst-sig-param">dst_ip: <code>str</code></span>):</span>
+    
+    <a class="headerLink" href="#_update_file_stats" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor._update_file_stats">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p>Обновляет статистику загруженных файлов.</p></div>
+  </div>
+</div><div class="basemethod private">
+  
+  
+  <a name="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor._update_http_stats">
+    
+  </a>
+  <a name="_update_http_stats">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span>&#160;<span class="py-defname">_update_http_stats</span><span class="function-signature">(<span class="rst-sig-param"><span class="rst-undocumented">self</span>, </span><span class="rst-sig-param">packet: <code>Packet</code>, </span><span class="rst-sig-param">packet_time: <code>float</code>, </span><span class="rst-sig-param">src_ip: <code>str</code>, </span><span class="rst-sig-param">dst_ip: <code>str</code></span>):</span>
+    
+    <a class="headerLink" href="#_update_http_stats" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor._update_http_stats">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p>Обновляет статистику HTTP запросов.</p></div>
+  </div>
+</div><div class="basemethod private">
+  
+  
+  <a name="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor._update_protocol_stats">
+    
+  </a>
+  <a name="_update_protocol_stats">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span>&#160;<span class="py-defname">_update_protocol_stats</span><span class="function-signature">(<span class="rst-sig-param"><span class="rst-undocumented">self</span>, </span><span class="rst-sig-param">packet: <code>Packet</code></span>):</span>
+    
+    <a class="headerLink" href="#_update_protocol_stats" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor._update_protocol_stats">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p>Обновляет статистику протоколов.</p></div>
+  </div>
+</div><div class="basemethod private">
+  
+  
+  <a name="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor._update_statistics">
+    
+  </a>
+  <a name="_update_statistics">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span>&#160;<span class="py-defname">_update_statistics</span><span class="function-signature">(<span class="rst-sig-param"><span class="rst-undocumented">self</span>, </span><span class="rst-sig-param">packet: <code>Packet</code>, </span><span class="rst-sig-param">packet_time: <code>float</code></span>):</span>
+    
+    <a class="headerLink" href="#_update_statistics" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor._update_statistics">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p>Обновляет статистику на основе пакета.</p></div>
+  </div>
+</div><div class="basemethod private">
+  
+  
+  <a name="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor._update_suspicious_ip_stats">
+    
+  </a>
+  <a name="_update_suspicious_ip_stats">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span>&#160;<span class="py-defname">_update_suspicious_ip_stats</span><span class="function-signature">(<span class="rst-sig-param"><span class="rst-undocumented">self</span>, </span><span class="rst-sig-param">packet: <code>Packet</code>, </span><span class="rst-sig-param">src_ip: <code>str</code>, </span><span class="rst-sig-param">dst_ip: <code>str</code></span>):</span>
+    
+    <a class="headerLink" href="#_update_suspicious_ip_stats" title="NFDetector.general.uTrafficMonitor.NetworkTrafficMonitor._update_suspicious_ip_stats">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p>Обновляет статистику по подозрительным IP.</p></div>
+  </div>
+</div>
+        </div>
+      
+      </main>
+    </div>
+
+    <footer class="navbar navbar-default">
+
+  
+  <div class="container-fluid">
+    <a href="index.html">API Documentation</a> for NFDetector,
+  generated by <a href="https://github.com/twisted/pydoctor/">pydoctor</a>
+    25.10.1 at 2025-12-13 06:00:40.
+  </div>
+
+  <!-- Search related scripts needs to be loaded at the end of HTML 
+    parsing not to introduce overhead and display HTML data asap -->
+  <script src="ajax.js" type="text/javascript"></script>
+  <script src="searchlib.js" type="text/javascript"></script>
+  <script src="search.js" type="text/javascript"></script>
+
+</footer>
+  
+    <script src="pydoctor.js" type="text/javascript"></script>
+
+  </body>
+</html>

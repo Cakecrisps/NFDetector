@@ -1,0 +1,995 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+          "DTD/xhtml1-strict.dtd">
+<html>
+  
+
+  <head>
+    
+    <title>NFDetector._test.TestTrafficAnalyzer</title>
+    <meta name="generator" content="pydoctor 25.10.1"> 
+        
+    </meta>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1 maximum-scale=1" />
+    <link rel="stylesheet" type="text/css" href="bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="apidocs.css" />
+    <link rel="stylesheet" type="text/css" href="extra.css" />
+    
+</head>
+
+  <body>
+
+    
+
+    <nav class="navbar navbar-default mainnavbar">
+      
+  
+  <div class="container-fluid">
+
+
+    <div class="navbar-header">
+      
+      <div class="navlinks">
+        <span class="navbar-brand">
+          NFDetector <a href="index.html">API Documentation</a>
+        </span>
+
+        <a href="moduleIndex.html">
+          Modules
+        </a>
+
+        <a href="classIndex.html">
+          Classes
+        </a>
+
+        <a href="nameIndex.html">
+          Names
+        </a>
+
+        <div id="search-box-container">
+          <div class="input-group">
+            <input id="search-box" type="search" name="search-query" placeholder="Search..." aria-label="Search" minlength="2" class="form-control" autocomplete="off" />
+            
+            <span class="input-group-btn">
+              <a style="display: none;" class="btn btn-default" id="search-clear-button" title="Clear" onclick="clearSearch()"><img src="fonts/x-circle.svg" alt="Clear" /></a>
+              <a class="btn btn-default" id="apidocs-help-button" title="Help" href="apidocs-help.html"><img src="fonts/info.svg" alt="Help" /></a>
+            </span>
+          </div>
+        </div>
+
+      </div>
+
+      <div id="search-results-container" style="display: none;">
+        
+        <div id="search-buttons">
+          <span class="label label-default" id="search-docstrings-button">
+          <label class="checkbox-inline">
+            <input type="checkbox" id="toggle-search-in-docstrings-checkbox" value="false" onclick="toggleSearchInDocstrings()">
+              search in docstrings
+            </input>
+          </label>
+          </span>
+          
+        </div>
+        
+        <noscript>
+            <h1>Cannot search: JavaScript is not supported/enabled in your browser.</h1>
+        </noscript>
+
+        <div id="search-status"> </div>
+
+        <div class="warning" id="search-warn-box" style="display: none;">
+          <p class="rst-last"><span id="search-warn"></span></p>
+        </div>
+
+        <table id="search-results">
+          <!-- Filled dynamically by JS -->
+        </table>
+        
+        <div style="margin-top: 10px;">
+          <p>For more information on the search, visit the <a href="apidocs-help.html#rst-search">help page</a>.</p>
+        </div>
+      </div>
+
+    </div>
+
+
+  </div>
+</nav>
+    
+    <div class="container-fluid">
+
+      <!-- Side navigation -->
+      <div class="sidebarcontainer" style="display: none;">
+        
+        <div class="sidebar"><nav class="sidebar">
+  
+
+  <div>
+
+      <div class="thingTitle">
+        <span>Class</span>
+        <code class="thisobject"><a href="NFDetector._test.TestTrafficAnalyzer.html" class="internal-link" title="This class"><wbr></wbr>Test<wbr></wbr>Traffic<wbr></wbr>Analyzer</a></code> 
+      </div>
+      
+      <div>
+        
+
+        
+         
+
+        
+        
+
+        <div class="childrenKindTitle">Methods</div>
+        <ul>
+    
+    <li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#setup_method" class="internal-link" title="NFDetector._test.TestTrafficAnalyzer.setup_method">setup<wbr></wbr>_method</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#teardown_method" class="internal-link" title="NFDetector._test.TestTrafficAnalyzer.teardown_method">teardown<wbr></wbr>_method</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#test_analyze_ddos_single_ip_negative" class="internal-link" title="NFDetector._test.TestTrafficAnalyzer.test_analyze_ddos_single_ip_negative">test<wbr></wbr>_analyze<wbr></wbr>_ddos<wbr></wbr>_single<wbr></wbr>_ip<wbr></wbr>_negative</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#test_analyze_ddos_single_ip_non_protected_dst" class="internal-link" title="NFDetector._test.TestTrafficAnalyzer.test_analyze_ddos_single_ip_non_protected_dst">test<wbr></wbr>_analyze<wbr></wbr>_ddos<wbr></wbr>_single<wbr></wbr>_ip<wbr></wbr>_non<wbr></wbr>_protected<wbr></wbr>_dst</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#test_analyze_ddos_single_ip_positive" class="internal-link" title="NFDetector._test.TestTrafficAnalyzer.test_analyze_ddos_single_ip_positive">test<wbr></wbr>_analyze<wbr></wbr>_ddos<wbr></wbr>_single<wbr></wbr>_ip<wbr></wbr>_positive</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#test_analyze_http_flood_negative" class="internal-link" title="NFDetector._test.TestTrafficAnalyzer.test_analyze_http_flood_negative">test<wbr></wbr>_analyze<wbr></wbr>_http<wbr></wbr>_flood<wbr></wbr>_negative</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#test_analyze_http_flood_non_http_packets" class="internal-link" title="NFDetector._test.TestTrafficAnalyzer.test_analyze_http_flood_non_http_packets">test<wbr></wbr>_analyze<wbr></wbr>_http<wbr></wbr>_flood<wbr></wbr>_non<wbr></wbr>_http<wbr></wbr>_packets</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#test_analyze_http_flood_positive" class="internal-link" title="NFDetector._test.TestTrafficAnalyzer.test_analyze_http_flood_positive">test<wbr></wbr>_analyze<wbr></wbr>_http<wbr></wbr>_flood<wbr></wbr>_positive</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#test_analyze_suspicious_ips_disabled" class="internal-link" title="NFDetector._test.TestTrafficAnalyzer.test_analyze_suspicious_ips_disabled">test<wbr></wbr>_analyze<wbr></wbr>_suspicious<wbr></wbr>_ips<wbr></wbr>_disabled</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#test_analyze_suspicious_ips_negative" class="internal-link" title="NFDetector._test.TestTrafficAnalyzer.test_analyze_suspicious_ips_negative">test<wbr></wbr>_analyze<wbr></wbr>_suspicious<wbr></wbr>_ips<wbr></wbr>_negative</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#test_analyze_suspicious_ips_positive_destination" class="internal-link" title="NFDetector._test.TestTrafficAnalyzer.test_analyze_suspicious_ips_positive_destination">test<wbr></wbr>_analyze<wbr></wbr>_suspicious<wbr></wbr>_ips<wbr></wbr>_positive<wbr></wbr>_destination</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#test_analyze_suspicious_ips_positive_source" class="internal-link" title="NFDetector._test.TestTrafficAnalyzer.test_analyze_suspicious_ips_positive_source">test<wbr></wbr>_analyze<wbr></wbr>_suspicious<wbr></wbr>_ips<wbr></wbr>_positive<wbr></wbr>_source</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#test_statistics_increment" class="internal-link" title="NFDetector._test.TestTrafficAnalyzer.test_statistics_increment">test<wbr></wbr>_statistics<wbr></wbr>_increment</a></code>
+            </div>
+        
+
+    </li><li class="private">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#_create_packet" class="internal-link" title="NFDetector._test.TestTrafficAnalyzer._create_packet">_create<wbr></wbr>_packet</a></code>
+            </div>
+        
+
+    </li>
+</ul> 
+
+        
+         
+
+        <div class="childrenKindTitle">Attributes</div>
+        <ul>
+    
+    <li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#analyzer" class="internal-link" title="NFDetector._test.TestTrafficAnalyzer.analyzer">analyzer</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#rules_data" class="internal-link" title="NFDetector._test.TestTrafficAnalyzer.rules_data">rules<wbr></wbr>_data</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#temp_protectips_file" class="internal-link" title="NFDetector._test.TestTrafficAnalyzer.temp_protectips_file">temp<wbr></wbr>_protectips<wbr></wbr>_file</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#temp_rules_file" class="internal-link" title="NFDetector._test.TestTrafficAnalyzer.temp_rules_file">temp<wbr></wbr>_rules<wbr></wbr>_file</a></code>
+            </div>
+        
+
+    </li>
+</ul> 
+
+        
+         
+        
+      </div>
+  </div><div>
+
+      <div class="thingTitle">
+        <span>Module</span>
+        <code><a href="NFDetector._test.html" class="internal-link" title="The parent of this class">_test</a></code> 
+      </div>
+      
+      <div>
+        
+
+        
+         
+
+        <div class="childrenKindTitle">Classes</div>
+        <ul>
+    
+    <li class=" thisobject">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="NFDetector._test.TestTrafficAnalyzer.html" class="internal-link" title="NFDetector._test.TestTrafficAnalyzer"><wbr></wbr>Test<wbr></wbr>Traffic<wbr></wbr>Analyzer</a></code>
+            </div>
+        
+
+    </li>
+</ul>
+
+        
+         
+
+        
+         
+
+        
+         
+
+        
+         
+        
+      </div>
+  </div>
+
+</nav>
+        </div>
+        <div id="collapse-sidebar">
+          <a class="btn btn-link" onclick="toggleSideBarCollapse()" title="Toggle Sidebar Collapse">
+          </a>
+        </div> 
+        <script src="sidebartoggle.js" type="text/javascript"></script>
+       
+      </div>
+
+      <main class="">
+        
+
+        
+
+        <div class="page-header">
+          <h1 class="class"><code><code><a href="index.html" class="internal-link">NFDetector</a></code><wbr></wbr>.<code><a href="NFDetector._test.html" class="internal-link" title="NFDetector._test">_test</a></code><wbr></wbr>.<code><a href="NFDetector._test.TestTrafficAnalyzer.html" class="internal-link" title="NFDetector._test.TestTrafficAnalyzer">TestTrafficAnalyzer</a></code></code></h1>
+          <div id="show-private">
+            <button class="btn btn-link" onclick="togglePrivate()">Toggle Private API</button>
+          </div>
+        </div>
+
+        <div class="categoryHeader">
+          class documentation
+        </div>
+
+        <div class="extrasDocstring">
+          <p class="class-signature"><code><span class="py-keyword">class</span> <span class="py-defname">TestTrafficAnalyzer</span>:</code></p><p><a href="classIndex.html#NFDetector._test.TestTrafficAnalyzer">View In Hierarchy</a></p>
+        </div>
+
+        <div class="moduleDocstring">
+          <div><p>Набор тестов для класса TrafficAnalyzer.</p></div>
+        </div>
+
+        <div id="split-tables">
+          <table class="children sortable" id="id12">
+  
+  
+  <tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#setup_method" class="internal-link" title="NFDetector._test.TestTrafficAnalyzer.setup_method">setup<wbr></wbr>_method</a></code></td>
+    <td>Подготовка тестовой среды.</td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#teardown_method" class="internal-link" title="NFDetector._test.TestTrafficAnalyzer.teardown_method">teardown<wbr></wbr>_method</a></code></td>
+    <td>Очистка тестовой среды - удаление временных файлов.</td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#test_analyze_ddos_single_ip_negative" class="internal-link" title="NFDetector._test.TestTrafficAnalyzer.test_analyze_ddos_single_ip_negative">test<wbr></wbr>_analyze<wbr></wbr>_ddos<wbr></wbr>_single<wbr></wbr>_ip<wbr></wbr>_negative</a></code></td>
+    <td>Негативный тест: DDoS не обнаружен при малом количестве пакетов.</td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#test_analyze_ddos_single_ip_non_protected_dst" class="internal-link" title="NFDetector._test.TestTrafficAnalyzer.test_analyze_ddos_single_ip_non_protected_dst">test<wbr></wbr>_analyze<wbr></wbr>_ddos<wbr></wbr>_single<wbr></wbr>_ip<wbr></wbr>_non<wbr></wbr>_protected<wbr></wbr>_dst</a></code></td>
+    <td>Тест: пакеты к незащищаемым IP не учитываются.</td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#test_analyze_ddos_single_ip_positive" class="internal-link" title="NFDetector._test.TestTrafficAnalyzer.test_analyze_ddos_single_ip_positive">test<wbr></wbr>_analyze<wbr></wbr>_ddos<wbr></wbr>_single<wbr></wbr>_ip<wbr></wbr>_positive</a></code></td>
+    <td>Позитивный тест: обнаружение DDoS атаки от одного IP.</td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#test_analyze_http_flood_negative" class="internal-link" title="NFDetector._test.TestTrafficAnalyzer.test_analyze_http_flood_negative">test<wbr></wbr>_analyze<wbr></wbr>_http<wbr></wbr>_flood<wbr></wbr>_negative</a></code></td>
+    <td>Негативный тест: HTTP flood не обнаружен.</td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#test_analyze_http_flood_non_http_packets" class="internal-link" title="NFDetector._test.TestTrafficAnalyzer.test_analyze_http_flood_non_http_packets">test<wbr></wbr>_analyze<wbr></wbr>_http<wbr></wbr>_flood<wbr></wbr>_non<wbr></wbr>_http<wbr></wbr>_packets</a></code></td>
+    <td>Тест: не-HTTP пакеты игнорируются при анализе HTTP flood.</td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#test_analyze_http_flood_positive" class="internal-link" title="NFDetector._test.TestTrafficAnalyzer.test_analyze_http_flood_positive">test<wbr></wbr>_analyze<wbr></wbr>_http<wbr></wbr>_flood<wbr></wbr>_positive</a></code></td>
+    <td>Позитивный тест: обнаружение HTTP flood атаки.</td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#test_analyze_suspicious_ips_disabled" class="internal-link" title="NFDetector._test.TestTrafficAnalyzer.test_analyze_suspicious_ips_disabled">test<wbr></wbr>_analyze<wbr></wbr>_suspicious<wbr></wbr>_ips<wbr></wbr>_disabled</a></code></td>
+    <td>Тест: анализ подозрительных IP отключен в правилах.</td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#test_analyze_suspicious_ips_negative" class="internal-link" title="NFDetector._test.TestTrafficAnalyzer.test_analyze_suspicious_ips_negative">test<wbr></wbr>_analyze<wbr></wbr>_suspicious<wbr></wbr>_ips<wbr></wbr>_negative</a></code></td>
+    <td>Негативный тест: подозрительные IP не обнаружены.</td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#test_analyze_suspicious_ips_positive_destination" class="internal-link" title="NFDetector._test.TestTrafficAnalyzer.test_analyze_suspicious_ips_positive_destination">test<wbr></wbr>_analyze<wbr></wbr>_suspicious<wbr></wbr>_ips<wbr></wbr>_positive<wbr></wbr>_destination</a></code></td>
+    <td>Позитивный тест: обнаружение подозрительного IP.назначения.</td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#test_analyze_suspicious_ips_positive_source" class="internal-link" title="NFDetector._test.TestTrafficAnalyzer.test_analyze_suspicious_ips_positive_source">test<wbr></wbr>_analyze<wbr></wbr>_suspicious<wbr></wbr>_ips<wbr></wbr>_positive<wbr></wbr>_source</a></code></td>
+    <td>Позитивный тест: обнаружение подозрительного IP.источника.</td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#test_statistics_increment" class="internal-link" title="NFDetector._test.TestTrafficAnalyzer.test_statistics_increment">test<wbr></wbr>_statistics<wbr></wbr>_increment</a></code></td>
+    <td>Тест корректного обновления статистики.</td>
+  </tr><tr class="instancevariable">
+    
+    <td>Instance Variable</td>
+    <td><code><a href="#analyzer" class="internal-link" title="NFDetector._test.TestTrafficAnalyzer.analyzer">analyzer</a></code></td>
+    <td><span class="rst-undocumented">Undocumented</span></td>
+  </tr><tr class="instancevariable">
+    
+    <td>Instance Variable</td>
+    <td><code><a href="#rules_data" class="internal-link" title="NFDetector._test.TestTrafficAnalyzer.rules_data">rules<wbr></wbr>_data</a></code></td>
+    <td><span class="rst-undocumented">Undocumented</span></td>
+  </tr><tr class="instancevariable">
+    
+    <td>Instance Variable</td>
+    <td><code><a href="#temp_protectips_file" class="internal-link" title="NFDetector._test.TestTrafficAnalyzer.temp_protectips_file">temp<wbr></wbr>_protectips<wbr></wbr>_file</a></code></td>
+    <td><span class="rst-undocumented">Undocumented</span></td>
+  </tr><tr class="instancevariable">
+    
+    <td>Instance Variable</td>
+    <td><code><a href="#temp_rules_file" class="internal-link" title="NFDetector._test.TestTrafficAnalyzer.temp_rules_file">temp<wbr></wbr>_rules<wbr></wbr>_file</a></code></td>
+    <td><span class="rst-undocumented">Undocumented</span></td>
+  </tr><tr class="method private">
+    
+    <td>Method</td>
+    <td><code><a href="#_create_packet" class="internal-link" title="NFDetector._test.TestTrafficAnalyzer._create_packet">_create<wbr></wbr>_packet</a></code></td>
+    <td>Создает mock-объект сетевого пакета.</td>
+  </tr>
+</table>
+          
+
+            
+        </div>
+
+        <div id="child-list">
+          <div class="basemethod">
+  
+  
+  <a name="NFDetector._test.TestTrafficAnalyzer.setup_method">
+    
+  </a>
+  <a name="setup_method">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span>&#160;<span class="py-defname">setup_method</span><span class="function-signature">(<span class="rst-sig-param"><span class="rst-undocumented">self</span></span>):</span>
+    
+    <a class="headerLink" href="#setup_method" title="NFDetector._test.TestTrafficAnalyzer.setup_method">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p>Подготовка тестовой среды.</p>
+<p>Создает временные файлы с правилами и защищаемыми IP, инициализирует тестируемый объект.</p>
+</div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="NFDetector._test.TestTrafficAnalyzer.teardown_method">
+    
+  </a>
+  <a name="teardown_method">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span>&#160;<span class="py-defname">teardown_method</span><span class="function-signature">(<span class="rst-sig-param"><span class="rst-undocumented">self</span></span>):</span>
+    
+    <a class="headerLink" href="#teardown_method" title="NFDetector._test.TestTrafficAnalyzer.teardown_method">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p>Очистка тестовой среды - удаление временных файлов.</p></div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="NFDetector._test.TestTrafficAnalyzer.test_analyze_ddos_single_ip_negative">
+    
+  </a>
+  <a name="test_analyze_ddos_single_ip_negative">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span>&#160;<span class="py-defname">test_analyze_ddos_single_ip_negative</span><span class="function-signature">(<span class="rst-sig-param"><span class="rst-undocumented">self</span></span>):</span>
+    
+    <a class="headerLink" href="#test_analyze_ddos_single_ip_negative" title="NFDetector._test.TestTrafficAnalyzer.test_analyze_ddos_single_ip_negative">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p>Негативный тест: DDoS не обнаружен при малом количестве пакетов.</p>
+<p>Проверяет, что система не генерирует ложных срабатываний при количестве пакетов ниже порогового значения.</p>
+</div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="NFDetector._test.TestTrafficAnalyzer.test_analyze_ddos_single_ip_non_protected_dst">
+    
+  </a>
+  <a name="test_analyze_ddos_single_ip_non_protected_dst">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span>&#160;<span class="py-defname">test_analyze_ddos_single_ip_non_protected_dst</span><span class="function-signature">(<span class="rst-sig-param"><span class="rst-undocumented">self</span></span>):</span>
+    
+    <a class="headerLink" href="#test_analyze_ddos_single_ip_non_protected_dst" title="NFDetector._test.TestTrafficAnalyzer.test_analyze_ddos_single_ip_non_protected_dst">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p>Тест: пакеты к незащищаемым IP не учитываются.</p>
+<p>Проверяет, что система игнорирует трафик, направленный на IP, не входящие в список защищаемых.</p>
+</div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="NFDetector._test.TestTrafficAnalyzer.test_analyze_ddos_single_ip_positive">
+    
+  </a>
+  <a name="test_analyze_ddos_single_ip_positive">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span>&#160;<span class="py-defname">test_analyze_ddos_single_ip_positive</span><span class="function-signature">(<span class="rst-sig-param"><span class="rst-undocumented">self</span></span>):</span>
+    
+    <a class="headerLink" href="#test_analyze_ddos_single_ip_positive" title="NFDetector._test.TestTrafficAnalyzer.test_analyze_ddos_single_ip_positive">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p>Позитивный тест: обнаружение DDoS атаки от одного IP.</p>
+<p>Проверяет, что при превышении порога пакетов от одного IP система генерирует корректное предупреждение.</p>
+</div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="NFDetector._test.TestTrafficAnalyzer.test_analyze_http_flood_negative">
+    
+  </a>
+  <a name="test_analyze_http_flood_negative">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span>&#160;<span class="py-defname">test_analyze_http_flood_negative</span><span class="function-signature">(<span class="rst-sig-param"><span class="rst-undocumented">self</span></span>):</span>
+    
+    <a class="headerLink" href="#test_analyze_http_flood_negative" title="NFDetector._test.TestTrafficAnalyzer.test_analyze_http_flood_negative">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p>Негативный тест: HTTP flood не обнаружен.</p>
+<p>Проверяет отсутствие срабатывания при количестве HTTP-запросов ниже порогового значения.</p>
+</div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="NFDetector._test.TestTrafficAnalyzer.test_analyze_http_flood_non_http_packets">
+    
+  </a>
+  <a name="test_analyze_http_flood_non_http_packets">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span>&#160;<span class="py-defname">test_analyze_http_flood_non_http_packets</span><span class="function-signature">(<span class="rst-sig-param"><span class="rst-undocumented">self</span></span>):</span>
+    
+    <a class="headerLink" href="#test_analyze_http_flood_non_http_packets" title="NFDetector._test.TestTrafficAnalyzer.test_analyze_http_flood_non_http_packets">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p>Тест: не-HTTP пакеты игнорируются при анализе HTTP flood.</p>
+<p>Проверяет, что система учитывает только HTTP-трафик и не реагирует на другие типы пакетов.</p>
+</div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="NFDetector._test.TestTrafficAnalyzer.test_analyze_http_flood_positive">
+    
+  </a>
+  <a name="test_analyze_http_flood_positive">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span>&#160;<span class="py-defname">test_analyze_http_flood_positive</span><span class="function-signature">(<span class="rst-sig-param"><span class="rst-undocumented">self</span></span>):</span>
+    
+    <a class="headerLink" href="#test_analyze_http_flood_positive" title="NFDetector._test.TestTrafficAnalyzer.test_analyze_http_flood_positive">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p>Позитивный тест: обнаружение HTTP flood атаки.</p>
+<p>Проверяет генерацию предупреждения при превышении порога HTTP-запросов от одного источника.</p>
+</div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="NFDetector._test.TestTrafficAnalyzer.test_analyze_suspicious_ips_disabled">
+    
+  </a>
+  <a name="test_analyze_suspicious_ips_disabled">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span>&#160;<span class="py-defname">test_analyze_suspicious_ips_disabled</span><span class="function-signature">(<span class="rst-sig-param"><span class="rst-undocumented">self</span></span>):</span>
+    
+    <a class="headerLink" href="#test_analyze_suspicious_ips_disabled" title="NFDetector._test.TestTrafficAnalyzer.test_analyze_suspicious_ips_disabled">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p>Тест: анализ подозрительных IP отключен в правилах.</p>
+<p>Проверяет, что при отключенной функции в конфигурации система не генерирует предупреждений.</p>
+</div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="NFDetector._test.TestTrafficAnalyzer.test_analyze_suspicious_ips_negative">
+    
+  </a>
+  <a name="test_analyze_suspicious_ips_negative">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span>&#160;<span class="py-defname">test_analyze_suspicious_ips_negative</span><span class="function-signature">(<span class="rst-sig-param"><span class="rst-undocumented">self</span></span>):</span>
+    
+    <a class="headerLink" href="#test_analyze_suspicious_ips_negative" title="NFDetector._test.TestTrafficAnalyzer.test_analyze_suspicious_ips_negative">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p>Негативный тест: подозрительные IP не обнаружены.</p>
+<p>Проверяет отсутствие срабатывания при трафике от и к IP, не входящим в списки подозрительных.</p>
+</div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="NFDetector._test.TestTrafficAnalyzer.test_analyze_suspicious_ips_positive_destination">
+    
+  </a>
+  <a name="test_analyze_suspicious_ips_positive_destination">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span>&#160;<span class="py-defname">test_analyze_suspicious_ips_positive_destination</span><span class="function-signature">(<span class="rst-sig-param"><span class="rst-undocumented">self</span></span>):</span>
+    
+    <a class="headerLink" href="#test_analyze_suspicious_ips_positive_destination" title="NFDetector._test.TestTrafficAnalyzer.test_analyze_suspicious_ips_positive_destination">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p>Позитивный тест: обнаружение подозрительного IP.назначения.</p>
+<p>Проверяет генерацию предупреждения при трафике к IP, которое находится и в списке защищаемых, и в списке подозрительных.</p>
+</div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="NFDetector._test.TestTrafficAnalyzer.test_analyze_suspicious_ips_positive_source">
+    
+  </a>
+  <a name="test_analyze_suspicious_ips_positive_source">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span>&#160;<span class="py-defname">test_analyze_suspicious_ips_positive_source</span><span class="function-signature">(<span class="rst-sig-param"><span class="rst-undocumented">self</span></span>):</span>
+    
+    <a class="headerLink" href="#test_analyze_suspicious_ips_positive_source" title="NFDetector._test.TestTrafficAnalyzer.test_analyze_suspicious_ips_positive_source">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p>Позитивный тест: обнаружение подозрительного IP.источника.</p>
+<p>Проверяет генерацию предупреждения при трафике от IP, находящегося в списке подозрительных.</p>
+</div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="NFDetector._test.TestTrafficAnalyzer.test_statistics_increment">
+    
+  </a>
+  <a name="test_statistics_increment">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span>&#160;<span class="py-defname">test_statistics_increment</span><span class="function-signature">(<span class="rst-sig-param"><span class="rst-undocumented">self</span></span>):</span>
+    
+    <a class="headerLink" href="#test_statistics_increment" title="NFDetector._test.TestTrafficAnalyzer.test_statistics_increment">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p>Тест корректного обновления статистики.</p>
+<p>Проверяет, что система корректно подсчитывает общее количество обработанных пакетов и количество срабатываний.</p>
+</div>
+  </div>
+</div><div class="baseinstancevariable">
+  
+  
+  <a name="NFDetector._test.TestTrafficAnalyzer.analyzer">
+    
+  </a>
+  <a name="analyzer">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">analyzer</span> =
+    
+    <a class="headerLink" href="#analyzer" title="NFDetector._test.TestTrafficAnalyzer.analyzer">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    
+  </div>
+</div><div class="baseinstancevariable">
+  
+  
+  <a name="NFDetector._test.TestTrafficAnalyzer.rules_data">
+    
+  </a>
+  <a name="rules_data">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">rules_data</span>: <code>dict</code> =
+    
+    <a class="headerLink" href="#rules_data" title="NFDetector._test.TestTrafficAnalyzer.rules_data">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    
+  </div>
+</div><div class="baseinstancevariable">
+  
+  
+  <a name="NFDetector._test.TestTrafficAnalyzer.temp_protectips_file">
+    
+  </a>
+  <a name="temp_protectips_file">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">temp_protectips_file</span> =
+    
+    <a class="headerLink" href="#temp_protectips_file" title="NFDetector._test.TestTrafficAnalyzer.temp_protectips_file">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    
+  </div>
+</div><div class="baseinstancevariable">
+  
+  
+  <a name="NFDetector._test.TestTrafficAnalyzer.temp_rules_file">
+    
+  </a>
+  <a name="temp_rules_file">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">temp_rules_file</span> =
+    
+    <a class="headerLink" href="#temp_rules_file" title="NFDetector._test.TestTrafficAnalyzer.temp_rules_file">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    
+  </div>
+</div><div class="basemethod private">
+  
+  
+  <a name="NFDetector._test.TestTrafficAnalyzer._create_packet">
+    
+  </a>
+  <a name="_create_packet">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span>&#160;<span class="py-defname">_create_packet</span><span class="function-signature">(<span class="rst-sig-param"><span class="rst-undocumented">self</span>, </span><span class="rst-sig-param">src_ip, </span><span class="rst-sig-param">dst_ip, </span><span class="rst-sig-param">is_http=False, </span><span class="rst-sig-param">timestamp=1000</span>):</span>
+    
+    <a class="headerLink" href="#_create_packet" title="NFDetector._test.TestTrafficAnalyzer._create_packet">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p class="pre">Создает mock-объект сетевого пакета.
+
+Args:
+    src_ip (str): IP-адрес источника
+    dst_ip (str): IP-адрес назначения
+    is_http (bool): Флаг HTTP-пакета
+    timestamp (int): Временная метка
+    
+Returns:
+    Mock: Сконфигурированный mock-объект пакета</p></div>
+  </div>
+</div>
+        </div>
+      
+      </main>
+    </div>
+
+    <footer class="navbar navbar-default">
+
+  
+  <div class="container-fluid">
+    <a href="index.html">API Documentation</a> for NFDetector,
+  generated by <a href="https://github.com/twisted/pydoctor/">pydoctor</a>
+    25.10.1 at 2025-12-13 06:00:40.
+  </div>
+
+  <!-- Search related scripts needs to be loaded at the end of HTML 
+    parsing not to introduce overhead and display HTML data asap -->
+  <script src="ajax.js" type="text/javascript"></script>
+  <script src="searchlib.js" type="text/javascript"></script>
+  <script src="search.js" type="text/javascript"></script>
+
+</footer>
+  
+    <script src="pydoctor.js" type="text/javascript"></script>
+
+  </body>
+</html>

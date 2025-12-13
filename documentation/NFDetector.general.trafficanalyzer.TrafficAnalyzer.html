@@ -1,0 +1,1118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+          "DTD/xhtml1-strict.dtd">
+<html>
+  
+
+  <head>
+    
+    <title>NFDetector.general.trafficanalyzer.TrafficAnalyzer</title>
+    <meta name="generator" content="pydoctor 25.10.1"> 
+        
+    </meta>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1 maximum-scale=1" />
+    <link rel="stylesheet" type="text/css" href="bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="apidocs.css" />
+    <link rel="stylesheet" type="text/css" href="extra.css" />
+    
+</head>
+
+  <body>
+
+    
+
+    <nav class="navbar navbar-default mainnavbar">
+      
+  
+  <div class="container-fluid">
+
+
+    <div class="navbar-header">
+      
+      <div class="navlinks">
+        <span class="navbar-brand">
+          NFDetector <a href="index.html">API Documentation</a>
+        </span>
+
+        <a href="moduleIndex.html">
+          Modules
+        </a>
+
+        <a href="classIndex.html">
+          Classes
+        </a>
+
+        <a href="nameIndex.html">
+          Names
+        </a>
+
+        <div id="search-box-container">
+          <div class="input-group">
+            <input id="search-box" type="search" name="search-query" placeholder="Search..." aria-label="Search" minlength="2" class="form-control" autocomplete="off" />
+            
+            <span class="input-group-btn">
+              <a style="display: none;" class="btn btn-default" id="search-clear-button" title="Clear" onclick="clearSearch()"><img src="fonts/x-circle.svg" alt="Clear" /></a>
+              <a class="btn btn-default" id="apidocs-help-button" title="Help" href="apidocs-help.html"><img src="fonts/info.svg" alt="Help" /></a>
+            </span>
+          </div>
+        </div>
+
+      </div>
+
+      <div id="search-results-container" style="display: none;">
+        
+        <div id="search-buttons">
+          <span class="label label-default" id="search-docstrings-button">
+          <label class="checkbox-inline">
+            <input type="checkbox" id="toggle-search-in-docstrings-checkbox" value="false" onclick="toggleSearchInDocstrings()">
+              search in docstrings
+            </input>
+          </label>
+          </span>
+          
+        </div>
+        
+        <noscript>
+            <h1>Cannot search: JavaScript is not supported/enabled in your browser.</h1>
+        </noscript>
+
+        <div id="search-status"> </div>
+
+        <div class="warning" id="search-warn-box" style="display: none;">
+          <p class="rst-last"><span id="search-warn"></span></p>
+        </div>
+
+        <table id="search-results">
+          <!-- Filled dynamically by JS -->
+        </table>
+        
+        <div style="margin-top: 10px;">
+          <p>For more information on the search, visit the <a href="apidocs-help.html#rst-search">help page</a>.</p>
+        </div>
+      </div>
+
+    </div>
+
+
+  </div>
+</nav>
+    
+    <div class="container-fluid">
+
+      <!-- Side navigation -->
+      <div class="sidebarcontainer" style="display: none;">
+        
+        <div class="sidebar"><nav class="sidebar">
+  
+
+  <div>
+
+      <div class="thingTitle">
+        <span>Class</span>
+        <code class="thisobject"><a href="NFDetector.general.trafficanalyzer.TrafficAnalyzer.html" class="internal-link" title="This class"><wbr></wbr>Traffic<wbr></wbr>Analyzer</a></code> 
+      </div>
+      
+      <div>
+        
+
+        
+         
+
+        
+        
+
+        <div class="childrenKindTitle">Methods</div>
+        <ul>
+    
+    <li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#__init__" class="internal-link" title="NFDetector.general.trafficanalyzer.TrafficAnalyzer.__init__">__init__</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#analyze_bruteforce" class="internal-link" title="NFDetector.general.trafficanalyzer.TrafficAnalyzer.analyze_bruteforce">analyze<wbr></wbr>_bruteforce</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#analyze_c2_beaconing" class="internal-link" title="NFDetector.general.trafficanalyzer.TrafficAnalyzer.analyze_c2_beaconing">analyze<wbr></wbr>_c2<wbr></wbr>_beaconing</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#analyze_ddos_multi_ip" class="internal-link" title="NFDetector.general.trafficanalyzer.TrafficAnalyzer.analyze_ddos_multi_ip">analyze<wbr></wbr>_ddos<wbr></wbr>_multi<wbr></wbr>_ip</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#analyze_ddos_single_ip" class="internal-link" title="NFDetector.general.trafficanalyzer.TrafficAnalyzer.analyze_ddos_single_ip">analyze<wbr></wbr>_ddos<wbr></wbr>_single<wbr></wbr>_ip</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#analyze_http_flood" class="internal-link" title="NFDetector.general.trafficanalyzer.TrafficAnalyzer.analyze_http_flood">analyze<wbr></wbr>_http<wbr></wbr>_flood</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#analyze_suspicious_ips" class="internal-link" title="NFDetector.general.trafficanalyzer.TrafficAnalyzer.analyze_suspicious_ips">analyze<wbr></wbr>_suspicious<wbr></wbr>_ips</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#analyze_syn_flood" class="internal-link" title="NFDetector.general.trafficanalyzer.TrafficAnalyzer.analyze_syn_flood">analyze<wbr></wbr>_syn<wbr></wbr>_flood</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#get_protectips" class="internal-link" title="NFDetector.general.trafficanalyzer.TrafficAnalyzer.get_protectips">get<wbr></wbr>_protectips</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#get_rules" class="internal-link" title="NFDetector.general.trafficanalyzer.TrafficAnalyzer.get_rules">get<wbr></wbr>_rules</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#get_statistics" class="internal-link" title="NFDetector.general.trafficanalyzer.TrafficAnalyzer.get_statistics">get<wbr></wbr>_statistics</a></code>
+            </div>
+        
+
+    </li><li class="private">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#_get_connection_id" class="internal-link" title="NFDetector.general.trafficanalyzer.TrafficAnalyzer._get_connection_id">_get<wbr></wbr>_connection<wbr></wbr>_id</a></code>
+            </div>
+        
+
+    </li><li class="private">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#_get_packet_info" class="internal-link" title="NFDetector.general.trafficanalyzer.TrafficAnalyzer._get_packet_info">_get<wbr></wbr>_packet<wbr></wbr>_info</a></code>
+            </div>
+        
+
+    </li><li class="private">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#_increment_counter" class="internal-link" title="NFDetector.general.trafficanalyzer.TrafficAnalyzer._increment_counter">_increment<wbr></wbr>_counter</a></code>
+            </div>
+        
+
+    </li>
+</ul> 
+
+        
+         
+
+        <div class="childrenKindTitle">Attributes</div>
+        <ul>
+    
+    <li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#pending_syns" class="internal-link" title="NFDetector.general.trafficanalyzer.TrafficAnalyzer.pending_syns">pending<wbr></wbr>_syns</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#protectips" class="internal-link" title="NFDetector.general.trafficanalyzer.TrafficAnalyzer.protectips">protectips</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#rules" class="internal-link" title="NFDetector.general.trafficanalyzer.TrafficAnalyzer.rules">rules</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#stats" class="internal-link" title="NFDetector.general.trafficanalyzer.TrafficAnalyzer.stats">stats</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#suspicious_ips" class="internal-link" title="NFDetector.general.trafficanalyzer.TrafficAnalyzer.suspicious_ips">suspicious<wbr></wbr>_ips</a></code>
+            </div>
+        
+
+    </li>
+</ul> 
+
+        
+         
+        
+      </div>
+  </div><div>
+
+      <div class="thingTitle">
+        <span>Module</span>
+        <code><a href="NFDetector.general.trafficanalyzer.html" class="internal-link" title="The parent of this class">trafficanalyzer</a></code> 
+      </div>
+      
+      <div>
+        
+
+        
+         
+
+        <div class="childrenKindTitle">Classes</div>
+        <ul>
+    
+    <li class=" thisobject">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="NFDetector.general.trafficanalyzer.TrafficAnalyzer.html" class="internal-link" title="NFDetector.general.trafficanalyzer.TrafficAnalyzer"><wbr></wbr>Traffic<wbr></wbr>Analyzer</a></code>
+            </div>
+        
+
+    </li>
+</ul>
+
+        
+         
+
+        
+         
+
+        
+         
+
+        
+         
+        
+      </div>
+  </div>
+
+</nav>
+        </div>
+        <div id="collapse-sidebar">
+          <a class="btn btn-link" onclick="toggleSideBarCollapse()" title="Toggle Sidebar Collapse">
+          </a>
+        </div> 
+        <script src="sidebartoggle.js" type="text/javascript"></script>
+       
+      </div>
+
+      <main class="">
+        
+
+        
+
+        <div class="page-header">
+          <h1 class="class"><code><code><a href="index.html" class="internal-link">NFDetector</a></code><wbr></wbr>.<code><a href="NFDetector.general.html" class="internal-link" title="NFDetector.general">general</a></code><wbr></wbr>.<code><a href="NFDetector.general.trafficanalyzer.html" class="internal-link" title="NFDetector.general.trafficanalyzer">trafficanalyzer</a></code><wbr></wbr>.<code><a href="NFDetector.general.trafficanalyzer.TrafficAnalyzer.html" class="internal-link" title="NFDetector.general.trafficanalyzer.TrafficAnalyzer">TrafficAnalyzer</a></code></code></h1>
+          <div id="show-private">
+            <button class="btn btn-link" onclick="togglePrivate()">Toggle Private API</button>
+          </div>
+        </div>
+
+        <div class="categoryHeader">
+          class documentation
+        </div>
+
+        <div class="extrasDocstring">
+          <p class="class-signature"><code><span class="py-keyword">class</span> <span class="py-defname">TrafficAnalyzer</span>:</code></p><p>Constructor: <code><a href="#__init__" class="internal-link" title="NFDetector.general.trafficanalyzer.TrafficAnalyzer.__init__">TrafficAnalyzer(rules_file, protectips)</a></code></p><p><a href="classIndex.html#NFDetector.general.trafficanalyzer.TrafficAnalyzer">View In Hierarchy</a></p>
+        </div>
+
+        <div class="moduleDocstring">
+          <div><p class="pre">Анализатор сетевого трафика для обнаружения угроз безопасности.
+
+Attributes:
+    rules (Dict): Загруженные правила обнаружения угроз из JSON файла.
+    protectips (List[str]): Список защищаемых IP-адресов.
+    stats (Dict): Словарь со статистикой анализа.
+    suspicious_ips (Set[str]): Множество подозрительных IP-адресов.
+    pending_syns (Dict): Словарь для отслеживания полуоткрытых соединений.</p></div>
+        </div>
+
+        <div id="split-tables">
+          <table class="children sortable" id="id20">
+  
+  
+  <tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#__init__" class="internal-link" title="NFDetector.general.trafficanalyzer.TrafficAnalyzer.__init__">__init__</a></code></td>
+    <td>Инициализация анализатора трафика.</td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#analyze_bruteforce" class="internal-link" title="NFDetector.general.trafficanalyzer.TrafficAnalyzer.analyze_bruteforce">analyze<wbr></wbr>_bruteforce</a></code></td>
+    <td>Анализ brute-force атак на аутентификацию.</td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#analyze_c2_beaconing" class="internal-link" title="NFDetector.general.trafficanalyzer.TrafficAnalyzer.analyze_c2_beaconing">analyze<wbr></wbr>_c2<wbr></wbr>_beaconing</a></code></td>
+    <td>Анализ C2 beaconing (командно-контрольного трафика).</td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#analyze_ddos_multi_ip" class="internal-link" title="NFDetector.general.trafficanalyzer.TrafficAnalyzer.analyze_ddos_multi_ip">analyze<wbr></wbr>_ddos<wbr></wbr>_multi<wbr></wbr>_ip</a></code></td>
+    <td>Анализ DDoS атаки от множества IP-адресов.</td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#analyze_ddos_single_ip" class="internal-link" title="NFDetector.general.trafficanalyzer.TrafficAnalyzer.analyze_ddos_single_ip">analyze<wbr></wbr>_ddos<wbr></wbr>_single<wbr></wbr>_ip</a></code></td>
+    <td>Анализ DDoS атаки от одного IP-адреса.</td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#analyze_http_flood" class="internal-link" title="NFDetector.general.trafficanalyzer.TrafficAnalyzer.analyze_http_flood">analyze<wbr></wbr>_http<wbr></wbr>_flood</a></code></td>
+    <td>Анализ HTTP flood атаки.</td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#analyze_suspicious_ips" class="internal-link" title="NFDetector.general.trafficanalyzer.TrafficAnalyzer.analyze_suspicious_ips">analyze<wbr></wbr>_suspicious<wbr></wbr>_ips</a></code></td>
+    <td>Анализ трафика с участием подозрительных IP-адресов.</td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#analyze_syn_flood" class="internal-link" title="NFDetector.general.trafficanalyzer.TrafficAnalyzer.analyze_syn_flood">analyze<wbr></wbr>_syn<wbr></wbr>_flood</a></code></td>
+    <td>Анализ SYN flood атаки.</td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#get_protectips" class="internal-link" title="NFDetector.general.trafficanalyzer.TrafficAnalyzer.get_protectips">get<wbr></wbr>_protectips</a></code></td>
+    <td>Возвращает список защищаемых IP-адресов.</td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#get_rules" class="internal-link" title="NFDetector.general.trafficanalyzer.TrafficAnalyzer.get_rules">get<wbr></wbr>_rules</a></code></td>
+    <td>Возвращает загруженные правила обнаружения.</td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#get_statistics" class="internal-link" title="NFDetector.general.trafficanalyzer.TrafficAnalyzer.get_statistics">get<wbr></wbr>_statistics</a></code></td>
+    <td>Возвращает текущую статистику анализа.</td>
+  </tr><tr class="instancevariable">
+    
+    <td>Instance Variable</td>
+    <td><code><a href="#pending_syns" class="internal-link" title="NFDetector.general.trafficanalyzer.TrafficAnalyzer.pending_syns">pending<wbr></wbr>_syns</a></code></td>
+    <td><span class="rst-undocumented">Undocumented</span></td>
+  </tr><tr class="instancevariable">
+    
+    <td>Instance Variable</td>
+    <td><code><a href="#protectips" class="internal-link" title="NFDetector.general.trafficanalyzer.TrafficAnalyzer.protectips">protectips</a></code></td>
+    <td><span class="rst-undocumented">Undocumented</span></td>
+  </tr><tr class="instancevariable">
+    
+    <td>Instance Variable</td>
+    <td><code><a href="#rules" class="internal-link" title="NFDetector.general.trafficanalyzer.TrafficAnalyzer.rules">rules</a></code></td>
+    <td><span class="rst-undocumented">Undocumented</span></td>
+  </tr><tr class="instancevariable">
+    
+    <td>Instance Variable</td>
+    <td><code><a href="#stats" class="internal-link" title="NFDetector.general.trafficanalyzer.TrafficAnalyzer.stats">stats</a></code></td>
+    <td><span class="rst-undocumented">Undocumented</span></td>
+  </tr><tr class="instancevariable">
+    
+    <td>Instance Variable</td>
+    <td><code><a href="#suspicious_ips" class="internal-link" title="NFDetector.general.trafficanalyzer.TrafficAnalyzer.suspicious_ips">suspicious<wbr></wbr>_ips</a></code></td>
+    <td><span class="rst-undocumented">Undocumented</span></td>
+  </tr><tr class="method private">
+    
+    <td>Method</td>
+    <td><code><a href="#_get_connection_id" class="internal-link" title="NFDetector.general.trafficanalyzer.TrafficAnalyzer._get_connection_id">_get<wbr></wbr>_connection<wbr></wbr>_id</a></code></td>
+    <td>Генерирует уникальный идентификатор соединения.</td>
+  </tr><tr class="method private">
+    
+    <td>Method</td>
+    <td><code><a href="#_get_packet_info" class="internal-link" title="NFDetector.general.trafficanalyzer.TrafficAnalyzer._get_packet_info">_get<wbr></wbr>_packet<wbr></wbr>_info</a></code></td>
+    <td>Извлекает информацию из пакета pyshark.</td>
+  </tr><tr class="method private">
+    
+    <td>Method</td>
+    <td><code><a href="#_increment_counter" class="internal-link" title="NFDetector.general.trafficanalyzer.TrafficAnalyzer._increment_counter">_increment<wbr></wbr>_counter</a></code></td>
+    <td>Увеличивает счетчик в словаре.</td>
+  </tr>
+</table>
+          
+
+            
+        </div>
+
+        <div id="child-list">
+          <div class="basemethod">
+  
+  
+  <a name="NFDetector.general.trafficanalyzer.TrafficAnalyzer.__init__">
+    
+  </a>
+  <a name="__init__">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span>&#160;<span class="py-defname">__init__</span><span class="function-signature">(<span class="rst-sig-param"><span class="rst-undocumented">self</span>, </span><span class="rst-sig-param">rules_file: <code>str</code>, </span><span class="rst-sig-param">protectips: <code>str</code></span>):</span>
+    
+    <a class="headerLink" href="#__init__" title="NFDetector.general.trafficanalyzer.TrafficAnalyzer.__init__">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p class="pre">Инициализация анализатора трафика.
+
+Args:
+    rules_file: Путь к файлу с правилами (JSON)
+    protectips: Путь к файлу с IP для мониторинга
+    
+Raises:
+    FileNotFoundError: Если не найден файл правил или файл с IP
+    ValueError: Если файл правил имеет неверный формат JSON</p></div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="NFDetector.general.trafficanalyzer.TrafficAnalyzer.analyze_bruteforce">
+    
+  </a>
+  <a name="analyze_bruteforce">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span>&#160;<span class="py-defname">analyze_bruteforce</span><span class="function-signature">(<span class="rst-sig-param"><span class="rst-undocumented">self</span>, </span><span class="rst-sig-param">window_packets: <code>list</code></span>) -&gt; <code>list[<wbr></wbr>tuple[<wbr></wbr>str, <wbr></wbr>str, <wbr></wbr>str, <wbr></wbr>bool]]</code>:</span>
+    
+    <a class="headerLink" href="#analyze_bruteforce" title="NFDetector.general.trafficanalyzer.TrafficAnalyzer.analyze_bruteforce">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p class="pre">Анализ brute-force атак на аутентификацию.
+
+Args:
+    window_packets: Список пакетов в анализируемом временном окне
+    
+Returns:
+    List[Tuple[str, str, str, bool]]: Список триггеров атак в формате 
+    (причина, цель, источник, является_ли_защищаемым)
+    
+Note:
+    Требуется модуль general.authdetect. По умолчанию лимит: 10 попыток</p></div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="NFDetector.general.trafficanalyzer.TrafficAnalyzer.analyze_c2_beaconing">
+    
+  </a>
+  <a name="analyze_c2_beaconing">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span>&#160;<span class="py-defname">analyze_c2_beaconing</span><span class="function-signature">(<span class="rst-sig-param"><span class="rst-undocumented">self</span>, </span><span class="rst-sig-param">window_packets: <code>list</code></span>) -&gt; <code>list[<wbr></wbr>tuple[<wbr></wbr>str, <wbr></wbr>str, <wbr></wbr>str, <wbr></wbr>bool]]</code>:</span>
+    
+    <a class="headerLink" href="#analyze_c2_beaconing" title="NFDetector.general.trafficanalyzer.TrafficAnalyzer.analyze_c2_beaconing">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p class="pre">Анализ C2 beaconing (командно-контрольного трафика).
+
+Args:
+    window_packets: Список пакетов в анализируемом временном окне
+    
+Returns:
+    List[Tuple[str, str, str, bool]]: Список триггеров атак в формате 
+    (причина, цель, источник, является_ли_защищаемым)
+    
+Note:
+    Обнаруживает периодические соединения с малым джиттером</p></div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="NFDetector.general.trafficanalyzer.TrafficAnalyzer.analyze_ddos_multi_ip">
+    
+  </a>
+  <a name="analyze_ddos_multi_ip">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span>&#160;<span class="py-defname">analyze_ddos_multi_ip</span><span class="function-signature">(<span class="rst-sig-param"><span class="rst-undocumented">self</span>, </span><span class="rst-sig-param">window_packets: <code>list</code></span>) -&gt; <code>list[<wbr></wbr>tuple[<wbr></wbr>str, <wbr></wbr>str, <wbr></wbr>str, <wbr></wbr>bool]]</code>:</span>
+    
+    <a class="headerLink" href="#analyze_ddos_multi_ip" title="NFDetector.general.trafficanalyzer.TrafficAnalyzer.analyze_ddos_multi_ip">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p class="pre">Анализ DDoS атаки от множества IP-адресов.
+
+Args:
+    window_packets: Список пакетов в анализируемом временном окне
+    
+Returns:
+    List[Tuple[str, str, str, bool]]: Список триггеров атак в формате 
+    (причина, цель, источник, является_ли_защищаемым)
+    
+Note:
+    Правило должно быть включено в конфигурации. По умолчанию лимит: 5000 пакетов</p></div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="NFDetector.general.trafficanalyzer.TrafficAnalyzer.analyze_ddos_single_ip">
+    
+  </a>
+  <a name="analyze_ddos_single_ip">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span>&#160;<span class="py-defname">analyze_ddos_single_ip</span><span class="function-signature">(<span class="rst-sig-param"><span class="rst-undocumented">self</span>, </span><span class="rst-sig-param">window_packets: <code>list</code></span>) -&gt; <code>list[<wbr></wbr>tuple[<wbr></wbr>str, <wbr></wbr>str, <wbr></wbr>str, <wbr></wbr>bool]]</code>:</span>
+    
+    <a class="headerLink" href="#analyze_ddos_single_ip" title="NFDetector.general.trafficanalyzer.TrafficAnalyzer.analyze_ddos_single_ip">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p class="pre">Анализ DDoS атаки от одного IP-адреса.
+
+Args:
+    window_packets: Список пакетов в анализируемом временном окне
+    
+Returns:
+    List[Tuple[str, str, str, bool]]: Список триггеров атак в формате 
+    (причина, цель, источник, является_ли_защищаемым)
+    
+Note:
+    Правило должно быть включено в конфигурации. По умолчанию лимит: 1000 пакетов</p></div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="NFDetector.general.trafficanalyzer.TrafficAnalyzer.analyze_http_flood">
+    
+  </a>
+  <a name="analyze_http_flood">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span>&#160;<span class="py-defname">analyze_http_flood</span><span class="function-signature">(<span class="rst-sig-param"><span class="rst-undocumented">self</span>, </span><span class="rst-sig-param">window_packets: <code>list</code></span>) -&gt; <code>list[<wbr></wbr>tuple[<wbr></wbr>str, <wbr></wbr>str, <wbr></wbr>str, <wbr></wbr>bool]]</code>:</span>
+    
+    <a class="headerLink" href="#analyze_http_flood" title="NFDetector.general.trafficanalyzer.TrafficAnalyzer.analyze_http_flood">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p class="pre">Анализ HTTP flood атаки.
+
+Args:
+    window_packets: Список пакетов в анализируемом временном окне
+    
+Returns:
+    List[Tuple[str, str, str, bool]]: Список триггеров атак в формате 
+    (причина, цель, источник, является_ли_защищаемым)
+    
+Note:
+    Правило должно быть включено в конфигурации. По умолчанию лимит: 80 HTTP запросов</p></div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="NFDetector.general.trafficanalyzer.TrafficAnalyzer.analyze_suspicious_ips">
+    
+  </a>
+  <a name="analyze_suspicious_ips">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span>&#160;<span class="py-defname">analyze_suspicious_ips</span><span class="function-signature">(<span class="rst-sig-param"><span class="rst-undocumented">self</span>, </span><span class="rst-sig-param">window_packets: <code>list</code></span>) -&gt; <code>list[<wbr></wbr>tuple[<wbr></wbr>str, <wbr></wbr>str, <wbr></wbr>str, <wbr></wbr>bool]]</code>:</span>
+    
+    <a class="headerLink" href="#analyze_suspicious_ips" title="NFDetector.general.trafficanalyzer.TrafficAnalyzer.analyze_suspicious_ips">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p class="pre">Анализ трафика с участием подозрительных IP-адресов.
+
+Args:
+    window_packets: Список пакетов в анализируемом временном окне
+    
+Returns:
+    List[Tuple[str, str, str, bool]]: Список триггеров атак в формате 
+    (причина, цель, источник, является_ли_защищаемым)
+    
+Note:
+    Проверяет как источник, так и назначение на наличие в списке подозрительных IP</p></div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="NFDetector.general.trafficanalyzer.TrafficAnalyzer.analyze_syn_flood">
+    
+  </a>
+  <a name="analyze_syn_flood">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span>&#160;<span class="py-defname">analyze_syn_flood</span><span class="function-signature">(<span class="rst-sig-param"><span class="rst-undocumented">self</span>, </span><span class="rst-sig-param">window_packets: <code>list</code></span>) -&gt; <code>list[<wbr></wbr>tuple[<wbr></wbr>str, <wbr></wbr>str, <wbr></wbr>str, <wbr></wbr>bool]]</code>:</span>
+    
+    <a class="headerLink" href="#analyze_syn_flood" title="NFDetector.general.trafficanalyzer.TrafficAnalyzer.analyze_syn_flood">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p class="pre">Анализ SYN flood атаки.
+
+Args:
+    window_packets: Список пакетов в анализируемом временном окне
+    
+Returns:
+    List[Tuple[str, str, str, bool]]: Список триггеров атак в формате 
+    (причина, цель, источник, является_ли_защищаемым)
+    
+Note:
+    Правило должно быть включено в конфигурации. По умолчанию лимит: 50 полуоткрытых соединений</p></div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="NFDetector.general.trafficanalyzer.TrafficAnalyzer.get_protectips">
+    
+  </a>
+  <a name="get_protectips">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span>&#160;<span class="py-defname">get_protectips</span><span class="function-signature">(<span class="rst-sig-param"><span class="rst-undocumented">self</span></span>) -&gt; <code>list[<wbr></wbr>str]</code>:</span>
+    
+    <a class="headerLink" href="#get_protectips" title="NFDetector.general.trafficanalyzer.TrafficAnalyzer.get_protectips">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p class="pre">Возвращает список защищаемых IP-адресов.
+
+Returns:
+    List[str]: Список IP-адресов, которые находятся под защитой</p></div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="NFDetector.general.trafficanalyzer.TrafficAnalyzer.get_rules">
+    
+  </a>
+  <a name="get_rules">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span>&#160;<span class="py-defname">get_rules</span><span class="function-signature">(<span class="rst-sig-param"><span class="rst-undocumented">self</span></span>) -&gt; <code>dict</code>:</span>
+    
+    <a class="headerLink" href="#get_rules" title="NFDetector.general.trafficanalyzer.TrafficAnalyzer.get_rules">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p class="pre">Возвращает загруженные правила обнаружения.
+
+Returns:
+    Dict: Правила обнаружения угроз в формате словаря</p></div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="NFDetector.general.trafficanalyzer.TrafficAnalyzer.get_statistics">
+    
+  </a>
+  <a name="get_statistics">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span>&#160;<span class="py-defname">get_statistics</span><span class="function-signature">(<span class="rst-sig-param"><span class="rst-undocumented">self</span></span>) -&gt; <code>dict</code>:</span>
+    
+    <a class="headerLink" href="#get_statistics" title="NFDetector.general.trafficanalyzer.TrafficAnalyzer.get_statistics">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p class="pre">Возвращает текущую статистику анализа.
+
+Returns:
+    Dict: Словарь со статистикой, включая общее количество пакетов,
+          количество срабатываний по типам атак, подозрительные IP и т.д.</p></div>
+  </div>
+</div><div class="baseinstancevariable">
+  
+  
+  <a name="NFDetector.general.trafficanalyzer.TrafficAnalyzer.pending_syns">
+    
+  </a>
+  <a name="pending_syns">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">pending_syns</span>: <code>dict</code> =
+    
+    <a class="headerLink" href="#pending_syns" title="NFDetector.general.trafficanalyzer.TrafficAnalyzer.pending_syns">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    
+  </div>
+</div><div class="baseinstancevariable">
+  
+  
+  <a name="NFDetector.general.trafficanalyzer.TrafficAnalyzer.protectips">
+    
+  </a>
+  <a name="protectips">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">protectips</span> =
+    
+    <a class="headerLink" href="#protectips" title="NFDetector.general.trafficanalyzer.TrafficAnalyzer.protectips">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    
+  </div>
+</div><div class="baseinstancevariable">
+  
+  
+  <a name="NFDetector.general.trafficanalyzer.TrafficAnalyzer.rules">
+    
+  </a>
+  <a name="rules">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">rules</span> =
+    
+    <a class="headerLink" href="#rules" title="NFDetector.general.trafficanalyzer.TrafficAnalyzer.rules">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    
+  </div>
+</div><div class="baseinstancevariable">
+  
+  
+  <a name="NFDetector.general.trafficanalyzer.TrafficAnalyzer.stats">
+    
+  </a>
+  <a name="stats">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">stats</span>: <code>dict</code> =
+    
+    <a class="headerLink" href="#stats" title="NFDetector.general.trafficanalyzer.TrafficAnalyzer.stats">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    
+  </div>
+</div><div class="baseinstancevariable">
+  
+  
+  <a name="NFDetector.general.trafficanalyzer.TrafficAnalyzer.suspicious_ips">
+    
+  </a>
+  <a name="suspicious_ips">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">suspicious_ips</span>: <code>set</code> =
+    
+    <a class="headerLink" href="#suspicious_ips" title="NFDetector.general.trafficanalyzer.TrafficAnalyzer.suspicious_ips">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    
+  </div>
+</div><div class="basemethod private">
+  
+  
+  <a name="NFDetector.general.trafficanalyzer.TrafficAnalyzer._get_connection_id">
+    
+  </a>
+  <a name="_get_connection_id">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span>&#160;<span class="py-defname">_get_connection_id</span><span class="function-signature">(<span class="rst-sig-param"><span class="rst-undocumented">self</span>, </span><span class="rst-sig-param">src_ip: <code>str</code>, </span><span class="rst-sig-param">dst_ip: <code>str</code>, </span><span class="rst-sig-param">src_port: <code>str</code>, </span><span class="rst-sig-param">dst_port: <code>str</code></span>) -&gt; <code>str</code>:</span>
+    
+    <a class="headerLink" href="#_get_connection_id" title="NFDetector.general.trafficanalyzer.TrafficAnalyzer._get_connection_id">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p class="pre">Генерирует уникальный идентификатор соединения.
+
+Args:
+    src_ip (str): IP-адрес источника
+    dst_ip (str): IP-адрес назначения
+    src_port (str): Порт источника
+    dst_port (str): Порт назначения
+    
+Returns:
+    str: Уникальный идентификатор соединения в формате "src_ip:src_port-dst_ip:dst_port"</p></div>
+  </div>
+</div><div class="basemethod private">
+  
+  
+  <a name="NFDetector.general.trafficanalyzer.TrafficAnalyzer._get_packet_info">
+    
+  </a>
+  <a name="_get_packet_info">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span>&#160;<span class="py-defname">_get_packet_info</span><span class="function-signature">(<span class="rst-sig-param"><span class="rst-undocumented">self</span>, </span><span class="rst-sig-param">packet</span>) -&gt; <code>dict</code>:</span>
+    
+    <a class="headerLink" href="#_get_packet_info" title="NFDetector.general.trafficanalyzer.TrafficAnalyzer._get_packet_info">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p class="pre">Извлекает информацию из пакета pyshark.
+
+Args:
+    packet: Пакет для анализа
+    
+Returns:
+    Dict: Словарь с информацией о пакете или пустой словарь в случае ошибки
+    
+Note:
+    Ожидается, что пакет имеет атрибуты pyshark</p></div>
+  </div>
+</div><div class="basemethod private">
+  
+  
+  <a name="NFDetector.general.trafficanalyzer.TrafficAnalyzer._increment_counter">
+    
+  </a>
+  <a name="_increment_counter">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span>&#160;<span class="py-defname">_increment_counter</span><span class="function-signature">(<span class="rst-sig-param"><span class="rst-undocumented">self</span>, </span><span class="rst-sig-param">counter_dict: <code>dict</code>, </span><span class="rst-sig-param">key: <code>str</code></span>):</span>
+    
+    <a class="headerLink" href="#_increment_counter" title="NFDetector.general.trafficanalyzer.TrafficAnalyzer._increment_counter">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p class="pre">Увеличивает счетчик в словаре.
+
+Args:
+    counter_dict (dict): Словарь с счетчиками
+    key (str): Ключ для инкремента</p></div>
+  </div>
+</div>
+        </div>
+      
+      </main>
+    </div>
+
+    <footer class="navbar navbar-default">
+
+  
+  <div class="container-fluid">
+    <a href="index.html">API Documentation</a> for NFDetector,
+  generated by <a href="https://github.com/twisted/pydoctor/">pydoctor</a>
+    25.10.1 at 2025-12-13 06:00:40.
+  </div>
+
+  <!-- Search related scripts needs to be loaded at the end of HTML 
+    parsing not to introduce overhead and display HTML data asap -->
+  <script src="ajax.js" type="text/javascript"></script>
+  <script src="searchlib.js" type="text/javascript"></script>
+  <script src="search.js" type="text/javascript"></script>
+
+</footer>
+  
+    <script src="pydoctor.js" type="text/javascript"></script>
+
+  </body>
+</html>
