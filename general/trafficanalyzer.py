@@ -8,8 +8,6 @@
 import json
 from typing import Dict, List, Tuple, Optional, Set
 import time
-from datetime import datetime
-
 
 class TrafficAnalyzer:
     """

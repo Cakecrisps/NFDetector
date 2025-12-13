@@ -6,7 +6,7 @@
 
 import json
 import pyshark
-from typing import List, Dict, Any, Set, Optional
+from typing import List, Dict, Any, Optional
 import datetime
 import os
 import threading
