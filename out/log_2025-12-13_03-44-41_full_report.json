@@ -1,0 +1,662 @@
+{
+  "raw_stats": {
+    "total": 81,
+    "total_bytes": 63475,
+    "start_time": 1715074658.393204,
+    "end_time": 1715074694.422375,
+    "protos": {
+      "TCP": 149,
+      "HTTP": 17,
+      "DATA-TEXT-LINES": 6,
+      "URLENCODED-FORM": 3
+    },
+    "src_ips": {
+      "10.142.0.4": 40,
+      "10.142.0.3": 41
+    },
+    "dst_ips": {
+      "10.142.0.3": 40,
+      "10.142.0.4": 41
+    },
+    "dns": {},
+    "http_endp": [
+      {
+        "src_ip": "10.142.0.4",
+        "dst_ip": "10.142.0.3",
+        "time": "2024-05-07 12:37:38.405",
+        "timestamp": 1715074658.405369,
+        "method": "GET",
+        "uri": "/",
+        "host": "10.142.0.3",
+        "full_url": "http://10.142.0.3/",
+        "user_agent": "",
+        "referer": "",
+        "content_type": "",
+        "content_length": 0,
+        "status_code": "",
+        "response_phrase": "",
+        "packet_length": 90
+      },
+      {
+        "src_ip": "10.142.0.3",
+        "dst_ip": "10.142.0.4",
+        "time": "2024-05-07 12:37:42.745",
+        "timestamp": 1715074662.745064,
+        "method": "UNKNOWN",
+        "uri": "/",
+        "host": "",
+        "full_url": "",
+        "user_agent": "",
+        "referer": "",
+        "content_type": "text/html",
+        "content_length": 0,
+        "status_code": "200",
+        "response_phrase": "OK",
+        "packet_length": 60
+      },
+      {
+        "src_ip": "10.142.0.4",
+        "dst_ip": "10.142.0.3",
+        "time": "2024-05-07 12:37:42.826",
+        "timestamp": 1715074662.8263,
+        "method": "POST",
+        "uri": "/submit_feedback",
+        "host": "10.142.0.3",
+        "full_url": "http://10.142.0.3/submit_feedback",
+        "user_agent": "",
+        "referer": "",
+        "content_type": "application/x-www-form-urlencoded",
+        "content_length": 242,
+        "status_code": "",
+        "response_phrase": "",
+        "packet_length": 418
+      },
+      {
+        "src_ip": "10.142.0.3",
+        "dst_ip": "10.142.0.4",
+        "time": "2024-05-07 12:37:42.827",
+        "timestamp": 1715074662.827481,
+        "method": "UNKNOWN",
+        "uri": "/submit_feedback",
+        "host": "",
+        "full_url": "",
+        "user_agent": "",
+        "referer": "",
+        "content_type": "text/html",
+        "content_length": 0,
+        "status_code": "200",
+        "response_phrase": "OK",
+        "packet_length": 297
+      },
+      {
+        "src_ip": "10.142.0.4",
+        "dst_ip": "10.142.0.3",
+        "time": "2024-05-07 12:37:42.833",
+        "timestamp": 1715074662.833016,
+        "method": "GET",
+        "uri": "/",
+        "host": "10.142.0.3",
+        "full_url": "http://10.142.0.3/",
+        "user_agent": "",
+        "referer": "",
+        "content_type": "",
+        "content_length": 0,
+        "status_code": "",
+        "response_phrase": "",
+        "packet_length": 90
+      },
+      {
+        "src_ip": "10.142.0.3",
+        "dst_ip": "10.142.0.4",
+        "time": "2024-05-07 12:37:48.810",
+        "timestamp": 1715074668.810967,
+        "method": "UNKNOWN",
+        "uri": "/",
+        "host": "",
+        "full_url": "",
+        "user_agent": "",
+        "referer": "",
+        "content_type": "text/html",
+        "content_length": 0,
+        "status_code": "200",
+        "response_phrase": "OK",
+        "packet_length": 60
+      },
+      {
+        "src_ip": "10.142.0.4",
+        "dst_ip": "10.142.0.3",
+        "time": "2024-05-07 12:37:53.272",
+        "timestamp": 1715074673.272197,
+        "method": "POST",
+        "uri": "/submit_feedback",
+        "host": "10.142.0.3",
+        "full_url": "http://10.142.0.3/submit_feedback",
+        "user_agent": "",
+        "referer": "",
+        "content_type": "application/x-www-form-urlencoded",
+        "content_length": 20783,
+        "status_code": "",
+        "response_phrase": "",
+        "packet_length": 6925
+      },
+      {
+        "src_ip": "10.142.0.3",
+        "dst_ip": "10.142.0.4",
+        "time": "2024-05-07 12:37:53.274",
+        "timestamp": 1715074673.274286,
+        "method": "UNKNOWN",
+        "uri": "/submit_feedback",
+        "host": "",
+        "full_url": "",
+        "user_agent": "",
+        "referer": "",
+        "content_type": "text/html",
+        "content_length": 0,
+        "status_code": "200",
+        "response_phrase": "OK",
+        "packet_length": 8056
+      },
+      {
+        "src_ip": "10.142.0.4",
+        "dst_ip": "10.142.0.3",
+        "time": "2024-05-07 12:37:53.275",
+        "timestamp": 1715074673.275947,
+        "method": "GET",
+        "uri": "/",
+        "host": "10.142.0.3",
+        "full_url": "http://10.142.0.3/",
+        "user_agent": "",
+        "referer": "",
+        "content_type": "",
+        "content_length": 0,
+        "status_code": "",
+        "response_phrase": "",
+        "packet_length": 90
+      },
+      {
+        "src_ip": "10.142.0.3",
+        "dst_ip": "10.142.0.4",
+        "time": "2024-05-07 12:38:14.361",
+        "timestamp": 1715074694.361704,
+        "method": "UNKNOWN",
+        "uri": "/",
+        "host": "",
+        "full_url": "",
+        "user_agent": "",
+        "referer": "",
+        "content_type": "text/html",
+        "content_length": 0,
+        "status_code": "200",
+        "response_phrase": "OK",
+        "packet_length": 60
+      },
+      {
+        "src_ip": "10.142.0.4",
+        "dst_ip": "10.142.0.3",
+        "time": "2024-05-07 12:38:14.419",
+        "timestamp": 1715074694.419744,
+        "method": "POST",
+        "uri": "/submit_feedback",
+        "host": "10.142.0.3",
+        "full_url": "http://10.142.0.3/submit_feedback",
+        "user_agent": "",
+        "referer": "",
+        "content_type": "application/x-www-form-urlencoded",
+        "content_length": 2984,
+        "status_code": "",
+        "response_phrase": "",
+        "packet_length": 3161
+      },
+      {
+        "src_ip": "10.142.0.3",
+        "dst_ip": "10.142.0.4",
+        "time": "2024-05-07 12:38:14.420",
+        "timestamp": 1715074694.420642,
+        "method": "UNKNOWN",
+        "uri": "/submit_feedback",
+        "host": "",
+        "full_url": "",
+        "user_agent": "",
+        "referer": "",
+        "content_type": "text/html",
+        "content_length": 0,
+        "status_code": "200",
+        "response_phrase": "OK",
+        "packet_length": 193
+      },
+      {
+        "src_ip": "10.142.0.4",
+        "dst_ip": "10.142.0.3",
+        "time": "2024-05-07 12:38:14.421",
+        "timestamp": 1715074694.421975,
+        "method": "GET",
+        "uri": "/",
+        "host": "10.142.0.3",
+        "full_url": "http://10.142.0.3/",
+        "user_agent": "",
+        "referer": "",
+        "content_type": "",
+        "content_length": 0,
+        "status_code": "",
+        "response_phrase": "",
+        "packet_length": 90
+      }
+    ],
+    "downloaded_files": [],
+    "suspicious_ips": {
+      "total_packets": 0,
+      "src_count": 0,
+      "dst_count": 0,
+      "src_ips": {},
+      "dst_ips": {}
+    },
+    "auth_attempts": {
+      "total": 0,
+      "by_protocol": {},
+      "by_src_ip": {},
+      "by_dst_ip": {},
+      "successful": 0,
+      "failed": 0,
+      "details": []
+    },
+    "http_summary": {
+      "total_requests": 13,
+      "unique_hosts": 1,
+      "sample_requests": [
+        {
+          "src_ip": "10.142.0.4",
+          "dst_ip": "10.142.0.3",
+          "time": "2024-05-07 12:37:38.405",
+          "timestamp": 1715074658.405369,
+          "method": "GET",
+          "uri": "/",
+          "host": "10.142.0.3",
+          "full_url": "http://10.142.0.3/",
+          "user_agent": "",
+          "referer": "",
+          "content_type": "",
+          "content_length": 0,
+          "status_code": "",
+          "response_phrase": "",
+          "packet_length": 90
+        },
+        {
+          "src_ip": "10.142.0.3",
+          "dst_ip": "10.142.0.4",
+          "time": "2024-05-07 12:37:42.745",
+          "timestamp": 1715074662.745064,
+          "method": "UNKNOWN",
+          "uri": "/",
+          "host": "",
+          "full_url": "",
+          "user_agent": "",
+          "referer": "",
+          "content_type": "text/html",
+          "content_length": 0,
+          "status_code": "200",
+          "response_phrase": "OK",
+          "packet_length": 60
+        },
+        {
+          "src_ip": "10.142.0.4",
+          "dst_ip": "10.142.0.3",
+          "time": "2024-05-07 12:37:42.826",
+          "timestamp": 1715074662.8263,
+          "method": "POST",
+          "uri": "/submit_feedback",
+          "host": "10.142.0.3",
+          "full_url": "http://10.142.0.3/submit_feedback",
+          "user_agent": "",
+          "referer": "",
+          "content_type": "application/x-www-form-urlencoded",
+          "content_length": 242,
+          "status_code": "",
+          "response_phrase": "",
+          "packet_length": 418
+        },
+        {
+          "src_ip": "10.142.0.3",
+          "dst_ip": "10.142.0.4",
+          "time": "2024-05-07 12:37:42.827",
+          "timestamp": 1715074662.827481,
+          "method": "UNKNOWN",
+          "uri": "/submit_feedback",
+          "host": "",
+          "full_url": "",
+          "user_agent": "",
+          "referer": "",
+          "content_type": "text/html",
+          "content_length": 0,
+          "status_code": "200",
+          "response_phrase": "OK",
+          "packet_length": 297
+        },
+        {
+          "src_ip": "10.142.0.4",
+          "dst_ip": "10.142.0.3",
+          "time": "2024-05-07 12:37:42.833",
+          "timestamp": 1715074662.833016,
+          "method": "GET",
+          "uri": "/",
+          "host": "10.142.0.3",
+          "full_url": "http://10.142.0.3/",
+          "user_agent": "",
+          "referer": "",
+          "content_type": "",
+          "content_length": 0,
+          "status_code": "",
+          "response_phrase": "",
+          "packet_length": 90
+        },
+        {
+          "src_ip": "10.142.0.3",
+          "dst_ip": "10.142.0.4",
+          "time": "2024-05-07 12:37:48.810",
+          "timestamp": 1715074668.810967,
+          "method": "UNKNOWN",
+          "uri": "/",
+          "host": "",
+          "full_url": "",
+          "user_agent": "",
+          "referer": "",
+          "content_type": "text/html",
+          "content_length": 0,
+          "status_code": "200",
+          "response_phrase": "OK",
+          "packet_length": 60
+        },
+        {
+          "src_ip": "10.142.0.4",
+          "dst_ip": "10.142.0.3",
+          "time": "2024-05-07 12:37:53.272",
+          "timestamp": 1715074673.272197,
+          "method": "POST",
+          "uri": "/submit_feedback",
+          "host": "10.142.0.3",
+          "full_url": "http://10.142.0.3/submit_feedback",
+          "user_agent": "",
+          "referer": "",
+          "content_type": "application/x-www-form-urlencoded",
+          "content_length": 20783,
+          "status_code": "",
+          "response_phrase": "",
+          "packet_length": 6925
+        },
+        {
+          "src_ip": "10.142.0.3",
+          "dst_ip": "10.142.0.4",
+          "time": "2024-05-07 12:37:53.274",
+          "timestamp": 1715074673.274286,
+          "method": "UNKNOWN",
+          "uri": "/submit_feedback",
+          "host": "",
+          "full_url": "",
+          "user_agent": "",
+          "referer": "",
+          "content_type": "text/html",
+          "content_length": 0,
+          "status_code": "200",
+          "response_phrase": "OK",
+          "packet_length": 8056
+        },
+        {
+          "src_ip": "10.142.0.4",
+          "dst_ip": "10.142.0.3",
+          "time": "2024-05-07 12:37:53.275",
+          "timestamp": 1715074673.275947,
+          "method": "GET",
+          "uri": "/",
+          "host": "10.142.0.3",
+          "full_url": "http://10.142.0.3/",
+          "user_agent": "",
+          "referer": "",
+          "content_type": "",
+          "content_length": 0,
+          "status_code": "",
+          "response_phrase": "",
+          "packet_length": 90
+        },
+        {
+          "src_ip": "10.142.0.3",
+          "dst_ip": "10.142.0.4",
+          "time": "2024-05-07 12:38:14.361",
+          "timestamp": 1715074694.361704,
+          "method": "UNKNOWN",
+          "uri": "/",
+          "host": "",
+          "full_url": "",
+          "user_agent": "",
+          "referer": "",
+          "content_type": "text/html",
+          "content_length": 0,
+          "status_code": "200",
+          "response_phrase": "OK",
+          "packet_length": 60
+        },
+        {
+          "src_ip": "10.142.0.4",
+          "dst_ip": "10.142.0.3",
+          "time": "2024-05-07 12:38:14.419",
+          "timestamp": 1715074694.419744,
+          "method": "POST",
+          "uri": "/submit_feedback",
+          "host": "10.142.0.3",
+          "full_url": "http://10.142.0.3/submit_feedback",
+          "user_agent": "",
+          "referer": "",
+          "content_type": "application/x-www-form-urlencoded",
+          "content_length": 2984,
+          "status_code": "",
+          "response_phrase": "",
+          "packet_length": 3161
+        },
+        {
+          "src_ip": "10.142.0.3",
+          "dst_ip": "10.142.0.4",
+          "time": "2024-05-07 12:38:14.420",
+          "timestamp": 1715074694.420642,
+          "method": "UNKNOWN",
+          "uri": "/submit_feedback",
+          "host": "",
+          "full_url": "",
+          "user_agent": "",
+          "referer": "",
+          "content_type": "text/html",
+          "content_length": 0,
+          "status_code": "200",
+          "response_phrase": "OK",
+          "packet_length": 193
+        },
+        {
+          "src_ip": "10.142.0.4",
+          "dst_ip": "10.142.0.3",
+          "time": "2024-05-07 12:38:14.421",
+          "timestamp": 1715074694.421975,
+          "method": "GET",
+          "uri": "/",
+          "host": "10.142.0.3",
+          "full_url": "http://10.142.0.3/",
+          "user_agent": "",
+          "referer": "",
+          "content_type": "",
+          "content_length": 0,
+          "status_code": "",
+          "response_phrase": "",
+          "packet_length": 90
+        }
+      ]
+    },
+    "files_summary": {
+      "total_files": 0,
+      "file_types": {},
+      "top_files": [],
+      "sample_files": []
+    },
+    "auth_summary": {
+      "total_attempts": 0,
+      "successful_attempts": 0,
+      "failed_attempts": 0,
+      "success_rate": 0,
+      "top_protocols": [],
+      "top_source_ips": [],
+      "suspicious_ips": [],
+      "protocol_distribution": {},
+      "recent_attempts": [],
+      "raw_attempts_count": 0
+    }
+  },
+  "metadata": {
+    "analysis_time": "2025-12-13 03:44:42",
+    "traffic_file": "cap",
+    "analysis_duration_seconds": 0.0
+  },
+  "files": {
+    "protected_ips": {
+      "path": "ext/protectips.txt",
+      "count": 2,
+      "content_sample": [
+        "10.142.0.4",
+        "10.142.0.3"
+      ]
+    },
+    "suspicious_ips": {
+      "path": "ext/suspips.txt",
+      "count": 2646,
+      "content_sample": []
+    },
+    "rules": {
+      "path": "rules.json",
+      "content": {
+        "brute_force": {
+          "enabled": true,
+          "auth_proto": [
+            "SMB",
+            "SMB2",
+            "SSH",
+            "FTP",
+            "TELNET"
+          ],
+          "tryes_limit": 10.0,
+          "tryes_limit_window": 20.0,
+          "warn_tryes_limit_window": 100.0
+        },
+        "ddos": {
+          "enabled": true,
+          "1ip": {
+            "request_limit": 1000.0,
+            "request_limit_window": 1.0
+          },
+          "nip": {
+            "request_limit": 2000.0,
+            "request_limit_window": 1.0,
+            "display_ips": 10
+          }
+        },
+        "flood": {
+          "enabled": true,
+          "SYN": {
+            "syn_only_limit": 50.0,
+            "syn_only_window": 5.0
+          },
+          "HTTP": {
+            "request_rate_limit": 80.0,
+            "request_rate_window": 1.0
+          }
+        },
+        "C2_analysys": {
+          "enabled": true,
+          "beaconing_detection": {
+            "enabled": true,
+            "jitter_sec": 5,
+            "interval_min_sec": 10,
+            "interval_max_sec": 300,
+            "min_consistent_connections": 5
+          }
+        },
+        "reaction": {
+          "out": [
+            "PRINT",
+            "LOG"
+          ]
+        },
+        "suspicious_ips": {
+          "enabled": true,
+          "files_of_susp_ip_list": [
+            "ext/suspips.txt"
+          ]
+        }
+      }
+    }
+  },
+  "traffic_statistics": {
+    "total_packets": 81,
+    "total_bytes": 63475,
+    "protocols_distribution": {
+      "TCP": 149,
+      "HTTP": 17,
+      "DATA-TEXT-LINES": 6,
+      "URLENCODED-FORM": 3
+    },
+    "top_source_ips_formatted": "  10.142.0.3: 41 пакетов\n  10.142.0.4: 40 пакетов",
+    "top_destination_ips_formatted": "  10.142.0.4: 41 пакетов\n  10.142.0.3: 40 пакетов",
+    "dns_statistics_formatted": "  Нет данных",
+    "packet_size_average": 783.64
+  },
+  "suspicious_activity": {
+    "total_suspicious_packets": 0,
+    "suspicious_sources_formatted": "  Нет данных",
+    "suspicious_destinations_formatted": "  Нет данных",
+    "threat_correlation": []
+  },
+  "detailed_threat_analysis": {
+    "brute_force": {
+      "detected": false,
+      "attempts_count": 0,
+      "target_ips": [],
+      "source_ips": [],
+      "time_window": 20.0
+    },
+    "ddos_attacks": {
+      "multi_ip": {
+        "detected": false,
+        "source_ips": [],
+        "target_ips": [],
+        "packet_rate": 0,
+        "threshold": 2000.0
+      },
+      "single_ip": {
+        "detected": false,
+        "source_ip": "",
+        "target_ips": [],
+        "packet_rate": 0,
+        "threshold": 1000.0
+      },
+      "http_flood": {
+        "detected": false,
+        "source_ips": [],
+        "request_rate": 0,
+        "threshold": 80.0
+      }
+    },
+    "flood_attacks": {
+      "syn_flood": {
+        "detected": false,
+        "source_ips": [],
+        "syn_ack_ratio": 0,
+        "threshold": 0.3
+      }
+    },
+    "c2_activity": {
+      "detected": false,
+      "beaconing_ips": [],
+      "interval_seconds": 0,
+      "min_interval": 10,
+      "max_interval": 300
+    }
+  },
+  "alarms_summary": {
+    "total_alarms": 0,
+    "alarms_by_type": {},
+    "raw_alarms": []
+  }
+}
