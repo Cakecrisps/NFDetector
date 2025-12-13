@@ -1,0 +1,449 @@
+{
+  "raw_stats": {
+    "total": 1000,
+    "total_bytes": 108428,
+    "start_time": 1476605277.277352,
+    "end_time": 1476605945.957581,
+    "protos": {
+      "BROWSER": 15,
+      "UDP": 682,
+      "DHCPV6": 52,
+      "ICMPV6": 67,
+      "null": 193,
+      "ARP": 90,
+      "DHCP": 12,
+      "NBNS": 84,
+      "IGMP": 31,
+      "LLMNR": 154,
+      "DNS": 357,
+      "SSDP": 8,
+      "TCP": 163,
+      "NBSS": 4,
+      "SMB": 16,
+      "SMB2": 56,
+      "LANMAN": 4,
+      "ICMP": 5,
+      "DCERPC": 2,
+      "SRVSVC": 2,
+      "DATA": 3
+    },
+    "src_ips": {
+      "192.168.199.1": 35,
+      "fe80::78da:c04d:12da:8a08": 28,
+      "::": 5,
+      "fe80::65b5:3a97:92d1:9199": 65,
+      "0.0.0.0": 6,
+      "192.168.199.254": 7,
+      "192.168.199.133": 412,
+      "fe80::31cb:26de:c5bb:c367": 98,
+      "169.254.195.103": 10,
+      "192.168.199.132": 244
+    },
+    "dst_ips": {
+      "192.168.199.255": 98,
+      "ff02::1:2": 52,
+      "ff02::1:ffd1:9199": 3,
+      "ff02::2": 15,
+      "ff02::16": 38,
+      "ff02::1": 5,
+      "255.255.255.255": 6,
+      "192.168.199.133": 82,
+      "224.0.0.22": 31,
+      "ff02::1:3": 67,
+      "224.0.0.252": 67,
+      "192.168.199.1": 376,
+      "239.255.255.250": 8,
+      "fe80::78da:c04d:12da:8a08": 2,
+      "fe80::65b5:3a97:92d1:9199": 11,
+      "192.168.199.132": 46,
+      "ff02::1:ffbb:c367": 3
+    },
+    "dns": {
+      "wpad.localdomain": 9,
+      "_ldap._tcp.dc._msdcs.WORKGROUP.localdomain": 15,
+      "isatap.localdomain": 13,
+      "localdomain.localdomain": 28,
+      "v10.vortex-win.data.microsoft.com": 15,
+      "www.bing.com": 10,
+      "sls.update.microsoft.com": 15,
+      "kv401-prod.do.dsp.mp.microsoft.com": 54,
+      "geover-prod.do.dsp.mp.microsoft.com": 80,
+      "geo-prod.do.dsp.mp.microsoft.com": 85,
+      "DESKTOP-2AEFM7G.localdomain": 3,
+      "ssw.live.com": 15,
+      "pipe.skype.com": 10,
+      "officeclient.microsoft.com": 5
+    },
+    "http_endp": [],
+    "downloaded_files": [],
+    "suspicious_ips": {
+      "total_packets": 0,
+      "src_count": 0,
+      "dst_count": 0,
+      "src_ips": {},
+      "dst_ips": {}
+    },
+    "auth_attempts": {
+      "total": 5,
+      "by_protocol": {
+        "SMB": 5
+      },
+      "by_src_ip": {
+        "192.168.199.1": 3,
+        "192.168.199.133": 2
+      },
+      "by_dst_ip": {
+        "192.168.199.133": 3,
+        "192.168.199.1": 2
+      },
+      "successful": 4,
+      "failed": 1,
+      "details": [
+        {
+          "timestamp": 1476605364.033378,
+          "time_str": "2016-10-16 11:09:24.033",
+          "protocol": "SMB",
+          "src_ip": "192.168.199.1",
+          "dst_ip": "192.168.199.133",
+          "status": "successful",
+          "details": {}
+        },
+        {
+          "timestamp": 1476605364.033848,
+          "time_str": "2016-10-16 11:09:24.033",
+          "protocol": "SMB",
+          "src_ip": "192.168.199.133",
+          "dst_ip": "192.168.199.1",
+          "status": "successful",
+          "details": {}
+        },
+        {
+          "timestamp": 1476605364.033977,
+          "time_str": "2016-10-16 11:09:24.033",
+          "protocol": "SMB",
+          "src_ip": "192.168.199.1",
+          "dst_ip": "192.168.199.133",
+          "status": "failed",
+          "details": {}
+        },
+        {
+          "timestamp": 1476605364.03991,
+          "time_str": "2016-10-16 11:09:24.039",
+          "protocol": "SMB",
+          "src_ip": "192.168.199.133",
+          "dst_ip": "192.168.199.1",
+          "status": "successful",
+          "details": {}
+        },
+        {
+          "timestamp": 1476605364.040501,
+          "time_str": "2016-10-16 11:09:24.040",
+          "protocol": "SMB",
+          "src_ip": "192.168.199.1",
+          "dst_ip": "192.168.199.133",
+          "status": "successful",
+          "details": {}
+        }
+      ]
+    },
+    "http_summary": {
+      "total_requests": 0,
+      "unique_hosts": 0,
+      "sample_requests": []
+    },
+    "files_summary": {
+      "total_files": 0,
+      "file_types": {},
+      "top_files": [],
+      "sample_files": []
+    },
+    "auth_summary": {
+      "total_attempts": 5,
+      "successful_attempts": 4,
+      "failed_attempts": 1,
+      "success_rate": 80.0,
+      "top_protocols": [
+        [
+          "SMB",
+          5
+        ]
+      ],
+      "top_source_ips": [
+        [
+          "192.168.199.1",
+          3
+        ],
+        [
+          "192.168.199.133",
+          2
+        ]
+      ],
+      "suspicious_ips": [],
+      "protocol_distribution": {
+        "SMB": 5
+      },
+      "recent_attempts": [
+        {
+          "timestamp": 1476605364.033378,
+          "time_str": "2016-10-16 11:09:24.033",
+          "protocol": "SMB",
+          "src_ip": "192.168.199.1",
+          "dst_ip": "192.168.199.133",
+          "status": "successful",
+          "details": {}
+        },
+        {
+          "timestamp": 1476605364.033848,
+          "time_str": "2016-10-16 11:09:24.033",
+          "protocol": "SMB",
+          "src_ip": "192.168.199.133",
+          "dst_ip": "192.168.199.1",
+          "status": "successful",
+          "details": {}
+        },
+        {
+          "timestamp": 1476605364.033977,
+          "time_str": "2016-10-16 11:09:24.033",
+          "protocol": "SMB",
+          "src_ip": "192.168.199.1",
+          "dst_ip": "192.168.199.133",
+          "status": "failed",
+          "details": {}
+        },
+        {
+          "timestamp": 1476605364.03991,
+          "time_str": "2016-10-16 11:09:24.039",
+          "protocol": "SMB",
+          "src_ip": "192.168.199.133",
+          "dst_ip": "192.168.199.1",
+          "status": "successful",
+          "details": {}
+        },
+        {
+          "timestamp": 1476605364.040501,
+          "time_str": "2016-10-16 11:09:24.040",
+          "protocol": "SMB",
+          "src_ip": "192.168.199.1",
+          "dst_ip": "192.168.199.133",
+          "status": "successful",
+          "details": {}
+        }
+      ],
+      "raw_attempts_count": 5
+    }
+  },
+  "metadata": {
+    "analysis_time": "2025-12-13 05:45:25",
+    "traffic_file": "smb-on-windows-10",
+    "analysis_duration_seconds": 0.0
+  },
+  "files": {
+    "protected_ips": {
+      "path": "ext/protectips.txt",
+      "count": 4,
+      "content_sample": [
+        "192.168.199.1",
+        "fe80::78da:c04d:12da:8a08",
+        "::"
+      ]
+    },
+    "suspicious_ips": {
+      "path": "ext/suspips.txt",
+      "count": 2646,
+      "content_sample": []
+    },
+    "rules": {
+      "path": "rules.json",
+      "content": {
+        "brute_force": {
+          "enabled": true,
+          "auth_proto": [
+            "SMB",
+            "SMB2",
+            "SSH",
+            "FTP",
+            "TELNET"
+          ],
+          "tryes_limit": 10.0,
+          "tryes_limit_window": 20.0,
+          "warn_tryes_limit_window": 100.0
+        },
+        "ddos": {
+          "enabled": true,
+          "1ip": {
+            "request_limit": 1000.0,
+            "request_limit_window": 1.0
+          },
+          "nip": {
+            "request_limit": 1.0,
+            "request_limit_window": 2.0,
+            "display_ips": 10
+          }
+        },
+        "flood": {
+          "enabled": true,
+          "SYN": {
+            "syn_only_limit": 50.0,
+            "syn_only_window": 5.0
+          },
+          "HTTP": {
+            "request_rate_limit": 80.0,
+            "request_rate_window": 1.0
+          }
+        },
+        "C2_analysys": {
+          "enabled": true,
+          "beaconing_detection": {
+            "enabled": true,
+            "jitter_sec": 5,
+            "interval_min_sec": 10,
+            "interval_max_sec": 300,
+            "min_consistent_connections": 5
+          }
+        },
+        "reaction": {
+          "out": [
+            "PRINT",
+            "LOG"
+          ]
+        },
+        "suspicious_ips": {
+          "enabled": true,
+          "files_of_susp_ip_list": [
+            "ext/suspips.txt"
+          ]
+        }
+      }
+    }
+  },
+  "traffic_statistics": {
+    "total_packets": 1000,
+    "total_bytes": 108428,
+    "protocols_distribution": {
+      "BROWSER": 15,
+      "UDP": 682,
+      "DHCPV6": 52,
+      "ICMPV6": 67,
+      "null": 193,
+      "ARP": 90,
+      "DHCP": 12,
+      "NBNS": 84,
+      "IGMP": 31,
+      "LLMNR": 154,
+      "DNS": 357,
+      "SSDP": 8,
+      "TCP": 163,
+      "NBSS": 4,
+      "SMB": 16,
+      "SMB2": 56,
+      "LANMAN": 4,
+      "ICMP": 5,
+      "DCERPC": 2,
+      "SRVSVC": 2,
+      "DATA": 3
+    },
+    "top_source_ips_formatted": "  192.168.199.133: 412 пакетов\n  192.168.199.132: 244 пакетов\n  fe80::31cb:26de:c5bb:c367: 98 пакетов\n  fe80::65b5:3a97:92d1:9199: 65 пакетов\n  192.168.199.1: 35 пакетов\n  fe80::78da:c04d:12da:8a08: 28 пакетов\n  169.254.195.103: 10 пакетов\n  192.168.199.254: 7 пакетов\n  0.0.0.0: 6 пакетов\n  ::: 5 пакетов",
+    "top_destination_ips_formatted": "  192.168.199.1: 376 пакетов\n  192.168.199.255: 98 пакетов\n  192.168.199.133: 82 пакетов\n  ff02::1:3: 67 пакетов\n  224.0.0.252: 67 пакетов\n  ff02::1:2: 52 пакетов\n  192.168.199.132: 46 пакетов\n  ff02::16: 38 пакетов\n  224.0.0.22: 31 пакетов\n  ff02::2: 15 пакетов",
+    "dns_statistics_formatted": "  geo-prod.do.dsp.mp.microsoft.com: 85 запросов\n  geover-prod.do.dsp.mp.microsoft.com: 80 запросов\n  kv401-prod.do.dsp.mp.microsoft.com: 54 запросов\n  localdomain.localdomain: 28 запросов\n  _ldap._tcp.dc._msdcs.WORKGROUP.localdomain: 15 запросов\n  v10.vortex-win.data.microsoft.com: 15 запросов\n  sls.update.microsoft.com: 15 запросов\n  ssw.live.com: 15 запросов\n  isatap.localdomain: 13 запросов\n  www.bing.com: 10 запросов",
+    "packet_size_average": 108.43
+  },
+  "suspicious_activity": {
+    "total_suspicious_packets": 0,
+    "suspicious_sources_formatted": "  Нет данных",
+    "suspicious_destinations_formatted": "  Нет данных",
+    "threat_correlation": []
+  },
+  "detailed_threat_analysis": {
+    "brute_force": {
+      "detected": false,
+      "attempts_count": 0,
+      "target_ips": [],
+      "source_ips": [],
+      "time_window": 20.0
+    },
+    "ddos_attacks": {
+      "multi_ip": {
+        "detected": false,
+        "source_ips": [],
+        "target_ips": [],
+        "packet_rate": 0,
+        "threshold": 1.0
+      },
+      "single_ip": {
+        "detected": false,
+        "source_ip": "",
+        "target_ips": [],
+        "packet_rate": 0,
+        "threshold": 1000.0
+      },
+      "http_flood": {
+        "detected": false,
+        "source_ips": [],
+        "request_rate": 0,
+        "threshold": 80.0
+      }
+    },
+    "flood_attacks": {
+      "syn_flood": {
+        "detected": false,
+        "source_ips": [],
+        "syn_ack_ratio": 0,
+        "threshold": 0.3
+      }
+    },
+    "c2_activity": {
+      "detected": false,
+      "beaconing_ips": [],
+      "interval_seconds": 0,
+      "min_interval": 10,
+      "max_interval": 300
+    }
+  },
+  "alarms_summary": {
+    "total_alarms": 6,
+    "alarms_by_type": {
+      "DDoS_MULTI_IP: 192.168.199.133 sent 6 packets, total: 6 (limit: 1.0)": 1,
+      "DDoS_MULTI_IP: 192.168.199.133 sent 1 packets, total: 1 (limit: 1.0)": 3,
+      "DDoS_MULTI_IP: 192.168.199.132 sent 4 packets, total: 6 (limit: 1.0)": 1,
+      "DDoS_MULTI_IP: 192.168.199.133 sent 1 packets, total: 2 (limit: 1.0)": 1
+    },
+    "raw_alarms": [
+      {
+        "type": "DDoS_MULTI_IP: 192.168.199.133 sent 6 packets, total: 6 (limit: 1.0)",
+        "source": "192.168.199.1",
+        "destination": "192.168.199.133",
+        "details": "True"
+      },
+      {
+        "type": "DDoS_MULTI_IP: 192.168.199.133 sent 1 packets, total: 1 (limit: 1.0)",
+        "source": "192.168.199.1",
+        "destination": "192.168.199.133",
+        "details": "True"
+      },
+      {
+        "type": "DDoS_MULTI_IP: 192.168.199.132 sent 4 packets, total: 6 (limit: 1.0)",
+        "source": "192.168.199.1",
+        "destination": "192.168.199.132",
+        "details": "True"
+      },
+      {
+        "type": "DDoS_MULTI_IP: 192.168.199.133 sent 1 packets, total: 1 (limit: 1.0)",
+        "source": "192.168.199.1",
+        "destination": "192.168.199.133",
+        "details": "True"
+      },
+      {
+        "type": "DDoS_MULTI_IP: 192.168.199.133 sent 1 packets, total: 2 (limit: 1.0)",
+        "source": "192.168.199.1",
+        "destination": "192.168.199.133",
+        "details": "True"
+      },
+      {
+        "type": "DDoS_MULTI_IP: 192.168.199.133 sent 1 packets, total: 1 (limit: 1.0)",
+        "source": "192.168.199.1",
+        "destination": "192.168.199.133",
+        "details": "True"
+      }
+    ]
+  }
+}

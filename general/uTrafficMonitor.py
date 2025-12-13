@@ -771,13 +771,20 @@ class NetworkTrafficMonitor:
                 print(f"Error in analyze {window_type}: {e}")
 
     def _get_packet_count(self, pcap_path: str) -> int:
-        """Оценивает количество пакетов в PCAP файле."""
         try:
-            file_size = os.path.getsize(pcap_path)
-            estimated_packets = file_size // 1000
-            return max(estimated_packets, 1)
+            cap = pyshark.FileCapture(pcap_path, keep_packets=False)
+            count = 0
+            try:
+                for _ in cap:
+                    count += 1
+            except:
+                # Если файл поврежден, просто возвращаем текущий счетчик
+                pass
+            return count
         except:
-            return 1000
+            return 0
+        finally:
+            cap.close()
 
     def analyze_file(self, pcap_path: str) -> Dict[str, Any]:
         """
@@ -803,82 +810,86 @@ class NetworkTrafficMonitor:
         auth_count = 0
 
         try:
-            capture = pyshark.FileCapture(pcap_path)
+            capture = pyshark.FileCapture(pcap_path,debug=self.debug_mode)
             packets_processed = 0
             start_time = time.time()
             last_update_time = start_time
 
             print("\n[Прогресс анализа]")
             print("┌────────────────────────────────────────────────────────────┐")
-
+            zz = 0
             for packet in capture:
-                if self.stop_flag:
-                    break
+                try:
+                    zz += 1
+                    if self.stop_flag:
+                        break
 
-                self.process_packet(packet)
-                packets_processed += 1
+                    self.process_packet(packet)
+                    packets_processed += 1
 
-                if hasattr(packet, 'http'):
-                    http_count += 1
+                    if hasattr(packet, 'http'):
+                        http_count += 1
 
-                file_count = len(self.downloaded_files)
-                auth_count = self.statistics["auth_attempts"]["total"]
+                    file_count = len(self.downloaded_files)
+                    auth_count = self.statistics["auth_attempts"]["total"]
 
-                current_time = time.time()
-                if current_time - last_update_time >= 0.5 or packets_processed % 100 == 0:
+                    current_time = time.time()
+                    if current_time - last_update_time >= 0.5 or packets_processed % 100 == 0:
 
-                    if total_packets > 0:
-                        percent = min(100, int((packets_processed / total_packets) * 100))
-                    else:
-                        percent = 0
-
-                    elapsed_time = current_time - start_time
-                    if packets_processed > 0 and elapsed_time > 0:
-                        speed = packets_processed / elapsed_time
-                        if total_packets > 0 and percent < 100:
-                            remaining_packets = total_packets - packets_processed
-                            remaining_time = remaining_packets / speed if speed > 0 else 0
-
-                            if remaining_time < 60:
-                                time_str = f"{remaining_time:.1f} сек"
-                            elif remaining_time < 3600:
-                                minutes = remaining_time / 60
-                                time_str = f"{minutes:.1f} мин"
-                            else:
-                                hours = remaining_time / 3600
-                                time_str = f"{hours:.1f} час"
+                        if total_packets > 0:
+                            percent = min(100, int((packets_processed / total_packets) * 100))
                         else:
-                            time_str = "завершается..."
-                            speed_str = f"{speed:.0f} пак/сек"
-                    else:
-                        time_str = "расчет..."
-                        speed_str = "---"
+                            percent = 0
 
-                    bar_width = 50
-                    filled = int(bar_width * percent / 100)
-                    bar = "█" * filled + "░" * (bar_width - filled)
+                        elapsed_time = current_time - start_time
+                        if packets_processed > 0 and elapsed_time > 0:
+                            speed = packets_processed / elapsed_time
+                            if total_packets > 0 and percent < 100:
+                                remaining_packets = total_packets - packets_processed
+                                remaining_time = remaining_packets / speed if speed > 0 else 0
 
-                    packets_str = f"{packets_processed:,}"
-                    if total_packets > 0:
-                        total_str = f"{total_packets:,}"
-                        percent_str = f"{percent:3d}%"
-                    else:
-                        total_str = "???"
-                        percent_str = "??%"
+                                if remaining_time < 60:
+                                    time_str = f"{remaining_time:.1f} сек"
+                                elif remaining_time < 3600:
+                                    minutes = remaining_time / 60
+                                    time_str = f"{minutes:.1f} мин"
+                                else:
+                                    hours = remaining_time / 3600
+                                    time_str = f"{hours:.1f} час"
+                            else:
+                                time_str = "завершается..."
+                                speed_str = f"{speed:.0f} пак/сек"
+                        else:
+                            time_str = "расчет..."
+                            speed_str = "---"
 
-                    print(
-                        f"\r│[{bar}] {percent_str} │ {packets_str}/{total_str} пакетов │",
-                        end=""
-                    )
-                    print(
-                        f" HTTP: {http_count:,} │ Auth: {auth_count} │ Файлы: {file_count} ",
-                        end=""
-                    )
+                        bar_width = 50
+                        filled = int(bar_width * percent / 100)
+                        bar = "█" * filled + "░" * (bar_width - filled)
 
-                    last_update_time = current_time
+                        packets_str = f"{packets_processed:,}"
+                        if total_packets > 0:
+                            total_str = f"{total_packets:,}"
+                            percent_str = f"{percent:3d}%"
+                        else:
+                            total_str = "???"
+                            percent_str = "??%"
 
-                if packets_processed >= total_packets and total_packets > 0:
-                    break
+                        print(
+                            f"\r│[{bar}] {percent_str} │ {packets_str}/{total_str} пакетов │",
+                            end=""
+                        )
+                        print(
+                            f" HTTP: {http_count:,} │ Auth: {auth_count} │ Файлы: {file_count} ",
+                            end=""
+                        )
+
+                        last_update_time = current_time
+
+                    if packets_processed >= total_packets and total_packets > 0:
+                        break
+                except:
+                    print(Exception)
 
             capture.close()
 
