@@ -12,15 +12,15 @@ class CountWindow:
 
     def expire(self, now):
         while self.events and self.events[0][0] < now - self.seconds:
-            _, key = self.events.popleft()
-            self.counts[key] -= 1
+            _, key, amount = self.events.popleft()
+            self.counts[key] -= amount
             if not self.counts[key]:
                 del self.counts[key]
 
-    def add(self, timestamp, key):
+    def add(self, timestamp, key, amount=1):
         previous = self.counts[key]
-        self.events.append((timestamp, key))
-        self.counts[key] += 1
+        self.events.append((timestamp, key, amount))
+        self.counts[key] += amount
         return previous < self.limit <= self.counts[key]
 
 
@@ -69,8 +69,9 @@ class BeaconWindow:
 class StreamingDetector:
     """One ordered capture stream. Emit rate alarms on threshold crossings.
 
-    State is scoped to a capture source; different agents must use separate
-    instances. Late packets are rejected before any detector state is changed.
+    State is scoped to an observation domain. Disjoint sensor streams may be
+    merged in event-time order upstream. Late packets are rejected before state
+    is changed.
     """
     def __init__(self, analyzer):
         self.rules = analyzer.rules
@@ -171,17 +172,23 @@ class StreamingDetector:
         protected = target in self.protected
         if protected:
             for name, window in self.rates.items():
-                if name == 'http' and not info['is_http']:
-                    continue
-                if name == 'brute' and auth_protocol not in self.rules['brute_force'].get('auth_proto', []):
-                    continue
-                key = (source, target, auth_protocol) if name == 'brute' else (source, target)
-                if window.add(now, key):
-                    category, label = {'ddos': ('ddos', 'DDoS_SINGLE_IP'),
-                                       'http': ('flood', 'HTTP_FLOOD'),
-                                       'brute': ('bruteforce', f'BRUTEFORCE_{auth_protocol}')}[name]
-                    self._alarm(alarms, category,
-                                f'{label}: {source} -> {target} ({window.counts[key]} events, limit: {window.limit})', target, source)
+                amounts = [(None, 1)]
+                if name == 'http':
+                    amount = info.get('http_requests', int(info['is_http']))
+                    amounts = [(None, amount)] if amount else []
+                elif name == 'brute':
+                    protocols = info.get('auth_protocols', [auth_protocol] if auth_protocol else [])
+                    counts = Counter(protocols)
+                    amounts = [(proto, count) for proto, count in counts.items()
+                               if proto in self.rules['brute_force'].get('auth_proto', [])]
+                for proto, amount in amounts:
+                    key = (source, target, proto) if name == 'brute' else (source, target)
+                    if window.add(now, key, amount):
+                        category, label = {'ddos': ('ddos', 'DDoS_SINGLE_IP'),
+                                           'http': ('flood', 'HTTP_FLOOD'),
+                                           'brute': ('bruteforce', f'BRUTEFORCE_{proto}')}[name]
+                        self._alarm(alarms, category,
+                                    f'{label}: {source} -> {target} ({window.counts[key]} events, limit: {window.limit})', target, source)
             if self.multi_config is not None:
                 self.multi_events.append((now, target, source))
                 self.multi_sources.setdefault(target, Counter())[source] += 1

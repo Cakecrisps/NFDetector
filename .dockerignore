@@ -1,0 +1,15 @@
+.git
+.agents
+.codex
+.aws
+__pycache__
+**/__pycache__
+.pytest_cache
+.venv
+.env
+*.key
+*.pem
+*.pcap
+*.pcapng
+out
+documentation

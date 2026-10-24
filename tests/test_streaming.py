@@ -213,3 +213,15 @@ def test_beacon_running_statistics_match_reference():
         if intervals:
             assert state.minimum[0][1] == min(intervals)
             assert state.maximum[0][1] == max(intervals)
+
+
+def test_multiple_application_events_in_one_packet_count_without_duplicate_packets(analyzer):
+    detector = StreamingDetector(analyzer)
+    info = event(analyzer)
+    info.update(http_requests=3, auth_protocols=['SSH'] * 3)
+    alarms = detector.process(info)
+    assert len(labels(alarms, 'HTTP_FLOOD')) == 1
+    assert len(labels(alarms, 'BRUTEFORCE_SSH')) == 1
+    assert detector.stats['total'] == 1
+    detector.process(event(analyzer, 1100, dst='8.8.8.8'))
+    assert not detector.rates['http'].counts and not detector.rates['brute'].counts

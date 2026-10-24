@@ -1,0 +1,18 @@
+# TLS terminates only at lb. API, workers and PostgreSQL use Docker backend networking.
+services:
+  lb:
+    environment:
+      NF_TLS_AUTOGENERATE: '0'
+    volumes:
+      - type: bind
+        source: ${NF_TLS_CERT:?Set NF_TLS_CERT to the server certificate/full chain}
+        target: /etc/nf/tls/server.crt
+        read_only: true
+        bind:
+          create_host_path: false
+      - type: bind
+        source: ${NF_TLS_KEY:?Set NF_TLS_KEY to the server private key}
+        target: /etc/nf/tls/server.key
+        read_only: true
+        bind:
+          create_host_path: false

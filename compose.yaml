@@ -1,0 +1,78 @@
+name: nfdetector
+x-service: &service
+  build: .
+  init: true
+  restart: unless-stopped
+  environment: &environment
+    DATABASE_URL: postgresql://nfdetect:${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}@postgres:5432/nfdetect
+    NF_DATA_DIR: /data
+    NF_RULES: /app/rules.json
+    NF_PROTECTED_IPS: /app/ext/protectips.txt
+  volumes:
+    - data:/data
+    - ./rules.json:/app/rules.json:ro
+    - ./ext:/app/ext:ro
+  depends_on:
+    postgres:
+      condition: service_healthy
+  cap_drop: [ALL]
+  security_opt: [no-new-privileges:true]
+  mem_limit: 1g
+  pids_limit: 128
+  networks: [backend]
+services:
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: nfdetect
+      POSTGRES_USER: nfdetect
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}
+    volumes:
+      - database:/var/lib/postgresql/data
+    networks: [backend]
+    healthcheck:
+      test: [CMD-SHELL, "pg_isready -U nfdetect -d nfdetect"]
+      interval: 2s
+      timeout: 3s
+      retries: 30
+  api:
+    <<: *service
+    command: [api]
+    healthcheck:
+      test: [CMD, python, -c, "import urllib.request; urllib.request.urlopen('http://localhost:8000/health', timeout=3)"]
+      interval: 3s
+      timeout: 5s
+      retries: 30
+  parser-worker:
+    <<: *service
+    command: [parser-worker]
+  detector-worker:
+    <<: *service
+    command: [detector-worker]
+  lb:
+    build:
+      context: .
+      dockerfile: infra/Dockerfile.lb
+    restart: unless-stopped
+    environment:
+      NF_TLS_HOST: ${NF_TLS_HOST:-localhost}
+      NF_TLS_AUTOGENERATE: '1'
+    ports:
+      - '${NF_BIND:-0.0.0.0}:${NF_PORT:-443}:8443'
+    networks: [edge, backend]
+    volumes:
+      - tls:/etc/nf/tls
+    depends_on:
+      api:
+        condition: service_healthy
+volumes:
+  database:
+  data:
+  tls:
+networks:
+  edge:
+    driver: bridge
+  backend:
+    driver: bridge
+    internal: true
