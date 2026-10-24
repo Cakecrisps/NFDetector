@@ -14,7 +14,7 @@
     "request_limit_window": 1.0
   },
   "nip": {
-    "request_limit": 1.0,        
+    "request_limit": 5000.0,
     "request_limit_window": 2.0,
     "display_ips": 10
   }

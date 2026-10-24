@@ -18,6 +18,8 @@ from general.trafficanalyzer import TrafficAnalyzer
 from general.AlarmClass import Alarm
 from general.summarygen import generate_summary, generate_full_json_summary
 from general.authdetect import is_auth_attempt
+from general.ip_lists import load_ip_list
+from general.streaming import StreamingDetector
 
 from pyshark.packet.packet import Packet
 
@@ -107,8 +109,9 @@ class NetworkTrafficMonitor:
         try:
             self._load_configuration()
             self.statistics = self._init_statistics()
-            self.windows = self._init_windows()
+            self.windows = {}  # Legacy batch API; streaming detection retains no packets.
             self.analyzer = TrafficAnalyzer(rules_path, protected_ips_path)
+            self.streaming = StreamingDetector(self.analyzer)
             self.stop_flag = False
             self.capture_thread = None
             os.makedirs(output_dir, exist_ok=True)
@@ -136,10 +139,7 @@ class NetworkTrafficMonitor:
                 self.suspicious_ips_sources.append(file_path)
                 try:
                     with open(file_path, 'r', encoding='utf-8') as f:
-                        for line in f:
-                            ip = line.strip()
-                            if ip and not ip.startswith('#'):
-                                self.suspicious_ips.add(ip)
+                        self.suspicious_ips.update(load_ip_list(f))
                 except FileNotFoundError:
                     pass
                 except Exception:
@@ -148,10 +148,7 @@ class NetworkTrafficMonitor:
         try:
             self.protected_ips = set()
             with open(self.protected_ips_path, 'r', encoding='utf-8') as f:
-                for line in f:
-                    ip = line.strip()
-                    if ip and not ip.startswith('#'):
-                        self.protected_ips.add(ip)
+                self.protected_ips.update(load_ip_list(f))
         except FileNotFoundError:
             raise FileNotFoundError(
                 f"Файл с защищенными IP не найден: {self.protected_ips_path}"
@@ -416,10 +413,10 @@ class NetworkTrafficMonitor:
 
         return False
 
-    def _analyze_auth_attempt(self, packet: Packet, packet_time: float) -> None:
+    def _analyze_auth_attempt(self, packet: Packet, packet_time: float, auth_result=None) -> None:
         """Анализирует пакет на предмет попыток аутентификации."""
         try:
-            is_auth, protocol = is_auth_attempt(packet)
+            is_auth, protocol = auth_result if auth_result is not None else is_auth_attempt(packet)
             if is_auth:
                 src_ip = self._get_src_ip(packet)
                 dst_ip = self._get_dst_ip(packet)
@@ -507,26 +504,21 @@ class NetworkTrafficMonitor:
         """Обрабатывает один пакет."""
         try:
             packet_time = float(packet.sniff_timestamp)
+            info = self.analyzer._get_packet_info(packet)
+            if info:
+                info['timestamp'] = packet_time
+            # Reject late packets before changing statistics or detector state.
+            if (self.streaming.last_timestamp is not None
+                    and packet_time < self.streaming.last_timestamp):
+                raise ValueError("Capture timestamps must be nondecreasing")
             self._update_statistics(packet, packet_time)
+            auth_result = is_auth_attempt(packet)
+            self._analyze_auth_attempt(packet, packet_time, auth_result)
+            alarms = self.streaming.process(info, auth_result[1] if auth_result[0] else None)
+            self._record_alarms(alarms)
 
-            self._analyze_auth_attempt(packet, packet_time)
-
-            for window_type, window in self.windows.items():
-                window.add_packet(packet, packet_time)
-                window.cleanup_old(packet_time)
-
-                current_time = time.time()
-                time_since_last_analysis = current_time - window.last_analysis
-
-                if window.window_sec < 5.0:
-                    analysis_interval = 0.5
-                else:
-                    analysis_interval = 1.0
-
-                if time_since_last_analysis >= analysis_interval and window.size() > 0:
-                    self._analyze_window(window_type, window.get_packets())
-                    window.last_analysis = current_time
-
+        except ValueError:
+            raise
         except Exception as e:
             if self.debug_mode:
                 print(f"Ошибка обработки пакета: {e}")
@@ -744,6 +736,8 @@ class NetworkTrafficMonitor:
                 alarm = self.analyzer.analyze_http_flood(packets)
             elif "flood_SYN" in window_type:
                 alarm = self.analyzer.analyze_syn_flood(packets)
+            elif window_type == "suspicious_ips":
+                alarm = self.analyzer.analyze_suspicious_ips(packets)
             elif "C2" in window_type:
                 alarm = self.analyzer.analyze_c2_beaconing(packets)
             else:
@@ -752,39 +746,20 @@ class NetworkTrafficMonitor:
             if not alarm:
                 return
 
-            self.alarms.append(alarm[0])
+            self._record_alarms(alarm)
 
-            Alarm(
-                alarm[0][0],
-                alarm[0][1],
-                alarm[0][2],
-                alarm[0][3]
-            ).log(
-                self.log_path,
-                self.rules["reaction"]["out"]
-            )
-
-            if self.debug_mode:
-                print(f"Alert: {alarm[0][1]} в окне {window_type}")
         except Exception as e:
             if self.debug_mode:
                 print(f"Error in analyze {window_type}: {e}")
 
-    def _get_packet_count(self, pcap_path: str) -> int:
-        try:
-            cap = pyshark.FileCapture(pcap_path, keep_packets=False)
-            count = 0
-            try:
-                for _ in cap:
-                    count += 1
-            except:
-                # Если файл поврежден, просто возвращаем текущий счетчик
-                pass
-            return count
-        except:
-            return 0
-        finally:
-            cap.close()
+    def _record_alarms(self, alarms) -> None:
+        for reason, target, source, is_protected in alarms:
+            self.alarms.append((reason, target, source, is_protected))
+            Alarm(reason, target, source, is_protected).log(
+                self.log_path, self.rules["reaction"]["out"]
+            )
+            if self.debug_mode:
+                print(f"Alert: {target}: {reason}")
 
     def analyze_file(self, pcap_path: str) -> Dict[str, Any]:
         """
@@ -802,96 +777,40 @@ class NetworkTrafficMonitor:
         """
         print(f"Начало анализа файла: {pcap_path}")
 
-        total_packets = self._get_packet_count(pcap_path)
-        print(f"Приблизительное количество пакетов: {total_packets:,}")
+        # Stream once: counting first would decode the entire capture twice.
 
         http_count = 0
         file_count = 0
         auth_count = 0
 
+        capture = None
         try:
-            capture = pyshark.FileCapture(pcap_path,debug=self.debug_mode)
+            capture = pyshark.FileCapture(pcap_path, debug=self.debug_mode, keep_packets=False)
             packets_processed = 0
             start_time = time.time()
             last_update_time = start_time
 
             print("\n[Прогресс анализа]")
             print("┌────────────────────────────────────────────────────────────┐")
-            zz = 0
             for packet in capture:
-                try:
-                    zz += 1
-                    if self.stop_flag:
-                        break
-
-                    self.process_packet(packet)
-                    packets_processed += 1
-
-                    if hasattr(packet, 'http'):
-                        http_count += 1
-
-                    file_count = len(self.downloaded_files)
-                    auth_count = self.statistics["auth_attempts"]["total"]
-
-                    current_time = time.time()
-                    if current_time - last_update_time >= 0.5 or packets_processed % 100 == 0:
-
-                        if total_packets > 0:
-                            percent = min(100, int((packets_processed / total_packets) * 100))
-                        else:
-                            percent = 0
-
-                        elapsed_time = current_time - start_time
-                        if packets_processed > 0 and elapsed_time > 0:
-                            speed = packets_processed / elapsed_time
-                            if total_packets > 0 and percent < 100:
-                                remaining_packets = total_packets - packets_processed
-                                remaining_time = remaining_packets / speed if speed > 0 else 0
-
-                                if remaining_time < 60:
-                                    time_str = f"{remaining_time:.1f} сек"
-                                elif remaining_time < 3600:
-                                    minutes = remaining_time / 60
-                                    time_str = f"{minutes:.1f} мин"
-                                else:
-                                    hours = remaining_time / 3600
-                                    time_str = f"{hours:.1f} час"
-                            else:
-                                time_str = "завершается..."
-                                speed_str = f"{speed:.0f} пак/сек"
-                        else:
-                            time_str = "расчет..."
-                            speed_str = "---"
-
-                        bar_width = 50
-                        filled = int(bar_width * percent / 100)
-                        bar = "█" * filled + "░" * (bar_width - filled)
-
-                        packets_str = f"{packets_processed:,}"
-                        if total_packets > 0:
-                            total_str = f"{total_packets:,}"
-                            percent_str = f"{percent:3d}%"
-                        else:
-                            total_str = "???"
-                            percent_str = "??%"
-
-                        print(
-                            f"\r│[{bar}] {percent_str} │ {packets_str}/{total_str} пакетов │",
-                            end=""
-                        )
-                        print(
-                            f" HTTP: {http_count:,} │ Auth: {auth_count} │ Файлы: {file_count} ",
-                            end=""
-                        )
-
-                        last_update_time = current_time
-
-                    if packets_processed >= total_packets and total_packets > 0:
-                        break
-                except:
-                    print(Exception)
-
-            capture.close()
+                if self.stop_flag:
+                    break
+                self.process_packet(packet)
+                packets_processed += 1
+                if hasattr(packet, 'http'):
+                    http_count += 1
+                file_count = len(self.downloaded_files)
+                auth_count = self.statistics["auth_attempts"]["total"]
+                current_time = time.time()
+                if current_time - last_update_time >= 0.5 or packets_processed % 100 == 0:
+                    elapsed = current_time - start_time
+                    speed = packets_processed / elapsed if elapsed > 0 else 0
+                    print(
+                        f"\r│ Пакеты: {packets_processed:,} │ {speed:.0f} пак/сек │ "
+                        f"HTTP: {http_count:,} │ Auth: {auth_count} │ Файлы: {file_count:,} ",
+                        end=""
+                    )
+                    last_update_time = current_time
 
             print("\n└────────────────────────────────────────────────────────────┘")
 
@@ -908,6 +827,9 @@ class NetworkTrafficMonitor:
             raise FileNotFoundError(f"PCAP файл не найден: {pcap_path}")
         except Exception as e:
             raise RuntimeError(f"Ошибка анализа файла: {e}")
+        finally:
+            if capture is not None:
+                capture.close()
 
         self._analyze_all_windows()
 
