@@ -31,8 +31,9 @@ class Direction:
 
 
 class FlowDecoder:
-    def __init__(self, timeout=300, max_flows=10000, max_bytes=64 * 1024 * 1024):
+    def __init__(self, timeout=300, max_flows=10000, max_bytes=64 * 1024 * 1024, ssh_ports=(22,)):
         self.timeout, self.max_flows, self.max_bytes = timeout, max_flows, max_bytes
+        self.ssh_ports = {str(port) for port in ssh_ports}
         self.flows, self.expiry, self.fragments = {}, [], {}
         self.bytes = 0
 
@@ -66,6 +67,7 @@ class FlowDecoder:
                 self.fragments.pop((str(stream_id), event['src_ip'], event['dst_ip'], fragment['id'], fragment['protocol']), None)
             self.bytes = sum(flow.size() for flow in self.flows.values())
             event['http_requests'], event['auth_protocols'], event['is_http'] = 0, [], False
+            event['ssh_greetings'] = 0
         event['decode_warnings'] = list(self.warnings)
 
     def _feed(self, event, stream_id):
@@ -74,6 +76,7 @@ class FlowDecoder:
             self._fragment(event, stream_id)
         event['http_requests'] = 0
         event['auth_protocols'] = []
+        event['ssh_greetings'] = 0
         if event['protocol'] != 'TCP':
             return
         key = (str(stream_id), event['src_ip'], event['dst_ip'], event['src_port'], event['dst_port'])
@@ -144,7 +147,9 @@ class FlowDecoder:
     def _application(self, flow, event):
         if not flow.protocol:
             port = event['dst_port']
-            if port in ('80', '8000', '8080') or re.match(rb'^(GET|POST|HEAD|PUT|DELETE|PATCH|OPTIONS|CONNECT|TRACE) ', flow.buffer):
+            if port in self.ssh_ports:
+                flow.protocol = 'SSH'
+            elif port in ('80', '8000', '8080') or re.match(rb'^(GET|POST|HEAD|PUT|DELETE|PATCH|OPTIONS|CONNECT|TRACE) ', flow.buffer):
                 flow.protocol = 'HTTP'
             elif port == '21':
                 flow.protocol = 'FTP'
@@ -155,7 +160,23 @@ class FlowDecoder:
             else:
                 flow.buffer = b''
                 return
-        if flow.protocol == 'HTTP':
+        if flow.protocol == 'SSH':
+            boundary = flow.buffer.find(b'\n')
+            if boundary < 0:
+                if len(flow.buffer) >= 255:
+                    raise ValueError('SSH identification exceeds 255 bytes')
+                return
+            identification = flow.buffer[:boundary + 1]
+            # Count the client version exchange once per TCP incarnation. Password
+            # attempts after key exchange are encrypted and are not inferred here.
+            if len(identification) <= 255 and re.fullmatch(
+                    rb'SSH-(2\.0|1\.99)-[!-~]+(?: [ -~]*)?\r?\n', identification):
+                event['ssh_greetings'] = 1
+            flow.protocol = 'SSH_ENCRYPTED'
+            flow.buffer = b''
+        elif flow.protocol == 'SSH_ENCRYPTED':
+            flow.buffer = b''
+        elif flow.protocol == 'HTTP':
             self._http(flow, event)
         elif flow.protocol == 'FTP':
             while b'\n' in flow.buffer:

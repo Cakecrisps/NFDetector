@@ -2,6 +2,7 @@
 "brute_force":{
     "enabled": true,
 "auth_proto":["SMB", "SMB2", "SSH", "FTP","TELNET"],
+    "ssh_handshakes": {"enabled": true, "ports": [22]},
     "tryes_limit":10.0,
     "tryes_limit_window":20.0,
     "warn_tryes_limit_window":100.0

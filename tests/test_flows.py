@@ -81,6 +81,49 @@ def test_ftp_commands_split_across_segments():
     assert feed(decoder, b'SS secret\r\n', seq=101 + len(prefix), port='21')['auth_protocols'] == ['FTP']
 
 
+def test_ssh_identification_split_reordered_and_restored():
+    import pickle
+    decoder = FlowDecoder()
+    banner = b'SSH-2.0-OpenSSH_9.2\r\n'
+    feed(decoder, seq=100, flags=2, port='22')
+    assert feed(decoder, banner[5:], seq=106, port='22')['ssh_greetings'] == 0
+    decoder = pickle.loads(pickle.dumps(decoder))
+    value = feed(decoder, banner[:5], port='22')
+    assert value['ssh_greetings'] == 1
+    assert value['auth_protocols'] == []
+    assert feed(decoder, banner, port='22')['ssh_greetings'] == 0
+    assert feed(decoder, banner, seq=101 + len(banner), port='22')['ssh_greetings'] == 0
+
+
+def test_ssh_new_connection_on_reused_tuple_counts_again():
+    decoder = FlowDecoder()
+    for sequence in (100, 500):
+        feed(decoder, seq=sequence, flags=2, port='22')
+        assert feed(decoder, b'SSH-2.0-client\r\n', seq=sequence + 1, port='22')['ssh_greetings'] == 1
+
+
+@pytest.mark.parametrize('payload', [b'GET / HTTP/1.1\r\n\r\n', b'\x00\xffencrypted\n',
+                                     b'SSH-2.0-\r\n', b'SSH-9.9-client\r\n'])
+def test_non_ssh_payload_on_ssh_port_is_not_a_greeting(payload):
+    assert feed(FlowDecoder(), payload, port='22')['ssh_greetings'] == 0
+
+
+def test_ssh_identification_length_is_bounded():
+    value = feed(FlowDecoder(), b'SSH-2.0-' + b'x' * 250, port='22')
+    assert value['ssh_greetings'] == 0
+    assert value['decode_warnings']
+
+
+def test_ssh_ports_are_configurable_and_server_banner_is_not_counted():
+    banner = b'SSH-2.0-client\r\n'
+    assert feed(FlowDecoder(), banner, port='2222')['ssh_greetings'] == 0
+    assert feed(FlowDecoder(ssh_ports=[2222]), banner, port='2222')['ssh_greetings'] == 1
+    value = event(banner, port='50000')
+    value['src_port'] = '22'
+    FlowDecoder().feed(value, 'stream')
+    assert value['ssh_greetings'] == 0
+
+
 def test_smb2_session_setup_split_across_segments():
     decoder = FlowDecoder()
     message = bytearray(64)

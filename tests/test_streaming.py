@@ -90,6 +90,30 @@ def test_http_and_auth_filtering(analyzer):
     assert labels(detector.process(ordinary, 'SSH'), 'BRUTEFORCE_SSH')
 
 
+def test_ssh_greetings_threshold_rearms_and_separates_peers_and_services(analyzer):
+    detector = StreamingDetector(analyzer)
+    greeting = dict(event(analyzer, dstport='22'), ssh_greetings=1)
+    assert not labels(detector.process(greeting), 'BRUTEFORCE_SSH_HANDSHAKES')
+    for changed in ({'src_ip': '10.0.0.2'}, {'dst_ip': '192.168.1.2'}, {'dst_port': '2222'},
+                    {'dst_ip': '8.8.8.8'}, {'ssh_greetings': 0}):
+        assert not labels(detector.process(dict(greeting, **changed)), 'BRUTEFORCE_SSH_HANDSHAKES')
+    found = labels(detector.process(greeting), 'BRUTEFORCE_SSH_HANDSHAKES')
+    assert len(found) == 1 and 'authentication outcome unknown' in found[0][0]
+    assert not labels(detector.process(greeting), 'BRUTEFORCE_SSH_HANDSHAKES')
+    assert not labels(detector.process(dict(greeting, timestamp=1021)), 'BRUTEFORCE_SSH_HANDSHAKES')
+    assert labels(detector.process(dict(greeting, timestamp=1022)), 'BRUTEFORCE_SSH_HANDSHAKES')
+
+
+@pytest.mark.parametrize('change', [{'enabled': False}, {'auth_proto': ['FTP']},
+                                  {'ssh_handshakes': {'enabled': False}}])
+def test_ssh_greeting_detection_can_be_disabled(analyzer, change):
+    analyzer.rules['brute_force'].update(change)
+    detector = StreamingDetector(analyzer)
+    greeting = dict(event(analyzer, dstport='22'), ssh_greetings=1)
+    for _ in range(3):
+        assert not labels(detector.process(greeting), 'BRUTEFORCE_SSH_HANDSHAKES')
+
+
 def test_syn_ack_retransmit_and_expiry(analyzer):
     detector = StreamingDetector(analyzer)
     syn = event(analyzer, flags='0x0002')

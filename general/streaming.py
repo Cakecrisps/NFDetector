@@ -91,6 +91,10 @@ class StreamingDetector:
             self.rates['http'] = CountWindow(config.get('request_rate_window', 1), config.get('request_rate_limit', 80))
         if brute.get('enabled'):
             self.rates['brute'] = CountWindow(brute.get('tryes_limit_window', 20), brute.get('tryes_limit', 10))
+            ssh = brute.get('ssh_handshakes', {})
+            if 'SSH' in brute.get('auth_proto', []) and ssh.get('enabled', True):
+                self.rates['ssh'] = CountWindow(ssh.get('window', brute.get('tryes_limit_window', 20)),
+                                               ssh.get('limit', brute.get('tryes_limit', 10)))
         self.multi_config = ddos.get('nip') if ddos.get('enabled') else None
         self.multi_events = deque()
         self.multi_sources = {}
@@ -181,9 +185,20 @@ class StreamingDetector:
                     counts = Counter(protocols)
                     amounts = [(proto, count) for proto, count in counts.items()
                                if proto in self.rules['brute_force'].get('auth_proto', [])]
+                elif name == 'ssh':
+                    amount = info.get('ssh_greetings', 0)
+                    amounts = [(None, amount)] if amount else []
                 for proto, amount in amounts:
-                    key = (source, target, proto) if name == 'brute' else (source, target)
+                    key = ((source, target, info['dst_port']) if name == 'ssh' else
+                           (source, target, proto) if name == 'brute' else (source, target))
                     if window.add(now, key, amount):
+                        if name == 'ssh':
+                            self._alarm(alarms, 'bruteforce',
+                                        f'BRUTEFORCE_SSH_HANDSHAKES: {source} -> {target}:{info["dst_port"]} '
+                                        f'(suspected brute force: {window.counts[key]} client greetings '
+                                        f'in {window.seconds}s, limit: {window.limit}; authentication outcome unknown)',
+                                        target, source)
+                            continue
                         category, label = {'ddos': ('ddos', 'DDoS_SINGLE_IP'),
                                            'http': ('flood', 'HTTP_FLOOD'),
                                            'brute': ('bruteforce', f'BRUTEFORCE_{proto}')}[name]

@@ -17,7 +17,7 @@ from .flows import FlowDecoder
 from .store import LeaseLost, Store
 
 log = logging.getLogger(__name__)
-CHECKPOINT_VERSION = 1
+CHECKPOINT_VERSION = 2
 
 
 class Heartbeat:
@@ -75,7 +75,8 @@ def parser_once(store, owner, job=None):
 def fresh_state(settings):
     analyzer = TrafficAnalyzer(str(settings.rules_path), str(settings.protected_path))
     return dict(version=CHECKPOINT_VERSION, detector=StreamingDetector(analyzer),
-                flows=FlowDecoder(), cursors={}, last_timestamp=None)
+                flows=FlowDecoder(ssh_ports=analyzer.rules.get('brute_force', {}).get(
+                    'ssh_handshakes', {}).get('ports', [22])), cursors={}, last_timestamp=None)
 
 
 def config_hash(settings):

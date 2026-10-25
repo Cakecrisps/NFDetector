@@ -180,6 +180,35 @@ def test_checkpoint_restores_after_every_single_packet(system):
     assert state['cursors'][stream]['sequence'] == 1
 
 
+def test_ssh_greetings_across_files_workers_and_checkpoint(system):
+    client, store, headers = system
+    rules = json.loads(store.settings.rules_path.read_text())
+    rules['brute_force']['auth_proto'].append('SSH')
+    store.settings.rules_path.write_text(json.dumps(rules))
+    store.settings.batch_size = 1
+    stream = register(client, headers)
+    banner = b'SSH-2.0-OpenSSH_9.2\r\n'
+    one = capture([(1000, tcp_frame(dport=22, flags=dpkt.tcp.TH_SYN)),
+                   (1000.1, tcp_frame(dport=22, seq=101, payload=banner)),
+                   (1000.2, tcp_frame(dport=22, sport=5001, flags=dpkt.tcp.TH_SYN)),
+                   (1000.3, tcp_frame(dport=22, sport=5001, seq=101, payload=banner[:5]))])
+    two = capture([(1000.4, tcp_frame(dport=22, sport=5001, seq=106, payload=banner[5:])),
+                   (1000.5, tcp_frame(dport=22, sport=5001, seq=101, payload=banner))])
+    for index, body in enumerate([one, two]):
+        assert upload(client, headers, stream, index, body).status_code == 201
+    seal(client, headers, stream, 1)
+    a, b = store.claim_chunk('A'), store.claim_chunk('B')
+    parser_once(store, 'B', b)
+    drain(store)
+    assert not alarms(store, 'BRUTEFORCE_SSH_HANDSHAKES')
+    parser_once(store, 'A', a)
+    drain(store)
+    found = alarms(store, 'BRUTEFORCE_SSH_HANDSHAKES')
+    assert len(found) == 1 and found[0]['sequence'] == 1
+    drain(store)
+    assert len(alarms(store, 'BRUTEFORCE_SSH_HANDSHAKES')) == 1
+
+
 def test_duplicate_delivery_is_idempotent_and_conflict_is_rejected(system):
     client, store, headers = system
     stream = register(client, headers)
