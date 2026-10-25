@@ -6,18 +6,30 @@ import uuid
 from contextlib import asynccontextmanager
 
 from fastapi import Depends, FastAPI, HTTPException, Request, Response
+from fastapi.exceptions import RequestValidationError
+from fastapi.responses import JSONResponse
 from pydantic import BaseModel, Field
 from starlette.concurrency import run_in_threadpool
 
 from .capture import MAGICS, fsync_directory
 from .settings import Settings
 from .store import Store
+from .web import install_web
+from .web_security import WebSecurityMiddleware
 
 
 class StreamRequest(BaseModel):
     id: uuid.UUID = Field(default_factory=uuid.uuid4)
     interface: str = Field(min_length=1, max_length=128)
     started_at: float = Field(ge=0, allow_inf_nan=False)
+
+
+class HeartbeatRequest(BaseModel):
+    capture_state: str = Field(default='idle', pattern=r'^(idle|capturing|uploading|stopped|error)$')
+    backlog_bytes: int = Field(default=0, ge=0, le=2**63-1)
+    backlog_files: int = Field(default=0, ge=0, le=2**31-1)
+    software_version: str = Field(default='', max_length=64)
+    last_error: str = Field(default='', max_length=512)
 
 
 class SealRequest(BaseModel):
@@ -32,10 +44,19 @@ def create_app(settings=None):
     async def lifespan(app):
         settings.prepare()
         await run_in_threadpool(store.initialize)
+        await run_in_threadpool(app.state.web_auth.bootstrap)
         yield
 
-    app = FastAPI(title='NFDetect ingestion', lifespan=lifespan)
+    app = FastAPI(title='NFDetect', lifespan=lifespan, docs_url=None, redoc_url=None, openapi_url=None)
     app.state.store = store
+    install_web(app, store)
+    app.add_middleware(WebSecurityMiddleware)
+
+    @app.exception_handler(RequestValidationError)
+    async def validation_error(request, error):
+        # Pydantic normally echoes the rejected input, including password fields.
+        safe = [{key: item[key] for key in ('loc', 'msg', 'type')} for item in error.errors()]
+        return JSONResponse({'detail': safe}, status_code=422)
 
     def authenticate(request: Request):
         scheme, _, token = request.headers.get('authorization', '').partition(' ')
@@ -167,6 +188,15 @@ def create_app(settings=None):
                                   (stream_id,)).fetchall()
             domain = conn.execute('SELECT id,last_timestamp,error FROM nf_domains WHERE id=%s', (agent['domain'],)).fetchone()
         return {'stream_id': str(stream_id), 'last_sequence': stream['last_sequence'], 'processed_sequence': stream['processed_sequence'], 'chunks': chunks, 'detector': domain}
+
+    @app.post('/v1/heartbeat')
+    def heartbeat(body: HeartbeatRequest, agent=Depends(authenticate)):
+        with store.connect() as conn:
+            conn.execute('''UPDATE nf_agents SET last_heartbeat_at=clock_timestamp(),capture_state=%s,
+                backlog_bytes=%s,backlog_files=%s,software_version=%s,last_error=%s WHERE id=%s''',
+                         (body.capture_state, body.backlog_bytes, body.backlog_files,
+                          body.software_version, body.last_error, agent['id']))
+        return {'ok': True}
 
     @app.get('/v1/events')
     def events(limit: int = 100, agent=Depends(authenticate)):

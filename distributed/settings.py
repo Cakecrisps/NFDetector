@@ -16,6 +16,8 @@ class Settings:
     lease_seconds: int = 60
     max_checkpoint: int = 64 * 1024 * 1024
     max_streams: int = 16
+    public_origin: str = ''
+    trust_proxy_headers: bool = False
 
     @classmethod
     def from_env(cls):
@@ -29,6 +31,8 @@ class Settings:
             int(os.environ.get('NF_BATCH_SIZE', 2000)),
             int(os.environ.get('NF_LEASE_SECONDS', 60)),
             max_streams=int(os.environ.get('NF_MAX_STREAMS', 16)),
+            public_origin=os.environ.get('NF_PUBLIC_URL', '').rstrip('/'),
+            trust_proxy_headers=os.environ.get('NF_TRUST_PROXY_HEADERS', '0') == '1',
         )
 
     def prepare(self):

@@ -69,3 +69,54 @@ CREATE TABLE IF NOT EXISTS nf_outbox (
 );
 
 ALTER TABLE nf_streams ADD COLUMN IF NOT EXISTS processed_sequence integer NOT NULL DEFAULT -1;
+
+-- Web administration has separate credentials and sessions from sensor API keys.
+CREATE TABLE IF NOT EXISTS nf_web_users (
+    id bigserial PRIMARY KEY,
+    username text UNIQUE NOT NULL,
+    password_hash text NOT NULL,
+    must_change_password boolean NOT NULL DEFAULT true,
+    bootstrap_hash text,
+    password_version integer NOT NULL DEFAULT 1,
+    created_at timestamptz NOT NULL DEFAULT clock_timestamp()
+);
+CREATE TABLE IF NOT EXISTS nf_web_sessions (
+    token_hash text PRIMARY KEY,
+    user_id bigint NOT NULL REFERENCES nf_web_users(id),
+    password_version integer NOT NULL,
+    csrf_token text NOT NULL,
+    created_at timestamptz NOT NULL DEFAULT clock_timestamp(),
+    last_seen_at timestamptz NOT NULL DEFAULT clock_timestamp(),
+    expires_at timestamptz NOT NULL,
+    reauthenticated_at timestamptz NOT NULL DEFAULT clock_timestamp()
+);
+CREATE INDEX IF NOT EXISTS nf_web_sessions_user ON nf_web_sessions(user_id);
+CREATE TABLE IF NOT EXISTS nf_web_login_limits (
+    bucket text PRIMARY KEY,
+    window_end timestamptz NOT NULL,
+    attempts integer NOT NULL
+);
+CREATE TABLE IF NOT EXISTS nf_web_audit (
+    id bigserial PRIMARY KEY,
+    actor text NOT NULL,
+    action text NOT NULL,
+    client_ip text NOT NULL,
+    subject text NOT NULL DEFAULT '',
+    created_at timestamptz NOT NULL DEFAULT clock_timestamp()
+);
+CREATE INDEX IF NOT EXISTS nf_web_audit_time ON nf_web_audit(created_at DESC);
+ALTER TABLE nf_agents ADD COLUMN IF NOT EXISTS created_at timestamptz NOT NULL DEFAULT clock_timestamp();
+ALTER TABLE nf_agents ADD COLUMN IF NOT EXISTS last_seen_at timestamptz;
+ALTER TABLE nf_agents ADD COLUMN IF NOT EXISTS last_heartbeat_at timestamptz;
+ALTER TABLE nf_agents ADD COLUMN IF NOT EXISTS capture_state text NOT NULL DEFAULT 'unknown';
+ALTER TABLE nf_agents ADD COLUMN IF NOT EXISTS backlog_bytes bigint NOT NULL DEFAULT 0;
+ALTER TABLE nf_agents ADD COLUMN IF NOT EXISTS backlog_files integer NOT NULL DEFAULT 0;
+ALTER TABLE nf_agents ADD COLUMN IF NOT EXISTS software_version text NOT NULL DEFAULT '';
+ALTER TABLE nf_agents ADD COLUMN IF NOT EXISTS last_error text NOT NULL DEFAULT '';
+ALTER TABLE nf_chunks ADD COLUMN IF NOT EXISTS captured_bytes bigint;
+ALTER TABLE nf_chunks ADD COLUMN IF NOT EXISTS traffic_stats jsonb NOT NULL DEFAULT '{}';
+CREATE TABLE IF NOT EXISTS nf_workers (
+    id text PRIMARY KEY,
+    kind text NOT NULL,
+    last_seen_at timestamptz NOT NULL DEFAULT clock_timestamp()
+);

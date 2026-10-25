@@ -205,6 +205,10 @@ def run_worker(settings, kind):
     store.initialize()
     owner = f'{kind}-{uuid.uuid4()}'
     operation = parser_once if kind == 'parser' else detector_once
+    last_ping = 0
     while True:
+        if time.monotonic() - last_ping >= 10:
+            store.worker_ping(owner, kind)
+            last_ping = time.monotonic()
         if not operation(store, owner):
             time.sleep(0.5)

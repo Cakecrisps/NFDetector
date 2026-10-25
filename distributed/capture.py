@@ -5,6 +5,7 @@ import json
 import math
 import os
 import struct
+from collections import Counter
 from pathlib import Path
 
 import dpkt
@@ -151,7 +152,9 @@ def parse_capture(source, destination):
     finally:
         temporary.unlink(missing_ok=True)
     return dict(path=str(path), frames=len(events), first_ts=events[0]['timestamp'] if events else None,
-                last_ts=events[-1]['timestamp'] if events else None)
+                last_ts=events[-1]['timestamp'] if events else None,
+                captured_bytes=sum(info['length'] for info in events),
+                traffic_stats={'protocols': dict(Counter(info['protocol'] for info in events))})
 
 
 def add_transport(info, transport):

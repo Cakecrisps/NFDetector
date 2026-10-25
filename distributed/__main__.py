@@ -10,6 +10,7 @@ def main():
     parser = argparse.ArgumentParser(description='NFDetect distributed capture and analysis')
     commands = parser.add_subparsers(dest='command', required=True)
     commands.add_parser('init-db')
+    commands.add_parser('setup-code')
     issue = commands.add_parser('issue-key')
     issue.add_argument('--name', required=True)
     issue.add_argument('--domain', required=True)
@@ -63,7 +64,16 @@ def main():
         run_worker(settings, 'parser' if args.command == 'parser-worker' else 'detector')
     else:
         store.initialize()
-        if args.command == 'issue-key':
+        if args.command == 'setup-code':
+            from .web_auth import WebAuth
+            auth = WebAuth(store)
+            auth.bootstrap()
+            with store.connect() as conn:
+                initial = conn.execute("SELECT must_change_password FROM nf_web_users WHERE username='root'").fetchone()
+            if not initial or not initial['must_change_password']:
+                parser.error('Initial setup is already complete; root:root is disabled')
+            print(auth.setup_path.read_text().strip())
+        elif args.command == 'issue-key':
             if not args.domain.strip() or len(args.domain) > 128:
                 parser.error('domain must contain 1–128 characters')
             path = Path(args.key_file)

@@ -8,6 +8,8 @@ x-service: &service
     NF_DATA_DIR: /data
     NF_RULES: /app/rules.json
     NF_PROTECTED_IPS: /app/ext/protectips.txt
+    NF_PUBLIC_URL: ${NF_PUBLIC_URL:-}
+    NF_TRUST_PROXY_HEADERS: '1'
   volumes:
     - data:/data
     - ./rules.json:/app/rules.json:ro

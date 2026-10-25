@@ -7,6 +7,7 @@ from pathlib import Path
 
 import psycopg
 from psycopg.rows import dict_row
+from psycopg.types.json import Jsonb
 
 
 class Conflict(Exception):
@@ -44,7 +45,12 @@ class Store:
             row = conn.execute('SELECT * FROM nf_agents WHERE key_id=%s AND NOT revoked', (key_id,)).fetchone()
         expected = row['key_hash'] if row else '0' * 64
         valid = hmac.compare_digest(expected, hashlib.sha256(secret.encode()).hexdigest())
-        return row if row and valid and secret else None
+        if row and valid and secret:
+            with self.connect() as conn:
+                conn.execute('''UPDATE nf_agents SET last_seen_at=clock_timestamp() WHERE id=%s
+                    AND (last_seen_at IS NULL OR last_seen_at<clock_timestamp()-interval '5 seconds')''', (row['id'],))
+            return row
+        return None
 
     def claim_chunk(self, owner):
         with self.connect() as conn:
@@ -92,8 +98,9 @@ class Store:
         with self.connect() as conn:
             self.fence(conn, 'nf_chunks', job)
             conn.execute("""UPDATE nf_chunks SET status='ready',artifact=%s,frames=%s,first_ts=%s,
-                last_ts=%s,parsed_by=owner,parser_finished_at=clock_timestamp(),owner=NULL,lease_until=NULL WHERE id=%s""",
-                         (result['path'], result['frames'], result['first_ts'], result['last_ts'], job['id']))
+                last_ts=%s,captured_bytes=%s,traffic_stats=%s,parsed_by=owner,parser_finished_at=clock_timestamp(),owner=NULL,lease_until=NULL WHERE id=%s""",
+                         (result['path'], result['frames'], result['first_ts'], result['last_ts'],
+                          result.get('captured_bytes'), Jsonb(result.get('traffic_stats', {})), job['id']))
             conn.execute('''UPDATE nf_domains SET work_version=work_version+1 WHERE id=(
                 SELECT a.domain FROM nf_chunks c JOIN nf_streams s ON s.id=c.stream_id
                 JOIN nf_agents a ON a.id=s.agent_id WHERE c.id=%s)''', (job['id'],))
@@ -132,3 +139,9 @@ class Store:
                              (cursor['sequence'] - 1, stream_id))
             conn.execute('''UPDATE nf_domains SET checkpoint=%s,config_hash=%s,last_timestamp=%s,owner=NULL,lease_until=NULL,
                 updated_at=clock_timestamp(),completed_version=CASE WHEN %s THEN %s ELSE completed_version END WHERE id=%s''', (checkpoint, config_hash, last_timestamp, idle, job['work_version'], job['id']))
+
+    def worker_ping(self, identity, kind):
+        with self.connect() as conn:
+            conn.execute("DELETE FROM nf_workers WHERE last_seen_at<clock_timestamp()-interval '1 day'")
+            conn.execute('''INSERT INTO nf_workers(id,kind) VALUES (%s,%s)
+                ON CONFLICT(id) DO UPDATE SET last_seen_at=clock_timestamp()''', (identity, kind))

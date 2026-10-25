@@ -50,6 +50,7 @@ class Uploader:
         token = key_file.read_text().strip()
         if not token or '\n' in token:
             raise ValueError('Invalid key file')
+        self.capture_state, self.last_error, self._heartbeat_due = 'idle', '', 0
         self.session = requests.Session()
         self.session.headers['Authorization'] = f'Bearer {token}'
         self.server, self.ca = server.rstrip('/'), ca
@@ -108,6 +109,7 @@ class Uploader:
             with self.lock:
                 self.state['registered'] = True
                 self.save()
+        self.heartbeat()
         progress = False
         for entry in list(self.state['entries']):
             index = entry['sequence']
@@ -144,6 +146,16 @@ class Uploader:
                 self.save()
         return progress
 
+    def heartbeat(self, force=False):
+        if not self.state['registered'] or (not force and time.monotonic() < self._heartbeat_due):
+            return
+        with self.lock:
+            pending = [item for item in self.state['entries'] if not item['ack']]
+            body = dict(capture_state=self.capture_state, backlog_bytes=sum(item['size'] for item in pending),
+                        backlog_files=len(pending), software_version='nfdetect-web-1', last_error=self.last_error[:512])
+        self.request('POST', '/v1/heartbeat', json=body)
+        self._heartbeat_due = time.monotonic() + 10
+
     def new_epoch(self):
         with self.lock:
             if not self.state['server_sealed']:
@@ -170,12 +182,15 @@ class Uploader:
                     raise InterruptedError('Agent stopped before capture registration')
 
     def upload_files(self, paths):
+        self.capture_state = 'uploading'
         for path in paths:
             self.add(path)
         with self.lock:
             self.state['sealed'] = True
             self.save()
         self.deliver()
+        self.capture_state = 'idle'
+        self.heartbeat(force=True)
 
 
 def run_capture(uploader, interface, spool, capture_filter, quota, stop_event=None):
@@ -207,6 +222,7 @@ def run_capture(uploader, interface, spool, capture_filter, quota, stop_event=No
     process = subprocess.Popen(['dumpcap', '-q', '-i', interface, '-f', capture_filter,
                                 '-b', 'duration:2', '-b', 'filesize:16384', '-b', 'printname:stdout',
                                 '-w', str(spool / 'capture.pcapng')], stdout=subprocess.PIPE, text=True)
+    uploader.capture_state = 'capturing'
     failures = []
 
     def harvest():
@@ -278,6 +294,9 @@ def run_capture(uploader, interface, spool, capture_filter, quota, stop_event=No
     with uploader.lock:
         uploader.state['sealed'] = True
         uploader.save()
+    uploader.capture_state = 'error' if reasons else 'stopped'
+    uploader.last_error = reasons[0] if reasons else ''
+    uploader._heartbeat_due = 0
     uploader.send_pending()
     if reasons:
         raise RuntimeError(reasons[0])
