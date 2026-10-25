@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="ru" data-bs-theme="auto">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+
+        <link rel="shortcut icon" href="../img/favicon.ico">
+        <title>Производительность - NFDetector</title>
+        <link href="../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../css/fontawesome.min.css" rel="stylesheet">
+        <link href="../css/brands.min.css" rel="stylesheet">
+        <link href="../css/solid.min.css" rel="stylesheet">
+        <link href="../css/v4-font-face.min.css" rel="stylesheet">
+        <link href="../css/base.css" rel="stylesheet">
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="../index.html">NFDetector</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li class="nav-item">
+                                <a href="../index.html" class="nav-link">Начало</a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown"  aria-expanded="false">Установка</a>
+                                <ul class="dropdown-menu">
+
+<li>
+    <a href="../getting-started/server.html" class="dropdown-item">Сервер и TLS</a>
+</li>
+
+<li>
+    <a href="../getting-started/agent.html" class="dropdown-item">Агент</a>
+</li>
+
+<li>
+    <a href="../getting-started/local.html" class="dropdown-item">Локальный анализ</a>
+</li>
+                                </ul>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown"  aria-expanded="false">Работа с системой</a>
+                                <ul class="dropdown-menu">
+
+<li>
+    <a href="../guides/panel.html" class="dropdown-item">Панель</a>
+</li>
+
+<li>
+    <a href="../guides/configuration.html" class="dropdown-item">Настройки и детекторы</a>
+</li>
+
+<li>
+    <a href="../guides/incidents.html" class="dropdown-item">Инциденты</a>
+</li>
+
+<li>
+    <a href="../guides/operations.html" class="dropdown-item">Эксплуатация</a>
+</li>
+
+<li>
+    <a href="../guides/troubleshooting.html" class="dropdown-item">Диагностика</a>
+</li>
+                                </ul>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown"  aria-expanded="false">Архитектура</a>
+                                <ul class="dropdown-menu">
+
+<li>
+    <a href="../architecture/overview.html" class="dropdown-item">Поток данных</a>
+</li>
+
+<li>
+    <a href="../architecture/api.html" class="dropdown-item">API и данные</a>
+</li>
+
+<li>
+    <a href="../architecture/limitations.html" class="dropdown-item">Ограничения</a>
+</li>
+                                </ul>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown"  aria-expanded="false">Состояние проекта</a>
+                                <ul class="dropdown-menu">
+
+<li>
+    <a href="../project/status.html" class="dropdown-item">Что реализовано</a>
+</li>
+
+<li>
+    <a href="../project/assessment.html" class="dropdown-item">Оценка и план</a>
+</li>
+
+<li>
+    <a href="../project/audit.html" class="dropdown-item">Проверка репозитория</a>
+</li>
+                                </ul>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle active" aria-current="page" role="button" data-bs-toggle="dropdown"  aria-expanded="false">Разработка</a>
+                                <ul class="dropdown-menu">
+
+<li>
+    <a href="testing.html" class="dropdown-item">Тесты</a>
+</li>
+
+<li>
+    <a href="performance.html" class="dropdown-item active" aria-current="page">Производительность</a>
+</li>
+
+<li>
+    <a href="documentation.html" class="dropdown-item">Сборка документации</a>
+</li>
+
+<li>
+    <a href="reference.html" class="dropdown-item">Справочник кода</a>
+</li>
+                                </ul>
+                            </li>
+                        </ul>
+
+                    <ul class="nav navbar-nav ms-md-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Поиск
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" href="testing.html" class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Назад
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="documentation.html" class="nav-link">
+                                    Вперед <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                            <li class="nav-item dropdown">
+                              <button id="theme-menu" aria-expanded="false" data-bs-toggle="dropdown" data-bs-display="static" aria-label="Toggle theme" class="nav-link dropdown-toggle">
+                                <i class="fa-solid fa-circle-half-stroke fa-fw"></i>
+                                <span class="d-lg-none ms-2">Toggle theme</span>
+                              </button>
+                              <ul class="dropdown-menu dropdown-menu-end">
+                                <li>
+                                  <button class="dropdown-item d-flex align-items-center" data-bs-theme-value="light" aria-pressed="false">
+                                    <i class="fa-solid fa-sun fa-fw"></i>
+                                    <span class="ms-2">Light</span>
+                                    <i class="fa-solid fa-check ms-auto d-none"></i>
+                                  </button>
+                                </li>
+                                <li>
+                                  <button class="dropdown-item d-flex align-items-center" data-bs-theme-value="dark" aria-pressed="false">
+                                    <i class="fa-solid fa-moon fa-fw"></i>
+                                    <span class="ms-2">Dark</span>
+                                    <i class="fa-solid fa-check ms-auto d-none"></i>
+                                  </button>
+                                </li>
+                                <li>
+                                  <button class="dropdown-item d-flex align-items-center" data-bs-theme-value="auto" aria-pressed="true">
+                                    <i class="fa-solid fa-circle-half-stroke fa-fw"></i>
+                                    <span class="ms-2">Auto</span>
+                                    <i class="fa-solid fa-check ms-auto"></i>
+                                  </button>
+                                </li>
+                              </ul>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <script src="../js/darkmode.js"></script>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#toc-collapse" title="Содержание">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
+        <ul class="nav flex-column">
+
+            <li class="nav-item" data-bs-level="1"><a href="#производительность-детекторов" class="nav-link">Производительность детекторов</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-bs-level="2"><a href="#что-изменено" class="nav-link">Что изменено</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#замер" class="nav-link">Замер</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#поведение-и-границы" class="nav-link">Поведение и границы</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#что-ещё-ограничивает-скорость" class="nav-link">Что ещё ограничивает скорость</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<h1 id="производительность-детекторов">Производительность детекторов<a class="headerlink" href="#производительность-детекторов" title="Permanent link">&para;</a></h1>
+<h2 id="что-изменено">Что изменено<a class="headerlink" href="#что-изменено" title="Permanent link">&para;</a></h2>
+<p>Ранее каждый пакет добавлялся в несколько окон с полными объектами PyShark.
+Затем каждое окно повторно обходилось целиком: извлекались IP/порты/флаги,
+строились счётчики и сортировались временные метки. При N пакетах, попавших
+в одно окно, это давало квадратичную работу.</p>
+<p><code>general/streaming.py</code> содержит независимое от PyShark потоковое ядро.
+На вход поступает один словарь полей пакета и результат распознавания
+аутентификации. Монитор извлекает их по одному разу на пакет.</p>
+<ul>
+<li>DDoS от одного IP, HTTP flood и brute force: очереди <code>(timestamp, key)</code>
+  и счётчики. Удаление старого события уменьшает счётчик; полный обход не нужен.</li>
+<li>Распределённый DDoS: счётчики источников отдельно на защищаемый адрес.
+  Список ведущих источников выбирается только при срабатывании.</li>
+<li>SYN flood: таблица ожидающих соединений и очередь истечения. Повторный SYN
+  обновляет время соединения без увеличения числа соединений; SYN-ACK его убирает.</li>
+<li>C2: очереди временных меток и интервалов, текущая сумма интервалов,
+  монотонные очереди для минимума и максимума. Сортировки и повторного обхода
+  всех пакетов нет. Сохранена прежняя трактовка события как пакета пары IP;
+  распознавание именно новых соединений остаётся отдельной задачей качества C2.</li>
+<li>Подозрительные IP: проверка множеств для текущего пакета.</li>
+</ul>
+<p>Операции со счётчиками и очередями имеют амортизированную стоимость O(1)
+на событие при фиксированном наборе правил. Истечение большой пачки старых
+событий может задержать один следующий пакет, но каждое событие удаляется
+один раз. Выбор ведущих источников при DDoS-срабатывании зависит от числа
+источников, поэтому весь конвейер нельзя объявлять строго O(1).</p>
+<p>Из RAM детекторов убраны объекты пакетов: хранятся только ключи и временные
+метки в пределах окон. Объём состояния всё ещё зависит от числа пакетов и
+уникальных соединений в окне, а не является фиксированным лимитом RAM.</p>
+<p>PCAP теперь декодируется одним проходом с <code>keep_packets=False</code>; предварительный
+проход ради количества пакетов убран. Вместо процента прогресса выводятся
+обработанное количество и текущая скорость. Захват закрывается и при ошибке.</p>
+<h2 id="замер">Замер<a class="headerlink" href="#замер" title="Permanent link">&para;</a></h2>
+<p>Воспроизводимый микробенчмарк:</p>
+<pre><code class="language-bash">python -m benchmarks.detectors --counts 500 1000 2000 --repeat 3
+</code></pre>
+<p>Повторный замер 25 октября 2026 года: Python 3.12, медиана трёх запусков.
+Команда выполнена при проверке документации; это микробенчмарк ядра.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">Пакетов в окне</th>
+<th style="text-align: right;">Повторный обход окна, с</th>
+<th style="text-align: right;">Потоковый вариант, с</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">500</td>
+<td style="text-align: right;">0.25020</td>
+<td style="text-align: right;">0.00189</td>
+</tr>
+<tr>
+<td style="text-align: right;">1000</td>
+<td style="text-align: right;">0.93696</td>
+<td style="text-align: right;">0.00358</td>
+</tr>
+<tr>
+<td style="text-align: right;">2000</td>
+<td style="text-align: right;">3.76893</td>
+<td style="text-align: right;">0.00785</td>
+</tr>
+</tbody>
+</table>
+<p>Измеряется один включённый DDoS-детектор на искусственных уже декодированных
+пакетах. Для обоих вариантов учитывается извлечение полей; у потокового это
+происходит один раз, у старого — при каждом обходе. Все пакеты остаются в одном
+секундном окне, порог выше их числа, вывода уведомлений нет.</p>
+<p>На 2000 пакетах в этом сценарии получилось около 480×, но это <strong>не</strong> ускорение
+всего приложения и <strong>не</strong> оценка пропускной способности сетевого захвата.
+TShark, PCAP I/O, все правила вместе, формирование отчётов и HTTP-уведомления
+в замер не входят. Абсолютные цифры зависят от машины и версии интерпретатора.</p>
+<h2 id="поведение-и-границы">Поведение и границы<a class="headerlink" href="#поведение-и-границы" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Окна привязаны к времени пакетов, включая граничную метку <code>now - window</code>.
+  Скорость чтения PCAP на результат не влияет.</li>
+<li>Rate/SYN/C2-оповещения выдаются при переходе к состоянию атаки; одинаковая
+  продолжающаяся атака не пишет новое уведомление на каждый пакет. После спада
+  состояния новое пересечение порога снова вызывает оповещение. Проверки
+  подозрительных IP остаются событиями каждого пакета.</li>
+<li>Счётчики rate/SYN ведутся по источнику <strong>и цели</strong>: трафик к разным защищаемым
+  адресам не склеивается, оповещение содержит соответствующую цель.</li>
+<li>В потоковом <code>analyzer.stats.total</code> пакет учитывается один раз, вместо повторного
+  подсчёта при каждом обходе каждого правила. Старые batch-методы сохранены для
+  совместимости и прямых вызовов; локальный монитор их на каждом пакете не вызывает.</li>
+<li>Один экземпляр ядра обслуживает один упорядоченный поток. Текущее ядро отвергает
+  убывающие timestamps до изменения своего состояния. Для смешанных/неупорядоченных
+  захватов нужен адаптер переупорядочивания, реализованный в серверном reducer.</li>
+<li>Один экземпляр монитора сохраняет состояние между последовательными вызовами
+  <code>analyze_file</code>, так что окно может пересекать границу файлов. Новый экземпляр
+  начинает независимый поток; сервер должен управлять этим явно.</li>
+</ul>
+<h2 id="что-ещё-ограничивает-скорость">Что ещё ограничивает скорость<a class="headerlink" href="#что-ещё-ограничивает-скорость" title="Permanent link">&para;</a></h2>
+<p>Локальный режим использует PyShark/TShark и хранит часть отчётных данных в RAM
+(<code>http_endp</code>, список оповещений, уникальные адреса и домены). Внешние HTTP-логи
+отправляются синхронно. Эти затраты не входят в микробенчмарк.</p>
+<p>Серверный режим использует dpkt, а не TShark. Parser держит события файла
+в RAM, сортирует и записывает JSONL с hex-payload. Один reducer на домен
+восстанавливает и сериализует полный checkpoint на каждом batch; это может
+стать узким местом раньше parser. Дополнительные detector-worker ускоряют
+разные домены, но не один горячий домен.</p>
+<p>Сквозной предел packets/s, длительный RSS и p95 capture→incident пока не
+установлены. Нужно измерять раздельно захват/drops, upload, parser, reducer,
+DB I/O, размер checkpoint, возраст backlog и диск. Повышение порогов правил
+меняет чувствительность, но не является проверенной оптимизацией производительности.</p>
+<p>Полный анализ и следующие шаги — в <a href="../project/assessment.html">оценке модели</a>.</p></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Документация создана с помощью <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script src="../js/bootstrap.bundle.min.js"></script>
+        <script>
+            var base_url = "..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../js/base.js"></script>
+        <script src="../search/main.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Поиск</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+            </div>
+            <div class="modal-body">
+                <p>Чтобы воспользоваться поиском по документам, введите поисковый запрос ниже.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Поиск..." id="mkdocs-search-query" title="Введите поисковый запрос">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="Ничего не найдено"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Сочетания клавиш</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Клавиши</th>
+                    <th>Действие</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Открыть справку</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Следующая страница</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Предыдущая страница</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Поиск</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

@@ -162,6 +162,12 @@ def test_tcp_http_and_authentication_survive_file_boundary(system):
     drain(store)
     assert len(alarms(store, 'HTTP_FLOOD')) == 1
     assert len(alarms(store, 'BRUTEFORCE_HTTP Basic')) == 1
+    # The external smoke-test must inspect combined kinds: DDOS keeps only
+    # one representative reason even when HTTP_FLOOD also contributed.
+    from benchmarks.compose_smoke import detected_kinds
+    incidents = client.get('/v1/events', headers=headers).json()['events']
+    assert len(incidents) == 2
+    assert {'DDoS_SINGLE_IP', 'HTTP_FLOOD', 'BRUTEFORCE_HTTP Basic'} <= detected_kinds(incidents)
 
 
 def test_checkpoint_restores_after_every_single_packet(system):

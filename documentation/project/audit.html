@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="ru" data-bs-theme="auto">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+
+        <link rel="shortcut icon" href="../img/favicon.ico">
+        <title>Проверка репозитория - NFDetector</title>
+        <link href="../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../css/fontawesome.min.css" rel="stylesheet">
+        <link href="../css/brands.min.css" rel="stylesheet">
+        <link href="../css/solid.min.css" rel="stylesheet">
+        <link href="../css/v4-font-face.min.css" rel="stylesheet">
+        <link href="../css/base.css" rel="stylesheet">
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="../index.html">NFDetector</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li class="nav-item">
+                                <a href="../index.html" class="nav-link">Начало</a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown"  aria-expanded="false">Установка</a>
+                                <ul class="dropdown-menu">
+
+<li>
+    <a href="../getting-started/server.html" class="dropdown-item">Сервер и TLS</a>
+</li>
+
+<li>
+    <a href="../getting-started/agent.html" class="dropdown-item">Агент</a>
+</li>
+
+<li>
+    <a href="../getting-started/local.html" class="dropdown-item">Локальный анализ</a>
+</li>
+                                </ul>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown"  aria-expanded="false">Работа с системой</a>
+                                <ul class="dropdown-menu">
+
+<li>
+    <a href="../guides/panel.html" class="dropdown-item">Панель</a>
+</li>
+
+<li>
+    <a href="../guides/configuration.html" class="dropdown-item">Настройки и детекторы</a>
+</li>
+
+<li>
+    <a href="../guides/incidents.html" class="dropdown-item">Инциденты</a>
+</li>
+
+<li>
+    <a href="../guides/operations.html" class="dropdown-item">Эксплуатация</a>
+</li>
+
+<li>
+    <a href="../guides/troubleshooting.html" class="dropdown-item">Диагностика</a>
+</li>
+                                </ul>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown"  aria-expanded="false">Архитектура</a>
+                                <ul class="dropdown-menu">
+
+<li>
+    <a href="../architecture/overview.html" class="dropdown-item">Поток данных</a>
+</li>
+
+<li>
+    <a href="../architecture/api.html" class="dropdown-item">API и данные</a>
+</li>
+
+<li>
+    <a href="../architecture/limitations.html" class="dropdown-item">Ограничения</a>
+</li>
+                                </ul>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle active" aria-current="page" role="button" data-bs-toggle="dropdown"  aria-expanded="false">Состояние проекта</a>
+                                <ul class="dropdown-menu">
+
+<li>
+    <a href="status.html" class="dropdown-item">Что реализовано</a>
+</li>
+
+<li>
+    <a href="assessment.html" class="dropdown-item">Оценка и план</a>
+</li>
+
+<li>
+    <a href="audit.html" class="dropdown-item active" aria-current="page">Проверка репозитория</a>
+</li>
+                                </ul>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown"  aria-expanded="false">Разработка</a>
+                                <ul class="dropdown-menu">
+
+<li>
+    <a href="../development/testing.html" class="dropdown-item">Тесты</a>
+</li>
+
+<li>
+    <a href="../development/performance.html" class="dropdown-item">Производительность</a>
+</li>
+
+<li>
+    <a href="../development/documentation.html" class="dropdown-item">Сборка документации</a>
+</li>
+
+<li>
+    <a href="../development/reference.html" class="dropdown-item">Справочник кода</a>
+</li>
+                                </ul>
+                            </li>
+                        </ul>
+
+                    <ul class="nav navbar-nav ms-md-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Поиск
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" href="assessment.html" class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Назад
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="../development/testing.html" class="nav-link">
+                                    Вперед <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                            <li class="nav-item dropdown">
+                              <button id="theme-menu" aria-expanded="false" data-bs-toggle="dropdown" data-bs-display="static" aria-label="Toggle theme" class="nav-link dropdown-toggle">
+                                <i class="fa-solid fa-circle-half-stroke fa-fw"></i>
+                                <span class="d-lg-none ms-2">Toggle theme</span>
+                              </button>
+                              <ul class="dropdown-menu dropdown-menu-end">
+                                <li>
+                                  <button class="dropdown-item d-flex align-items-center" data-bs-theme-value="light" aria-pressed="false">
+                                    <i class="fa-solid fa-sun fa-fw"></i>
+                                    <span class="ms-2">Light</span>
+                                    <i class="fa-solid fa-check ms-auto d-none"></i>
+                                  </button>
+                                </li>
+                                <li>
+                                  <button class="dropdown-item d-flex align-items-center" data-bs-theme-value="dark" aria-pressed="false">
+                                    <i class="fa-solid fa-moon fa-fw"></i>
+                                    <span class="ms-2">Dark</span>
+                                    <i class="fa-solid fa-check ms-auto d-none"></i>
+                                  </button>
+                                </li>
+                                <li>
+                                  <button class="dropdown-item d-flex align-items-center" data-bs-theme-value="auto" aria-pressed="true">
+                                    <i class="fa-solid fa-circle-half-stroke fa-fw"></i>
+                                    <span class="ms-2">Auto</span>
+                                    <i class="fa-solid fa-check ms-auto"></i>
+                                  </button>
+                                </li>
+                              </ul>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <script src="../js/darkmode.js"></script>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#toc-collapse" title="Содержание">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
+        <ul class="nav flex-column">
+
+            <li class="nav-item" data-bs-level="1"><a href="#проверка-репозитория-25-октября-2026" class="nav-link">Проверка репозитория 25 октября 2026</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-bs-level="2"><a href="#результаты-и-найденные-расхождения" class="nav-link">Результаты и найденные расхождения</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#выполненные-проверки" class="nav-link">Выполненные проверки</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#границы-этой-проверки" class="nav-link">Границы этой проверки</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<h1 id="проверка-репозитория-25-октября-2026">Проверка репозитория 25 октября 2026<a class="headerlink" href="#проверка-репозитория-25-октября-2026" title="Permanent link">&para;</a></h1>
+<p>Объект: локальная ветка <code>dev</code>, база <code>960187f</code>, после слияния <code>agent-installer</code>.
+Проверка основана на коде, конфигурации, автоматических тестах и локальной
+сборке. Она не является заключением о безопасности всей сети или гарантией
+производительности production.</p>
+<h2 id="результаты-и-найденные-расхождения">Результаты и найденные расхождения<a class="headerlink" href="#результаты-и-найденные-расхождения" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Область</th>
+<th>Вывод</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Состав ветки</td>
+<td>Автоустановщик объединён с инцидентами, графиками и темами</td>
+</tr>
+<tr>
+<td>Серверная схема</td>
+<td>Один TLS LB, внутренние API/БД/workers, общий data-volume; проверено чтением Compose/NGINX</td>
+</tr>
+<tr>
+<td>Границы файлов</td>
+<td>Состояние сохраняет reducer домена; parser не изолирует историю атаки</td>
+</tr>
+<tr>
+<td>Статистика</td>
+<td>Карточки/график/протоколы используют единый период и DB snapshot; capture-time инцидентов отличается от receipt-time файлов</td>
+</tr>
+<tr>
+<td>SSH</td>
+<td>Greeting rate маркирован как возможный перебор; зашифрованные ошибки пароля не видны</td>
+</tr>
+<tr>
+<td>Хранение</td>
+<td>Retention и GC отсутствуют, квота учитывает обработанные PCAP</td>
+</tr>
+<tr>
+<td>Уведомления</td>
+<td>Сервер пишет outbox, но внешнего доставщика нет</td>
+</tr>
+<tr>
+<td>Документация</td>
+<td>Старый pydoctor обошёл корень, включая <code>.git</code>, кеши и <code>out</code>; новый build использует явные Python roots</td>
+</tr>
+<tr>
+<td>Smoke-test</td>
+<td>Проверка старых отдельных reasons несовместима с объединённым DDOS; исправлена на анализ <code>kinds</code> инцидента</td>
+</tr>
+</tbody>
+</table>
+<p>Старый README обещал произвольные SIEM URL и неточно описывал пороги и защищаемые
+адреса. Архитектурный проект представлял часть будущих возможностей как готовые,
+а heartbeat ошибочно оставался среди планов. Описания заменены сверенными
+руководствами, статусом и отдельным планом.</p>
+<h2 id="выполненные-проверки">Выполненные проверки<a class="headerlink" href="#выполненные-проверки" title="Permanent link">&para;</a></h2>
+<p>После объединения веток и повторно после обновления smoke-test: <strong>142 теста
+прошли</strong> на Python 3.12 и отдельном PostgreSQL 16, без пропусков. Присутствовало одно предупреждение зависимости
+Starlette/httpx. Compose прошёл <code>config --quiet</code>, объединённые <code>app.js</code> и
+<code>theme.js</code> проверены парсером установленного Chrome.</p>
+<p>Дополнительно выполнены:</p>
+<ul>
+<li>Изолированный Compose HTTPS smoke-test: <strong>150 004 синтетических пакета</strong>, два
+  разных parser, второй файл завершён раньше первого; обнаружены
+  <code>DDoS_SINGLE_IP</code>, <code>HTTP_FLOOD</code>, <code>BRUTEFORCE_HTTP Basic</code>. После объединения
+  получилось <strong>два инцидента</strong>, DDoS и HTTP flood входят в общий DDOS.
+  Сертификат проверялся через отдельный тестовый CA-файл.</li>
+<li>Повторный микробенчмарк 500/1000/2000 событий, медиана трёх запусков:
+  на 2000 событиях 3.76893 с против 0.00785 с для потокового ядра.
+  Это не замер пропускной способности полного сервиса.</li>
+<li>MkDocs strict + pydoctor warnings-as-errors: <strong>84 HTML-страницы</strong>,
+  все локальные ссылки и anchors проверены. Старые страницы <code>.git</code>, кешей
+  и <code>out</code> отсутствуют. HTML полностью сгенерирован заново.</li>
+<li>Chrome: все <strong>19 страниц руководства</strong>, переход в API, английский и русский
+  поиск, сохранение тёмной темы, мобильное меню при ширине 390 px.
+  Нет ошибок JavaScript, HTTP-ошибок и внешних запросов ресурсов.</li>
+<li>Исправлены русские slug/якоря, отключён CDN highlight.js; для темы без него
+  добавлен небольшой исходный override генератора. Результат проверен визуально
+  на настольном и мобильном экране.</li>
+<li>Исправлена подсказка <code>--protected_ips</code> локальной CLI: это защищаемые цели,
+  а не исключения. Новые PCAP, отчёты и окружение документации исключены из Git.</li>
+</ul>
+<p>Автоустановщик проверен интеграционными тестами кода выдачи/обмена и артефактов.
+Повторная установка службы на реальной виртуалке в этом сеансе не выполнялась.</p>
+<h2 id="границы-этой-проверки">Границы этой проверки<a class="headerlink" href="#границы-этой-проверки" title="Permanent link">&para;</a></h2>
+<p>Рабочие контейнеры в начале проверки были остановлены. Рабочая установка,
+агенты на виртуалках, правила и данные не изменялись. Предыдущие успешные
+ручные проверки не выдаются здесь за новый live-прогон.</p>
+<p>Новый длительный нагрузочный прогон с реальным capture, потери dumpcap,
+заполнение диска, отказ Docker-хоста, восстановление резервной копии,
+ротация production-сертификата и точность правил на полном корпусе атак
+в этой проверке не подтверждены. Это задачи из <a href="assessment.html">плана</a>.</p></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Документация создана с помощью <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script src="../js/bootstrap.bundle.min.js"></script>
+        <script>
+            var base_url = "..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../js/base.js"></script>
+        <script src="../search/main.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Поиск</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+            </div>
+            <div class="modal-body">
+                <p>Чтобы воспользоваться поиском по документам, введите поисковый запрос ниже.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Поиск..." id="mkdocs-search-query" title="Введите поисковый запрос">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="Ничего не найдено"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Сочетания клавиш</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Клавиши</th>
+                    <th>Действие</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Открыть справку</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Следующая страница</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Предыдущая страница</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Поиск</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

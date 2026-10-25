@@ -76,7 +76,7 @@ def parse_arguments():
         '-pi', '--protected_ips',
         dest='protected_ips',
         default='ext/protectips.txt',
-        help='Файл с IP-адресами для исключения из анализа'
+        help='Файл с IP-адресами защищаемых целей'
     )
 
     parser.add_argument(

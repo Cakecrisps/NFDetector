@@ -1,0 +1,816 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+          "DTD/xhtml1-strict.dtd">
+<html>
+
+
+  <head>
+
+    <title>distributed.capture</title>
+    <meta name="generator" content="pydoctor 25.10.1">
+
+    </meta>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1 maximum-scale=1" />
+    <link rel="stylesheet" type="text/css" href="bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="apidocs.css" />
+    <link rel="stylesheet" type="text/css" href="extra.css" />
+
+</head>
+
+  <body>
+
+
+
+    <nav class="navbar navbar-default mainnavbar">
+
+
+  <div class="container-fluid">
+
+
+    <div class="navbar-header">
+
+      <div class="navlinks">
+        <span class="navbar-brand">
+          <a href="../index.html" class="projecthome">NFDetector</a> <a href="index.html">API Documentation</a>
+        </span>
+
+        <a href="moduleIndex.html">
+          Modules
+        </a>
+
+        <a href="classIndex.html">
+          Classes
+        </a>
+
+        <a href="nameIndex.html">
+          Names
+        </a>
+
+        <div id="search-box-container">
+          <div class="input-group">
+            <input id="search-box" type="search" name="search-query" placeholder="Search..." aria-label="Search" minlength="2" class="form-control" autocomplete="off" />
+
+            <span class="input-group-btn">
+              <a style="display: none;" class="btn btn-default" id="search-clear-button" title="Clear" onclick="clearSearch()"><img src="fonts/x-circle.svg" alt="Clear" /></a>
+              <a class="btn btn-default" id="apidocs-help-button" title="Help" href="apidocs-help.html"><img src="fonts/info.svg" alt="Help" /></a>
+            </span>
+          </div>
+        </div>
+
+      </div>
+
+      <div id="search-results-container" style="display: none;">
+
+        <div id="search-buttons">
+          <span class="label label-default" id="search-docstrings-button">
+          <label class="checkbox-inline">
+            <input type="checkbox" id="toggle-search-in-docstrings-checkbox" value="false" onclick="toggleSearchInDocstrings()">
+              search in docstrings
+            </input>
+          </label>
+          </span>
+
+        </div>
+
+        <noscript>
+            <h1>Cannot search: JavaScript is not supported/enabled in your browser.</h1>
+        </noscript>
+
+        <div id="search-status"> </div>
+
+        <div class="warning" id="search-warn-box" style="display: none;">
+          <p class="rst-last"><span id="search-warn"></span></p>
+        </div>
+
+        <table id="search-results">
+          <!-- Filled dynamically by JS -->
+        </table>
+
+        <div style="margin-top: 10px;">
+          <p>For more information on the search, visit the <a href="apidocs-help.html#rst-search">help page</a>.</p>
+        </div>
+      </div>
+
+    </div>
+
+
+  </div>
+</nav>
+
+    <div class="container-fluid">
+
+      <!-- Side navigation -->
+      <div class="sidebarcontainer" style="display: none;">
+
+        <div class="sidebar"><nav class="sidebar">
+
+
+  <div>
+
+      <div class="thingTitle">
+        <span>Module</span>
+        <code class="thisobject"><a href="distributed.capture.html" class="internal-link" title="This module">capture</a></code>
+      </div>
+
+      <div>
+
+
+
+
+
+
+
+
+        <div class="childrenKindTitle">Functions</div>
+        <ul>
+
+    <li class="">
+
+
+
+
+
+            <div class="itemName"><code><a href="#add_transport" class="internal-link" title="distributed.capture.add_transport">add<wbr></wbr>_transport</a></code>
+            </div>
+
+
+    </li><li class="">
+
+
+
+
+
+            <div class="itemName"><code><a href="#digest_file" class="internal-link" title="distributed.capture.digest_file">digest<wbr></wbr>_file</a></code>
+            </div>
+
+
+    </li><li class="">
+
+
+
+
+
+            <div class="itemName"><code><a href="#fsync_directory" class="internal-link" title="distributed.capture.fsync_directory">fsync<wbr></wbr>_directory</a></code>
+            </div>
+
+
+    </li><li class="">
+
+
+
+
+
+            <div class="itemName"><code><a href="#ip_packet" class="internal-link" title="distributed.capture.ip_packet">ip<wbr></wbr>_packet</a></code>
+            </div>
+
+
+    </li><li class="">
+
+
+
+
+
+            <div class="itemName"><code><a href="#parse_capture" class="internal-link" title="distributed.capture.parse_capture">parse<wbr></wbr>_capture</a></code>
+            </div>
+
+
+    </li><li class="">
+
+
+
+
+
+            <div class="itemName"><code><a href="#reader" class="internal-link" title="distributed.capture.reader">reader</a></code>
+            </div>
+
+
+    </li><li class="">
+
+
+
+
+
+            <div class="itemName"><code><a href="#validate_layout" class="internal-link" title="distributed.capture.validate_layout">validate<wbr></wbr>_layout</a></code>
+            </div>
+
+
+    </li>
+</ul>
+
+
+
+
+        <div class="childrenKindTitle">Variables</div>
+        <ul>
+
+    <li class="">
+
+
+
+
+
+            <div class="itemName"><code><a href="#MAGICS" class="internal-link" title="distributed.capture.MAGICS">MAGICS</a></code>
+            </div>
+
+
+    </li><li class="">
+
+
+
+
+
+            <div class="itemName"><code><a href="#MAX_ARTIFACT" class="internal-link" title="distributed.capture.MAX_ARTIFACT">MAX<wbr></wbr>_ARTIFACT</a></code>
+            </div>
+
+
+    </li><li class="">
+
+
+
+
+
+            <div class="itemName"><code><a href="#MAX_FRAMES" class="internal-link" title="distributed.capture.MAX_FRAMES">MAX<wbr></wbr>_FRAMES</a></code>
+            </div>
+
+
+    </li>
+</ul>
+
+
+
+
+      </div>
+  </div><div>
+
+      <div class="thingTitle">
+        <span>Package</span>
+        <code><a href="distributed.html" class="internal-link" title="The parent of this module">distributed</a></code>
+      </div>
+
+      <div>
+
+
+        <div class="childrenKindTitle">Modules</div>
+        <ul>
+
+    <li class="">
+
+
+
+
+
+            <div class="itemName"><code><a href="distributed.agent.html" class="internal-link" title="distributed.agent">agent</a></code>
+            </div>
+
+
+    </li><li class="">
+
+
+
+
+
+            <div class="itemName"><code><a href="distributed.api.html" class="internal-link" title="distributed.api">api</a></code>
+            </div>
+
+
+    </li><li class=" thisobject">
+
+
+
+
+
+            <div class="itemName"><code><a href="distributed.capture.html" class="internal-link" title="distributed.capture">capture</a></code>
+            </div>
+
+
+    </li><li class="">
+
+
+
+
+
+            <div class="itemName"><code><a href="distributed.flows.html" class="internal-link" title="distributed.flows">flows</a></code>
+            </div>
+
+
+    </li><li class="">
+
+
+
+
+
+            <div class="itemName"><code><a href="distributed.incidents.html" class="internal-link" title="distributed.incidents">incidents</a></code>
+            </div>
+
+
+    </li><li class="">
+
+
+
+
+
+            <div class="itemName"><code><a href="distributed.installation.html" class="internal-link" title="distributed.installation">installation</a></code>
+            </div>
+
+
+    </li><li class="">
+
+
+
+
+
+            <div class="itemName"><code><a href="distributed.installer.html" class="internal-link" title="distributed.installer">installer</a></code>
+            </div>
+
+
+    </li><li class="">
+
+
+
+
+
+            <div class="itemName"><code><a href="distributed.service.html" class="internal-link" title="distributed.service">service</a></code>
+            </div>
+
+
+    </li><li class="">
+
+
+
+
+
+            <div class="itemName"><code><a href="distributed.settings.html" class="internal-link" title="distributed.settings">settings</a></code>
+            </div>
+
+
+    </li><li class="">
+
+
+
+
+
+            <div class="itemName"><code><a href="distributed.store.html" class="internal-link" title="distributed.store">store</a></code>
+            </div>
+
+
+    </li><li class="">
+
+
+
+
+
+            <div class="itemName"><code><a href="distributed.tls.html" class="internal-link" title="distributed.tls">tls</a></code>
+            </div>
+
+
+    </li><li class="">
+
+
+
+
+
+            <div class="itemName"><code><a href="distributed.web.html" class="internal-link" title="distributed.web">web</a></code>
+            </div>
+
+
+    </li><li class="">
+
+
+
+
+
+            <div class="itemName"><code><a href="distributed.web_auth.html" class="internal-link" title="distributed.web_auth">web<wbr></wbr>_auth</a></code>
+            </div>
+
+
+    </li><li class="">
+
+
+
+
+
+            <div class="itemName"><code><a href="distributed.web_metrics.html" class="internal-link" title="distributed.web_metrics">web<wbr></wbr>_metrics</a></code>
+            </div>
+
+
+    </li><li class="">
+
+
+
+
+
+            <div class="itemName"><code><a href="distributed.web_security.html" class="internal-link" title="distributed.web_security">web<wbr></wbr>_security</a></code>
+            </div>
+
+
+    </li><li class="">
+
+
+
+
+
+            <div class="itemName"><code><a href="distributed.workers.html" class="internal-link" title="distributed.workers">workers</a></code>
+            </div>
+
+
+    </li><li class="private">
+
+
+
+
+
+            <div class="itemName"><code><a href="distributed.__main__.html" class="internal-link" title="distributed.__main__">__main__</a></code>
+            </div>
+
+
+    </li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      </div>
+  </div>
+
+</nav>
+        </div>
+        <div id="collapse-sidebar">
+          <a class="btn btn-link" onclick="toggleSideBarCollapse()" title="Toggle Sidebar Collapse">
+          </a>
+        </div>
+        <script src="sidebartoggle.js" type="text/javascript"></script>
+
+      </div>
+
+      <main class="">
+
+
+
+
+        <div class="page-header">
+          <h1 class="module"><code><code><a href="distributed.html" class="internal-link">distributed</a></code><wbr></wbr>.<code><a href="distributed.capture.html" class="internal-link" title="distributed.capture">capture</a></code></code></h1>
+          <div id="show-private">
+            <button class="btn btn-link" onclick="togglePrivate()">Toggle Private API</button>
+          </div>
+        </div>
+
+        <div class="categoryHeader">
+          module documentation
+        </div>
+
+        <div class="extrasDocstring">
+
+        </div>
+
+        <div class="moduleDocstring">
+          <div><p>Bounded, stateless L2/L3/L4 PCAP parsing. Application state lives downstream.</p></div>
+        </div>
+
+        <div id="split-tables">
+          <table class="children sortable" id="id9">
+
+
+  <tr class="function">
+
+    <td>Function</td>
+    <td><code><a href="#add_transport" class="internal-link" title="distributed.capture.add_transport">add<wbr></wbr>_transport</a></code></td>
+    <td><span class="rst-undocumented">Undocumented</span></td>
+  </tr><tr class="function">
+
+    <td>Function</td>
+    <td><code><a href="#digest_file" class="internal-link" title="distributed.capture.digest_file">digest<wbr></wbr>_file</a></code></td>
+    <td><span class="rst-undocumented">Undocumented</span></td>
+  </tr><tr class="function">
+
+    <td>Function</td>
+    <td><code><a href="#fsync_directory" class="internal-link" title="distributed.capture.fsync_directory">fsync<wbr></wbr>_directory</a></code></td>
+    <td><span class="rst-undocumented">Undocumented</span></td>
+  </tr><tr class="function">
+
+    <td>Function</td>
+    <td><code><a href="#ip_packet" class="internal-link" title="distributed.capture.ip_packet">ip<wbr></wbr>_packet</a></code></td>
+    <td><span class="rst-undocumented">Undocumented</span></td>
+  </tr><tr class="function">
+
+    <td>Function</td>
+    <td><code><a href="#parse_capture" class="internal-link" title="distributed.capture.parse_capture">parse<wbr></wbr>_capture</a></code></td>
+    <td>Publish a sorted JSONL artifact only after the entire capture validates.</td>
+  </tr><tr class="function">
+
+    <td>Function</td>
+    <td><code><a href="#reader" class="internal-link" title="distributed.capture.reader">reader</a></code></td>
+    <td><span class="rst-undocumented">Undocumented</span></td>
+  </tr><tr class="function">
+
+    <td>Function</td>
+    <td><code><a href="#validate_layout" class="internal-link" title="distributed.capture.validate_layout">validate<wbr></wbr>_layout</a></code></td>
+    <td>Reject capture layouts dpkt would partially ignore, and truncated frames.</td>
+  </tr><tr class="constant">
+
+    <td>Constant</td>
+    <td><code><a href="#MAGICS" class="internal-link" title="distributed.capture.MAGICS">MAGICS</a></code></td>
+    <td><span class="rst-undocumented">Undocumented</span></td>
+  </tr><tr class="constant">
+
+    <td>Constant</td>
+    <td><code><a href="#MAX_ARTIFACT" class="internal-link" title="distributed.capture.MAX_ARTIFACT">MAX<wbr></wbr>_ARTIFACT</a></code></td>
+    <td><span class="rst-undocumented">Undocumented</span></td>
+  </tr><tr class="constant">
+
+    <td>Constant</td>
+    <td><code><a href="#MAX_FRAMES" class="internal-link" title="distributed.capture.MAX_FRAMES">MAX<wbr></wbr>_FRAMES</a></code></td>
+    <td><span class="rst-undocumented">Undocumented</span></td>
+  </tr>
+</table>
+
+
+
+        </div>
+
+        <div id="child-list">
+          <div class="basefunction">
+
+
+  <a name="distributed.capture.add_transport">
+
+  </a>
+  <a name="add_transport">
+
+  </a>
+  <div class="functionHeader">
+
+
+    <span class="py-keyword">def</span>&#160;<span class="py-defname">add_transport</span><span class="function-signature">(<span class="rst-sig-param">info, </span><span class="rst-sig-param">transport</span>):</span>
+
+    <a class="headerLink" href="#add_transport" title="distributed.capture.add_transport">
+
+
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basefunction">
+
+
+  <a name="distributed.capture.digest_file">
+
+  </a>
+  <a name="digest_file">
+
+  </a>
+  <div class="functionHeader">
+
+
+    <span class="py-keyword">def</span>&#160;<span class="py-defname">digest_file</span><span class="function-signature">(<span class="rst-sig-param">path</span>):</span>
+
+    <a class="headerLink" href="#digest_file" title="distributed.capture.digest_file">
+
+
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basefunction">
+
+
+  <a name="distributed.capture.fsync_directory">
+
+  </a>
+  <a name="fsync_directory">
+
+  </a>
+  <div class="functionHeader">
+
+
+    <span class="py-keyword">def</span>&#160;<span class="py-defname">fsync_directory</span><span class="function-signature">(<span class="rst-sig-param">path</span>):</span>
+
+    <a class="headerLink" href="#fsync_directory" title="distributed.capture.fsync_directory">
+
+
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basefunction">
+
+
+  <a name="distributed.capture.ip_packet">
+
+  </a>
+  <a name="ip_packet">
+
+  </a>
+  <div class="functionHeader">
+
+
+    <span class="py-keyword">def</span>&#160;<span class="py-defname">ip_packet</span><span class="function-signature">(<span class="rst-sig-param">frame, </span><span class="rst-sig-param">linktype</span>):</span>
+
+    <a class="headerLink" href="#ip_packet" title="distributed.capture.ip_packet">
+
+
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basefunction">
+
+
+  <a name="distributed.capture.parse_capture">
+
+  </a>
+  <a name="parse_capture">
+
+  </a>
+  <div class="functionHeader">
+
+
+    <span class="py-keyword">def</span>&#160;<span class="py-defname">parse_capture</span><span class="function-signature">(<span class="rst-sig-param">source, </span><span class="rst-sig-param">destination</span>):</span>
+
+    <a class="headerLink" href="#parse_capture" title="distributed.capture.parse_capture">
+
+
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+
+    <div><p>Publish a sorted JSONL artifact only after the entire capture validates.</p></div>
+  </div>
+</div><div class="basefunction">
+
+
+  <a name="distributed.capture.reader">
+
+  </a>
+  <a name="reader">
+
+  </a>
+  <div class="functionHeader">
+
+
+    <span class="py-keyword">def</span>&#160;<span class="py-defname">reader</span><span class="function-signature">(<span class="rst-sig-param">handle</span>):</span>
+
+    <a class="headerLink" href="#reader" title="distributed.capture.reader">
+
+
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basefunction">
+
+
+  <a name="distributed.capture.validate_layout">
+
+  </a>
+  <a name="validate_layout">
+
+  </a>
+  <div class="functionHeader">
+
+
+    <span class="py-keyword">def</span>&#160;<span class="py-defname">validate_layout</span><span class="function-signature">(<span class="rst-sig-param">handle</span>):</span>
+
+    <a class="headerLink" href="#validate_layout" title="distributed.capture.validate_layout">
+
+
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+
+    <div><p>Reject capture layouts dpkt would partially ignore, and truncated frames.</p></div>
+  </div>
+</div><div class="baseconstant">
+
+
+  <a name="distributed.capture.MAGICS">
+
+  </a>
+  <a name="MAGICS">
+
+  </a>
+  <div class="functionHeader">
+
+    <span class="py-defname">MAGICS</span>: <code><a href="https://docs.python.org/3.12//library/stdtypes.html#tuple" class="intersphinx-link">tuple</a>[<wbr></wbr><a href="https://docs.python.org/3.12//library/stdtypes.html#bytes" class="intersphinx-link">bytes</a>, <wbr></wbr><span class="rst-variable-ellipsis">...</span>]</code> =
+
+    <a class="headerLink" href="#MAGICS" title="distributed.capture.MAGICS">
+
+
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+
+    <div><p class="undocumented">Undocumented</p></div>
+    <table class="valueTable"><tr class="fieldStart"><td class="fieldName">Value</td></tr><tr><td><pre class="constant-value"><code>(<wbr></wbr>b<span class="rst-variable-quote">'</span><span class="rst-variable-string">\xd4\xc3\xb2\xa1</span><span class="rst-variable-quote">'</span>,
+ <wbr></wbr>b<span class="rst-variable-quote">'</span><span class="rst-variable-string">\xa1\xb2\xc3\xd4</span><span class="rst-variable-quote">'</span>,
+ <wbr></wbr>b<span class="rst-variable-quote">'</span><span class="rst-variable-string">M&lt;\xb2\xa1</span><span class="rst-variable-quote">'</span>,
+ <wbr></wbr>b<span class="rst-variable-quote">'</span><span class="rst-variable-string">\xa1\xb2&lt;M</span><span class="rst-variable-quote">'</span>,
+ <wbr></wbr>b<span class="rst-variable-quote">'''</span><span class="rst-variable-string"></span>
+<span class="rst-variable-string">\r\r</span>
+<span class="rst-variable-string"></span><span class="rst-variable-quote">'''</span>)</code></pre></td></tr></table>
+  </div>
+</div><div class="baseconstant">
+
+
+  <a name="distributed.capture.MAX_ARTIFACT">
+
+  </a>
+  <a name="MAX_ARTIFACT">
+
+  </a>
+  <div class="functionHeader">
+
+    <span class="py-defname">MAX_ARTIFACT</span> =
+
+    <a class="headerLink" href="#MAX_ARTIFACT" title="distributed.capture.MAX_ARTIFACT">
+
+
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+
+    <div><p class="undocumented">Undocumented</p></div>
+    <table class="valueTable"><tr class="fieldStart"><td class="fieldName">Value</td></tr><tr><td><pre class="constant-value"><code>256 * 1024 * 1024</code></pre></td></tr></table>
+  </div>
+</div><div class="baseconstant">
+
+
+  <a name="distributed.capture.MAX_FRAMES">
+
+  </a>
+  <a name="MAX_FRAMES">
+
+  </a>
+  <div class="functionHeader">
+
+    <span class="py-defname">MAX_FRAMES</span>: <code><a href="https://docs.python.org/3.12//library/functions.html#int" class="intersphinx-link">int</a></code> =
+
+    <a class="headerLink" href="#MAX_FRAMES" title="distributed.capture.MAX_FRAMES">
+
+
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+
+    <div><p class="undocumented">Undocumented</p></div>
+    <table class="valueTable"><tr class="fieldStart"><td class="fieldName">Value</td></tr><tr><td><pre class="constant-value"><code>500000</code></pre></td></tr></table>
+  </div>
+</div>
+        </div>
+
+      </main>
+    </div>
+
+    <footer class="navbar navbar-default">
+
+
+  <div class="container-fluid">
+    <a href="index.html">API Documentation</a> for <a href="../index.html" class="projecthome">NFDetector</a>,
+  generated by <a href="https://github.com/twisted/pydoctor/">pydoctor</a>
+    25.10.1 at 2026-10-25 18:55:52.
+  </div>
+
+  <!-- Search related scripts needs to be loaded at the end of HTML
+    parsing not to introduce overhead and display HTML data asap -->
+  <script src="ajax.js" type="text/javascript"></script>
+  <script src="searchlib.js" type="text/javascript"></script>
+  <script src="search.js" type="text/javascript"></script>
+
+</footer>
+
+    <script src="pydoctor.js" type="text/javascript"></script>
+
+  </body>
+</html>

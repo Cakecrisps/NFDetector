@@ -1,0 +1,832 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+          "DTD/xhtml1-strict.dtd">
+<html>
+
+
+  <head>
+
+    <title>distributed.workers</title>
+    <meta name="generator" content="pydoctor 25.10.1">
+
+    </meta>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1 maximum-scale=1" />
+    <link rel="stylesheet" type="text/css" href="bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="apidocs.css" />
+    <link rel="stylesheet" type="text/css" href="extra.css" />
+
+</head>
+
+  <body>
+
+
+
+    <nav class="navbar navbar-default mainnavbar">
+
+
+  <div class="container-fluid">
+
+
+    <div class="navbar-header">
+
+      <div class="navlinks">
+        <span class="navbar-brand">
+          <a href="../index.html" class="projecthome">NFDetector</a> <a href="index.html">API Documentation</a>
+        </span>
+
+        <a href="moduleIndex.html">
+          Modules
+        </a>
+
+        <a href="classIndex.html">
+          Classes
+        </a>
+
+        <a href="nameIndex.html">
+          Names
+        </a>
+
+        <div id="search-box-container">
+          <div class="input-group">
+            <input id="search-box" type="search" name="search-query" placeholder="Search..." aria-label="Search" minlength="2" class="form-control" autocomplete="off" />
+
+            <span class="input-group-btn">
+              <a style="display: none;" class="btn btn-default" id="search-clear-button" title="Clear" onclick="clearSearch()"><img src="fonts/x-circle.svg" alt="Clear" /></a>
+              <a class="btn btn-default" id="apidocs-help-button" title="Help" href="apidocs-help.html"><img src="fonts/info.svg" alt="Help" /></a>
+            </span>
+          </div>
+        </div>
+
+      </div>
+
+      <div id="search-results-container" style="display: none;">
+
+        <div id="search-buttons">
+          <span class="label label-default" id="search-docstrings-button">
+          <label class="checkbox-inline">
+            <input type="checkbox" id="toggle-search-in-docstrings-checkbox" value="false" onclick="toggleSearchInDocstrings()">
+              search in docstrings
+            </input>
+          </label>
+          </span>
+
+        </div>
+
+        <noscript>
+            <h1>Cannot search: JavaScript is not supported/enabled in your browser.</h1>
+        </noscript>
+
+        <div id="search-status"> </div>
+
+        <div class="warning" id="search-warn-box" style="display: none;">
+          <p class="rst-last"><span id="search-warn"></span></p>
+        </div>
+
+        <table id="search-results">
+          <!-- Filled dynamically by JS -->
+        </table>
+
+        <div style="margin-top: 10px;">
+          <p>For more information on the search, visit the <a href="apidocs-help.html#rst-search">help page</a>.</p>
+        </div>
+      </div>
+
+    </div>
+
+
+  </div>
+</nav>
+
+    <div class="container-fluid">
+
+      <!-- Side navigation -->
+      <div class="sidebarcontainer" style="display: none;">
+
+        <div class="sidebar"><nav class="sidebar">
+
+
+  <div>
+
+      <div class="thingTitle">
+        <span>Module</span>
+        <code class="thisobject"><a href="distributed.workers.html" class="internal-link" title="This module">workers</a></code>
+      </div>
+
+      <div>
+
+
+
+
+
+        <div class="childrenKindTitle">Classes</div>
+        <ul>
+
+    <li class="">
+
+
+
+
+
+            <div class="itemName"><code><a href="distributed.workers.Heartbeat.html" class="internal-link" title="distributed.workers.Heartbeat"><wbr></wbr>Heartbeat</a></code>
+            </div>
+
+
+    </li>
+</ul>
+
+        <div class="childrenKindTitle">Functions</div>
+        <ul>
+
+    <li class="">
+
+
+
+
+
+            <div class="itemName"><code><a href="#config_hash" class="internal-link" title="distributed.workers.config_hash">config<wbr></wbr>_hash</a></code>
+            </div>
+
+
+    </li><li class="">
+
+
+
+
+
+            <div class="itemName"><code><a href="#decode_state" class="internal-link" title="distributed.workers.decode_state">decode<wbr></wbr>_state</a></code>
+            </div>
+
+
+    </li><li class="">
+
+
+
+
+
+            <div class="itemName"><code><a href="#detector_once" class="internal-link" title="distributed.workers.detector_once">detector<wbr></wbr>_once</a></code>
+            </div>
+
+
+    </li><li class="">
+
+
+
+
+
+            <div class="itemName"><code><a href="#encode_state" class="internal-link" title="distributed.workers.encode_state">encode<wbr></wbr>_state</a></code>
+            </div>
+
+
+    </li><li class="">
+
+
+
+
+
+            <div class="itemName"><code><a href="#fresh_state" class="internal-link" title="distributed.workers.fresh_state">fresh<wbr></wbr>_state</a></code>
+            </div>
+
+
+    </li><li class="">
+
+
+
+
+
+            <div class="itemName"><code><a href="#parser_once" class="internal-link" title="distributed.workers.parser_once">parser<wbr></wbr>_once</a></code>
+            </div>
+
+
+    </li><li class="">
+
+
+
+
+
+            <div class="itemName"><code><a href="#reduce_batch" class="internal-link" title="distributed.workers.reduce_batch">reduce<wbr></wbr>_batch</a></code>
+            </div>
+
+
+    </li><li class="">
+
+
+
+
+
+            <div class="itemName"><code><a href="#run_worker" class="internal-link" title="distributed.workers.run_worker">run<wbr></wbr>_worker</a></code>
+            </div>
+
+
+    </li>
+</ul>
+
+
+
+
+        <div class="childrenKindTitle">Variables</div>
+        <ul>
+
+    <li class="">
+
+
+
+
+
+            <div class="itemName"><code><a href="#CHECKPOINT_VERSION" class="internal-link" title="distributed.workers.CHECKPOINT_VERSION">CHECKPOINT<wbr></wbr>_VERSION</a></code>
+            </div>
+
+
+    </li><li class="">
+
+
+
+
+
+            <div class="itemName"><code><a href="#log" class="internal-link" title="distributed.workers.log">log</a></code>
+            </div>
+
+
+    </li>
+</ul>
+
+
+
+
+      </div>
+  </div><div>
+
+      <div class="thingTitle">
+        <span>Package</span>
+        <code><a href="distributed.html" class="internal-link" title="The parent of this module">distributed</a></code>
+      </div>
+
+      <div>
+
+
+        <div class="childrenKindTitle">Modules</div>
+        <ul>
+
+    <li class="">
+
+
+
+
+
+            <div class="itemName"><code><a href="distributed.agent.html" class="internal-link" title="distributed.agent">agent</a></code>
+            </div>
+
+
+    </li><li class="">
+
+
+
+
+
+            <div class="itemName"><code><a href="distributed.api.html" class="internal-link" title="distributed.api">api</a></code>
+            </div>
+
+
+    </li><li class="">
+
+
+
+
+
+            <div class="itemName"><code><a href="distributed.capture.html" class="internal-link" title="distributed.capture">capture</a></code>
+            </div>
+
+
+    </li><li class="">
+
+
+
+
+
+            <div class="itemName"><code><a href="distributed.flows.html" class="internal-link" title="distributed.flows">flows</a></code>
+            </div>
+
+
+    </li><li class="">
+
+
+
+
+
+            <div class="itemName"><code><a href="distributed.incidents.html" class="internal-link" title="distributed.incidents">incidents</a></code>
+            </div>
+
+
+    </li><li class="">
+
+
+
+
+
+            <div class="itemName"><code><a href="distributed.installation.html" class="internal-link" title="distributed.installation">installation</a></code>
+            </div>
+
+
+    </li><li class="">
+
+
+
+
+
+            <div class="itemName"><code><a href="distributed.installer.html" class="internal-link" title="distributed.installer">installer</a></code>
+            </div>
+
+
+    </li><li class="">
+
+
+
+
+
+            <div class="itemName"><code><a href="distributed.service.html" class="internal-link" title="distributed.service">service</a></code>
+            </div>
+
+
+    </li><li class="">
+
+
+
+
+
+            <div class="itemName"><code><a href="distributed.settings.html" class="internal-link" title="distributed.settings">settings</a></code>
+            </div>
+
+
+    </li><li class="">
+
+
+
+
+
+            <div class="itemName"><code><a href="distributed.store.html" class="internal-link" title="distributed.store">store</a></code>
+            </div>
+
+
+    </li><li class="">
+
+
+
+
+
+            <div class="itemName"><code><a href="distributed.tls.html" class="internal-link" title="distributed.tls">tls</a></code>
+            </div>
+
+
+    </li><li class="">
+
+
+
+
+
+            <div class="itemName"><code><a href="distributed.web.html" class="internal-link" title="distributed.web">web</a></code>
+            </div>
+
+
+    </li><li class="">
+
+
+
+
+
+            <div class="itemName"><code><a href="distributed.web_auth.html" class="internal-link" title="distributed.web_auth">web<wbr></wbr>_auth</a></code>
+            </div>
+
+
+    </li><li class="">
+
+
+
+
+
+            <div class="itemName"><code><a href="distributed.web_metrics.html" class="internal-link" title="distributed.web_metrics">web<wbr></wbr>_metrics</a></code>
+            </div>
+
+
+    </li><li class="">
+
+
+
+
+
+            <div class="itemName"><code><a href="distributed.web_security.html" class="internal-link" title="distributed.web_security">web<wbr></wbr>_security</a></code>
+            </div>
+
+
+    </li><li class=" thisobject">
+
+
+
+
+
+            <div class="itemName"><code><a href="distributed.workers.html" class="internal-link" title="distributed.workers">workers</a></code>
+            </div>
+
+
+    </li><li class="private">
+
+
+
+
+
+            <div class="itemName"><code><a href="distributed.__main__.html" class="internal-link" title="distributed.__main__">__main__</a></code>
+            </div>
+
+
+    </li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      </div>
+  </div>
+
+</nav>
+        </div>
+        <div id="collapse-sidebar">
+          <a class="btn btn-link" onclick="toggleSideBarCollapse()" title="Toggle Sidebar Collapse">
+          </a>
+        </div>
+        <script src="sidebartoggle.js" type="text/javascript"></script>
+
+      </div>
+
+      <main class="">
+
+
+
+
+        <div class="page-header">
+          <h1 class="module"><code><code><a href="distributed.html" class="internal-link">distributed</a></code><wbr></wbr>.<code><a href="distributed.workers.html" class="internal-link" title="distributed.workers">workers</a></code></code></h1>
+          <div id="show-private">
+            <button class="btn btn-link" onclick="togglePrivate()">Toggle Private API</button>
+          </div>
+        </div>
+
+        <div class="categoryHeader">
+          module documentation
+        </div>
+
+        <div class="extrasDocstring">
+
+        </div>
+
+        <div class="moduleDocstring">
+          <div><p>Parallel file jobs and fenced, restartable domain event-time reducers.</p></div>
+        </div>
+
+        <div id="split-tables">
+          <table class="children sortable" id="id35">
+
+
+  <tr class="class">
+
+    <td>Class</td>
+    <td><code><a href="distributed.workers.Heartbeat.html" class="internal-link" title="distributed.workers.Heartbeat"><wbr></wbr>Heartbeat</a></code></td>
+    <td><span class="rst-undocumented">Undocumented</span></td>
+  </tr><tr class="function">
+
+    <td>Function</td>
+    <td><code><a href="#config_hash" class="internal-link" title="distributed.workers.config_hash">config<wbr></wbr>_hash</a></code></td>
+    <td><span class="rst-undocumented">Undocumented</span></td>
+  </tr><tr class="function">
+
+    <td>Function</td>
+    <td><code><a href="#decode_state" class="internal-link" title="distributed.workers.decode_state">decode<wbr></wbr>_state</a></code></td>
+    <td><span class="rst-undocumented">Undocumented</span></td>
+  </tr><tr class="function">
+
+    <td>Function</td>
+    <td><code><a href="#detector_once" class="internal-link" title="distributed.workers.detector_once">detector<wbr></wbr>_once</a></code></td>
+    <td><span class="rst-undocumented">Undocumented</span></td>
+  </tr><tr class="function">
+
+    <td>Function</td>
+    <td><code><a href="#encode_state" class="internal-link" title="distributed.workers.encode_state">encode<wbr></wbr>_state</a></code></td>
+    <td><span class="rst-undocumented">Undocumented</span></td>
+  </tr><tr class="function">
+
+    <td>Function</td>
+    <td><code><a href="#fresh_state" class="internal-link" title="distributed.workers.fresh_state">fresh<wbr></wbr>_state</a></code></td>
+    <td><span class="rst-undocumented">Undocumented</span></td>
+  </tr><tr class="function">
+
+    <td>Function</td>
+    <td><code><a href="#parser_once" class="internal-link" title="distributed.workers.parser_once">parser<wbr></wbr>_once</a></code></td>
+    <td><span class="rst-undocumented">Undocumented</span></td>
+  </tr><tr class="function">
+
+    <td>Function</td>
+    <td><code><a href="#reduce_batch" class="internal-link" title="distributed.workers.reduce_batch">reduce<wbr></wbr>_batch</a></code></td>
+    <td>Merge ready file prefixes only up to every registered source's watermark.</td>
+  </tr><tr class="function">
+
+    <td>Function</td>
+    <td><code><a href="#run_worker" class="internal-link" title="distributed.workers.run_worker">run<wbr></wbr>_worker</a></code></td>
+    <td><span class="rst-undocumented">Undocumented</span></td>
+  </tr><tr class="constant">
+
+    <td>Constant</td>
+    <td><code><a href="#CHECKPOINT_VERSION" class="internal-link" title="distributed.workers.CHECKPOINT_VERSION">CHECKPOINT<wbr></wbr>_VERSION</a></code></td>
+    <td><span class="rst-undocumented">Undocumented</span></td>
+  </tr><tr class="variable">
+
+    <td>Variable</td>
+    <td><code><a href="#log" class="internal-link" title="distributed.workers.log">log</a></code></td>
+    <td><span class="rst-undocumented">Undocumented</span></td>
+  </tr>
+</table>
+
+
+
+        </div>
+
+        <div id="child-list">
+          <div class="basefunction">
+
+
+  <a name="distributed.workers.config_hash">
+
+  </a>
+  <a name="config_hash">
+
+  </a>
+  <div class="functionHeader">
+
+
+    <span class="py-keyword">def</span>&#160;<span class="py-defname">config_hash</span><span class="function-signature">(<span class="rst-sig-param">settings</span>):</span>
+
+    <a class="headerLink" href="#config_hash" title="distributed.workers.config_hash">
+
+
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basefunction">
+
+
+  <a name="distributed.workers.decode_state">
+
+  </a>
+  <a name="decode_state">
+
+  </a>
+  <div class="functionHeader">
+
+
+    <span class="py-keyword">def</span>&#160;<span class="py-defname">decode_state</span><span class="function-signature">(<span class="rst-sig-param">data, </span><span class="rst-sig-param">settings</span>):</span>
+
+    <a class="headerLink" href="#decode_state" title="distributed.workers.decode_state">
+
+
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basefunction">
+
+
+  <a name="distributed.workers.detector_once">
+
+  </a>
+  <a name="detector_once">
+
+  </a>
+  <div class="functionHeader">
+
+
+    <span class="py-keyword">def</span>&#160;<span class="py-defname">detector_once</span><span class="function-signature">(<span class="rst-sig-param">store, </span><span class="rst-sig-param">owner</span>):</span>
+
+    <a class="headerLink" href="#detector_once" title="distributed.workers.detector_once">
+
+
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basefunction">
+
+
+  <a name="distributed.workers.encode_state">
+
+  </a>
+  <a name="encode_state">
+
+  </a>
+  <div class="functionHeader">
+
+
+    <span class="py-keyword">def</span>&#160;<span class="py-defname">encode_state</span><span class="function-signature">(<span class="rst-sig-param">state, </span><span class="rst-sig-param">limit</span>):</span>
+
+    <a class="headerLink" href="#encode_state" title="distributed.workers.encode_state">
+
+
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basefunction">
+
+
+  <a name="distributed.workers.fresh_state">
+
+  </a>
+  <a name="fresh_state">
+
+  </a>
+  <div class="functionHeader">
+
+
+    <span class="py-keyword">def</span>&#160;<span class="py-defname">fresh_state</span><span class="function-signature">(<span class="rst-sig-param">settings</span>):</span>
+
+    <a class="headerLink" href="#fresh_state" title="distributed.workers.fresh_state">
+
+
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basefunction">
+
+
+  <a name="distributed.workers.parser_once">
+
+  </a>
+  <a name="parser_once">
+
+  </a>
+  <div class="functionHeader">
+
+
+    <span class="py-keyword">def</span>&#160;<span class="py-defname">parser_once</span><span class="function-signature">(<span class="rst-sig-param">store, </span><span class="rst-sig-param">owner, </span><span class="rst-sig-param">job=<a href="https://docs.python.org/3.12//library/constants.html#None" class="intersphinx-link">None</a></span>):</span>
+
+    <a class="headerLink" href="#parser_once" title="distributed.workers.parser_once">
+
+
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basefunction">
+
+
+  <a name="distributed.workers.reduce_batch">
+
+  </a>
+  <a name="reduce_batch">
+
+  </a>
+  <div class="functionHeader">
+
+
+    <span class="py-keyword">def</span>&#160;<span class="py-defname">reduce_batch</span><span class="function-signature">(<span class="rst-sig-param">store, </span><span class="rst-sig-param">domain, </span><span class="rst-sig-param">state, </span><span class="rst-sig-param">observations=<a href="https://docs.python.org/3.12//library/constants.html#None" class="intersphinx-link">None</a></span>):</span>
+
+    <a class="headerLink" href="#reduce_batch" title="distributed.workers.reduce_batch">
+
+
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+
+    <div><p>Merge ready file prefixes only up to every registered source's watermark.</p>
+<p>Each source must have non-overlapping timestamp ranges between consecutive
+chunks. Missing files hold the watermark, including a missing sequence zero.
+The same domain must contain disjoint observation sources with aligned clocks.</p>
+</div>
+  </div>
+</div><div class="basefunction">
+
+
+  <a name="distributed.workers.run_worker">
+
+  </a>
+  <a name="run_worker">
+
+  </a>
+  <div class="functionHeader">
+
+
+    <span class="py-keyword">def</span>&#160;<span class="py-defname">run_worker</span><span class="function-signature">(<span class="rst-sig-param">settings, </span><span class="rst-sig-param">kind</span>):</span>
+
+    <a class="headerLink" href="#run_worker" title="distributed.workers.run_worker">
+
+
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="baseconstant">
+
+
+  <a name="distributed.workers.CHECKPOINT_VERSION">
+
+  </a>
+  <a name="CHECKPOINT_VERSION">
+
+  </a>
+  <div class="functionHeader">
+
+    <span class="py-defname">CHECKPOINT_VERSION</span>: <code><a href="https://docs.python.org/3.12//library/functions.html#int" class="intersphinx-link">int</a></code> =
+
+    <a class="headerLink" href="#CHECKPOINT_VERSION" title="distributed.workers.CHECKPOINT_VERSION">
+
+
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+
+    <div><p class="undocumented">Undocumented</p></div>
+    <table class="valueTable"><tr class="fieldStart"><td class="fieldName">Value</td></tr><tr><td><pre class="constant-value"><code>2</code></pre></td></tr></table>
+  </div>
+</div><div class="basevariable">
+
+
+  <a name="distributed.workers.log">
+
+  </a>
+  <a name="log">
+
+  </a>
+  <div class="functionHeader">
+
+    <span class="py-defname">log</span> =
+
+    <a class="headerLink" href="#log" title="distributed.workers.log">
+
+
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+
+    <div><p class="undocumented">Undocumented</p></div>
+
+  </div>
+</div>
+        </div>
+
+      </main>
+    </div>
+
+    <footer class="navbar navbar-default">
+
+
+  <div class="container-fluid">
+    <a href="index.html">API Documentation</a> for <a href="../index.html" class="projecthome">NFDetector</a>,
+  generated by <a href="https://github.com/twisted/pydoctor/">pydoctor</a>
+    25.10.1 at 2026-10-25 18:55:52.
+  </div>
+
+  <!-- Search related scripts needs to be loaded at the end of HTML
+    parsing not to introduce overhead and display HTML data asap -->
+  <script src="ajax.js" type="text/javascript"></script>
+  <script src="searchlib.js" type="text/javascript"></script>
+  <script src="search.js" type="text/javascript"></script>
+
+</footer>
+
+    <script src="pydoctor.js" type="text/javascript"></script>
+
+  </body>
+</html>

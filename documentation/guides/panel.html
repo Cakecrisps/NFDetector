@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="ru" data-bs-theme="auto">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+
+        <link rel="shortcut icon" href="../img/favicon.ico">
+        <title>Панель - NFDetector</title>
+        <link href="../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../css/fontawesome.min.css" rel="stylesheet">
+        <link href="../css/brands.min.css" rel="stylesheet">
+        <link href="../css/solid.min.css" rel="stylesheet">
+        <link href="../css/v4-font-face.min.css" rel="stylesheet">
+        <link href="../css/base.css" rel="stylesheet">
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="../index.html">NFDetector</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li class="nav-item">
+                                <a href="../index.html" class="nav-link">Начало</a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown"  aria-expanded="false">Установка</a>
+                                <ul class="dropdown-menu">
+
+<li>
+    <a href="../getting-started/server.html" class="dropdown-item">Сервер и TLS</a>
+</li>
+
+<li>
+    <a href="../getting-started/agent.html" class="dropdown-item">Агент</a>
+</li>
+
+<li>
+    <a href="../getting-started/local.html" class="dropdown-item">Локальный анализ</a>
+</li>
+                                </ul>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle active" aria-current="page" role="button" data-bs-toggle="dropdown"  aria-expanded="false">Работа с системой</a>
+                                <ul class="dropdown-menu">
+
+<li>
+    <a href="panel.html" class="dropdown-item active" aria-current="page">Панель</a>
+</li>
+
+<li>
+    <a href="configuration.html" class="dropdown-item">Настройки и детекторы</a>
+</li>
+
+<li>
+    <a href="incidents.html" class="dropdown-item">Инциденты</a>
+</li>
+
+<li>
+    <a href="operations.html" class="dropdown-item">Эксплуатация</a>
+</li>
+
+<li>
+    <a href="troubleshooting.html" class="dropdown-item">Диагностика</a>
+</li>
+                                </ul>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown"  aria-expanded="false">Архитектура</a>
+                                <ul class="dropdown-menu">
+
+<li>
+    <a href="../architecture/overview.html" class="dropdown-item">Поток данных</a>
+</li>
+
+<li>
+    <a href="../architecture/api.html" class="dropdown-item">API и данные</a>
+</li>
+
+<li>
+    <a href="../architecture/limitations.html" class="dropdown-item">Ограничения</a>
+</li>
+                                </ul>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown"  aria-expanded="false">Состояние проекта</a>
+                                <ul class="dropdown-menu">
+
+<li>
+    <a href="../project/status.html" class="dropdown-item">Что реализовано</a>
+</li>
+
+<li>
+    <a href="../project/assessment.html" class="dropdown-item">Оценка и план</a>
+</li>
+
+<li>
+    <a href="../project/audit.html" class="dropdown-item">Проверка репозитория</a>
+</li>
+                                </ul>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown"  aria-expanded="false">Разработка</a>
+                                <ul class="dropdown-menu">
+
+<li>
+    <a href="../development/testing.html" class="dropdown-item">Тесты</a>
+</li>
+
+<li>
+    <a href="../development/performance.html" class="dropdown-item">Производительность</a>
+</li>
+
+<li>
+    <a href="../development/documentation.html" class="dropdown-item">Сборка документации</a>
+</li>
+
+<li>
+    <a href="../development/reference.html" class="dropdown-item">Справочник кода</a>
+</li>
+                                </ul>
+                            </li>
+                        </ul>
+
+                    <ul class="nav navbar-nav ms-md-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Поиск
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" href="../getting-started/local.html" class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Назад
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="configuration.html" class="nav-link">
+                                    Вперед <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                            <li class="nav-item dropdown">
+                              <button id="theme-menu" aria-expanded="false" data-bs-toggle="dropdown" data-bs-display="static" aria-label="Toggle theme" class="nav-link dropdown-toggle">
+                                <i class="fa-solid fa-circle-half-stroke fa-fw"></i>
+                                <span class="d-lg-none ms-2">Toggle theme</span>
+                              </button>
+                              <ul class="dropdown-menu dropdown-menu-end">
+                                <li>
+                                  <button class="dropdown-item d-flex align-items-center" data-bs-theme-value="light" aria-pressed="false">
+                                    <i class="fa-solid fa-sun fa-fw"></i>
+                                    <span class="ms-2">Light</span>
+                                    <i class="fa-solid fa-check ms-auto d-none"></i>
+                                  </button>
+                                </li>
+                                <li>
+                                  <button class="dropdown-item d-flex align-items-center" data-bs-theme-value="dark" aria-pressed="false">
+                                    <i class="fa-solid fa-moon fa-fw"></i>
+                                    <span class="ms-2">Dark</span>
+                                    <i class="fa-solid fa-check ms-auto d-none"></i>
+                                  </button>
+                                </li>
+                                <li>
+                                  <button class="dropdown-item d-flex align-items-center" data-bs-theme-value="auto" aria-pressed="true">
+                                    <i class="fa-solid fa-circle-half-stroke fa-fw"></i>
+                                    <span class="ms-2">Auto</span>
+                                    <i class="fa-solid fa-check ms-auto"></i>
+                                  </button>
+                                </li>
+                              </ul>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <script src="../js/darkmode.js"></script>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#toc-collapse" title="Содержание">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
+        <ul class="nav flex-column">
+
+            <li class="nav-item" data-bs-level="1"><a href="#веб-панель" class="nav-link">Веб-панель</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-bs-level="2"><a href="#первый-вход" class="nav-link">Первый вход</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#разделы-панели" class="nav-link">Разделы панели</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#защита-веб-доступа" class="nav-link">Защита веб-доступа</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<h1 id="веб-панель">Веб-панель<a class="headerlink" href="#веб-панель" title="Permanent link">&para;</a></h1>
+<p>Панель открывается по тому же адресу <code>https://detector.example.com/</code> и использует
+тот же сертификат LB. Новых внешних портов нет. Для удалённого веб-доступа в <code>.env</code> нужно задать
+точный origin без завершающего <code>/</code>:</p>
+<pre><code class="language-dotenv">NF_PUBLIC_URL=https://detector.example.com
+</code></pre>
+<p>Без <code>NF_PUBLIC_URL</code> первоначальная настройка разрешена только через localhost/loopback.
+Для локального порта, например, используйте <code>https://localhost:8443</code>.
+LB сохраняет исходный Host с портом и сам устанавливает доверенный адрес клиента.
+API остаётся доступным только в закрытой Docker-сети.</p>
+<h2 id="первый-вход">Первый вход<a class="headerlink" href="#первый-вход" title="Permanent link">&para;</a></h2>
+<p>При первой установке создаётся <strong>пользователь приложения <code>root</code> с паролем <code>root</code></strong>.
+Это не системная учётная запись контейнера. Для защиты от перехвата первоначальной
+настройки первый вход дополнительно требует одноразовый код с сервера:</p>
+<pre><code class="language-bash">docker compose exec -T api python -m distributed setup-code
+</code></pre>
+<p>При запуске с собственным сертификатом добавляйте те же <code>-f compose.yaml
+-f compose.tls.yaml</code>, что использовались при старте. Код хранится в приватном
+файле data-volume с правами <code>0600</code>, в PostgreSQL находится только его hash.
+Он не выдаётся через HTTP и не печатается в startup-лог.</p>
+<p>После входа доступен только экран обязательной смены пароля. До смены даже прямой
+вызов API статистики, ключей и событий запрещён сервером. Новый пароль должен
+содержать 15–128 символов и отличаться от прежнего. После смены <code>root:root</code> и код
+установки перестают работать; прежние сессии отзываются. Перезапуск и обновление
+контейнера первоначальный пароль не восстанавливают.</p>
+<h2 id="разделы-панели">Разделы панели<a class="headerlink" href="#разделы-панели" title="Permanent link">&para;</a></h2>
+<ul>
+<li>
+<p><strong>Обзор:</strong> агенты на связи, число пакетов, захваченные байты, инциденты за выбранный период,
+  график поступления PCAP, распределение протоколов и последние события.</p>
+</li>
+<li>
+<p><strong>Агенты:</strong> поиск, последняя связь, состояние захвата, очередь на сенсоре,
+  потоки, выпуск/замена/отзыв ключей. Секрет показывается один раз; его можно
+  скопировать или скачать. Замена немедленно отключает прежний ключ, история
+  агента остаётся на месте.</p>
+</li>
+<li><strong>Трафик:</strong> период 1 час / сутки / неделя, объём принятых PCAP, число пакетов,
+  разобранные байты, очередь файлов, ошибки и состояние доменов.</li>
+<li><strong>События:</strong> фильтрация по типу, поиск по IP/агенту/тексту, страницы и детали
+  с capture-временем и временем получения.</li>
+<li><strong>Безопасность:</strong> смена пароля и журнал входов/административных действий.</li>
+</ul>
+<p>На страницах «Обзор» и «Трафик» общий переключатель выбирает последний час,
+24 часа или 7 дней. Карточки, график и протоколы считаются за один диапазон
+из одного снимка PostgreSQL. Час разбит на 60 минут, сутки — на 96 интервалов
+по 15 минут, неделя — на 168 часовых интервалов. Суммы графика совпадают
+с карточками; пустые интервалы показаны нулями. Наведение или клавиши стрелок
+на графике показывают объём, пакеты и файлы конкретного интервала.</p>
+<p>Файлы, байты и протоколы отбираются <strong>по времени приёма сервером</strong>, не по
+датам внутри PCAP. PCAP-байты (с заголовками файла) и захваченные сетевые байты
+показаны отдельно. Поэтому поздняя загрузка старого PCAP попадает в сегодняшний
+график приёма. Инцидент учитывается в периоде, если его наблюдаемая активность
+пересекается с этим периодом. Агенты на связи и состояние доменов показывают
+текущее состояние; последние инциденты отдельно помечены как список за все периоды.</p>
+<p>Выбор светлой, тёмной или системной темы доступен в верхней панели и на экране
+входа. Системная тема следует настройке ОС. В <code>localStorage</code> сохраняется только
+значение <code>nf-theme</code>; пароли, ключи и сессии туда не записываются. Тема применяется
+до загрузки стилей, без inline-скриптов и ослабления CSP.</p>
+<p>Новая версия агента отправляет heartbeat каждые 10 секунд во время работы,
+включая состояние и размер локальной очереди. Связь считается свежей 60 секунд.
+Статус отражает последние данные, полученные сервером, а не сетевой ping сенсора.
+Захваченные байты считаются по кадрам при разборе; объём PCAP включает заголовки
+файлов. У ранее разобранных файлов может отсутствовать новая статистика протоколов
+и байтов — панель помечает такую неполноту.</p>
+<h2 id="защита-веб-доступа">Защита веб-доступа<a class="headerlink" href="#защита-веб-доступа" title="Permanent link">&para;</a></h2>
+<p>Пароли хранятся через Argon2id. Сессии — на сервере, в браузере только случайный
+<code>Secure</code>, <code>HttpOnly</code>, <code>SameSite=Strict</code> cookie с префиксом <code>__Host-</code>, без Domain.
+Срок — до 8 часов, время без действий пользователя — 30 минут. Для управления
+ключами через 5 минут после входа требуется повторное подтверждение пароля.</p>
+<p>Мутации защищены session-bound CSRF-токеном и проверкой точного Origin.
+Предусмотрены ограничение попыток входа, ограничение тела административного
+запроса, CSP без inline-скриптов/стилей, запрет встраивания, no-store и отзыв всех
+сессий при смене пароля. Ключ агента не даёт административного веб-доступа;
+веб-cookie не заменяет ключ агента. Пароли, cookies, код настройки и секреты
+ключей не записываются в журнал администратора. Данные агентов и событий
+выводятся как текст, без интерпретации HTML.</p>
+<p>На публичном сервере оставляйте HTTPS на LB. <code>NF_TRUST_PROXY_HEADERS=1</code> задан
+в Compose для закрытого API; при другом развёртывании доверять заголовкам клиента
+можно только за прокси, который их перезаписывает.</p></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Документация создана с помощью <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script src="../js/bootstrap.bundle.min.js"></script>
+        <script>
+            var base_url = "..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../js/base.js"></script>
+        <script src="../search/main.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Поиск</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+            </div>
+            <div class="modal-body">
+                <p>Чтобы воспользоваться поиском по документам, введите поисковый запрос ниже.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Поиск..." id="mkdocs-search-query" title="Введите поисковый запрос">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="Ничего не найдено"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Сочетания клавиш</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Клавиши</th>
+                    <th>Действие</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Открыть справку</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Следующая страница</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Предыдущая страница</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Поиск</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

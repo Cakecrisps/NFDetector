@@ -1,7 +1,7 @@
 """HTTPS smoke test for an already running isolated Compose deployment.
 
 The deployment must protect 192.168.1.1, set DDoS limit=3, HTTP limit=2 and
-HTTP Basic brute-force limit=2. See docs/distributed.md for a local quick start.
+HTTP Basic brute-force limit=2. See docs/development/testing.md for setup.
 No real traffic is captured. A large noise file makes parallel worker assignment visible.
 """
 import argparse
@@ -14,6 +14,12 @@ from pathlib import Path
 import dpkt
 
 from distributed.agent import Uploader
+
+
+def detected_kinds(events):
+    """An incident may combine multiple rules under one representative reason."""
+    return {kind for event in events
+            for kind in (event.get('kinds') or [event['reason'].split(':', 1)[0]])}
 
 
 def frame(payload=b'', seq=100, flags=16, target='192.168.1.1', port=80):
@@ -58,7 +64,7 @@ def main():
                 raise RuntimeError(json.dumps(status))
             events = uploader.request('GET', '/v1/events')['events']
             own = [event for event in events if event['stream_id'] == stream]
-            if all(any(event['reason'].startswith(label) for event in own) for label in expected):
+            if set(expected) <= detected_kinds(own):
                 owners = {chunk['parsed_by'] for chunk in status['chunks']}
                 if len(owners) != 2:
                     raise AssertionError('The files were not handled by distinct workers; increase --noise-frames')
@@ -67,7 +73,8 @@ def main():
                     raise AssertionError('Expected the later, smaller file to finish parsing first')
                 print(json.dumps(dict(stream_id=stream, parser_workers=sorted(owners),
                                       later_file_finished_first=True,
-                                      detected=[event['reason'] for event in own]), indent=2))
+                                      detected=sorted(detected_kinds(own)),
+                                      incidents=len(own)), indent=2))
                 return
             time.sleep(0.5)
         raise TimeoutError('No combined attack detected within 120 seconds')

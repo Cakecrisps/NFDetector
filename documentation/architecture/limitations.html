@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="ru" data-bs-theme="auto">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+
+        <link rel="shortcut icon" href="../img/favicon.ico">
+        <title>Ограничения - NFDetector</title>
+        <link href="../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../css/fontawesome.min.css" rel="stylesheet">
+        <link href="../css/brands.min.css" rel="stylesheet">
+        <link href="../css/solid.min.css" rel="stylesheet">
+        <link href="../css/v4-font-face.min.css" rel="stylesheet">
+        <link href="../css/base.css" rel="stylesheet">
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="../index.html">NFDetector</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li class="nav-item">
+                                <a href="../index.html" class="nav-link">Начало</a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown"  aria-expanded="false">Установка</a>
+                                <ul class="dropdown-menu">
+
+<li>
+    <a href="../getting-started/server.html" class="dropdown-item">Сервер и TLS</a>
+</li>
+
+<li>
+    <a href="../getting-started/agent.html" class="dropdown-item">Агент</a>
+</li>
+
+<li>
+    <a href="../getting-started/local.html" class="dropdown-item">Локальный анализ</a>
+</li>
+                                </ul>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown"  aria-expanded="false">Работа с системой</a>
+                                <ul class="dropdown-menu">
+
+<li>
+    <a href="../guides/panel.html" class="dropdown-item">Панель</a>
+</li>
+
+<li>
+    <a href="../guides/configuration.html" class="dropdown-item">Настройки и детекторы</a>
+</li>
+
+<li>
+    <a href="../guides/incidents.html" class="dropdown-item">Инциденты</a>
+</li>
+
+<li>
+    <a href="../guides/operations.html" class="dropdown-item">Эксплуатация</a>
+</li>
+
+<li>
+    <a href="../guides/troubleshooting.html" class="dropdown-item">Диагностика</a>
+</li>
+                                </ul>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle active" aria-current="page" role="button" data-bs-toggle="dropdown"  aria-expanded="false">Архитектура</a>
+                                <ul class="dropdown-menu">
+
+<li>
+    <a href="overview.html" class="dropdown-item">Поток данных</a>
+</li>
+
+<li>
+    <a href="api.html" class="dropdown-item">API и данные</a>
+</li>
+
+<li>
+    <a href="limitations.html" class="dropdown-item active" aria-current="page">Ограничения</a>
+</li>
+                                </ul>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown"  aria-expanded="false">Состояние проекта</a>
+                                <ul class="dropdown-menu">
+
+<li>
+    <a href="../project/status.html" class="dropdown-item">Что реализовано</a>
+</li>
+
+<li>
+    <a href="../project/assessment.html" class="dropdown-item">Оценка и план</a>
+</li>
+
+<li>
+    <a href="../project/audit.html" class="dropdown-item">Проверка репозитория</a>
+</li>
+                                </ul>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown"  aria-expanded="false">Разработка</a>
+                                <ul class="dropdown-menu">
+
+<li>
+    <a href="../development/testing.html" class="dropdown-item">Тесты</a>
+</li>
+
+<li>
+    <a href="../development/performance.html" class="dropdown-item">Производительность</a>
+</li>
+
+<li>
+    <a href="../development/documentation.html" class="dropdown-item">Сборка документации</a>
+</li>
+
+<li>
+    <a href="../development/reference.html" class="dropdown-item">Справочник кода</a>
+</li>
+                                </ul>
+                            </li>
+                        </ul>
+
+                    <ul class="nav navbar-nav ms-md-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Поиск
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" href="api.html" class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Назад
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="../project/status.html" class="nav-link">
+                                    Вперед <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                            <li class="nav-item dropdown">
+                              <button id="theme-menu" aria-expanded="false" data-bs-toggle="dropdown" data-bs-display="static" aria-label="Toggle theme" class="nav-link dropdown-toggle">
+                                <i class="fa-solid fa-circle-half-stroke fa-fw"></i>
+                                <span class="d-lg-none ms-2">Toggle theme</span>
+                              </button>
+                              <ul class="dropdown-menu dropdown-menu-end">
+                                <li>
+                                  <button class="dropdown-item d-flex align-items-center" data-bs-theme-value="light" aria-pressed="false">
+                                    <i class="fa-solid fa-sun fa-fw"></i>
+                                    <span class="ms-2">Light</span>
+                                    <i class="fa-solid fa-check ms-auto d-none"></i>
+                                  </button>
+                                </li>
+                                <li>
+                                  <button class="dropdown-item d-flex align-items-center" data-bs-theme-value="dark" aria-pressed="false">
+                                    <i class="fa-solid fa-moon fa-fw"></i>
+                                    <span class="ms-2">Dark</span>
+                                    <i class="fa-solid fa-check ms-auto d-none"></i>
+                                  </button>
+                                </li>
+                                <li>
+                                  <button class="dropdown-item d-flex align-items-center" data-bs-theme-value="auto" aria-pressed="true">
+                                    <i class="fa-solid fa-circle-half-stroke fa-fw"></i>
+                                    <span class="ms-2">Auto</span>
+                                    <i class="fa-solid fa-check ms-auto"></i>
+                                  </button>
+                                </li>
+                              </ul>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <script src="../js/darkmode.js"></script>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#toc-collapse" title="Содержание">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
+        <ul class="nav flex-column">
+
+            <li class="nav-item" data-bs-level="1"><a href="#ограничения-и-границы-гарантий" class="nav-link">Ограничения и границы гарантий</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-bs-level="2"><a href="#пакеты-и-протоколы" class="nav-link">Пакеты и протоколы</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#качество-детектирования" class="nav-link">Качество детектирования</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<h1 id="ограничения-и-границы-гарантий">Ограничения и границы гарантий<a class="headerlink" href="#ограничения-и-границы-гарантий" title="Permanent link">&para;</a></h1>
+<table>
+<thead>
+<tr>
+<th>Область</th>
+<th>Текущее поведение</th>
+<th>Следствие</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Время</td>
+<td>Часы согласованы; последовательные файлы не уходят назад по времени</td>
+<td>Обратный диапазон останавливает домен; коррекции часов нет</td>
+</tr>
+<tr>
+<td>Idle-источник</td>
+<td>Watermark ждёт каждый незакрытый поток</td>
+<td>Тихий/пропавший агент задерживает анализ остальных</td>
+</tr>
+<tr>
+<td>Масштабирование</td>
+<td>Один reducer на домен</td>
+<td>N parser не снимают предел CPU/сериализации домена</td>
+</tr>
+<tr>
+<td>Повторное наблюдение</td>
+<td>Дедупликация файлов, но не пакетов разных сенсоров</td>
+<td>Перекрывающиеся сенсоры завышают пороги</td>
+</tr>
+<tr>
+<td>Хранение</td>
+<td>Сервер не удаляет PCAP/JSONL автоматически</td>
+<td>2 GiB PCAP на агента заканчиваются <code>429</code>; JSONL, БД и orphan-файлы требуют отдельного бюджета</td>
+</tr>
+<tr>
+<td>Доступность</td>
+<td>Один хост, PostgreSQL, API и LB</td>
+<td>Volumes переживают рестарт, но не потерю хоста/диска</td>
+</tr>
+<tr>
+<td>Конфигурация</td>
+<td>Hash правил и адресов входит в checkpoint</td>
+<td>Смена правил требует replay/миграции</td>
+</tr>
+<tr>
+<td>Уведомления</td>
+<td>Outbox записывается, доставщика нет</td>
+<td>Инцидент не означает отправку в SIEM/мессенджер</td>
+</tr>
+<tr>
+<td>Доступ</td>
+<td>Панель администратора и индивидуальные ключи загрузки</td>
+<td>Нет ролей и изоляции нескольких организаций</td>
+</tr>
+<tr>
+<td>Checkpoint</td>
+<td>Доверенный pickle, предел 64 MiB до сжатия</td>
+<td>Нужен доверенный DB-доступ; превышение останавливает домен</td>
+</tr>
+</tbody>
+</table>
+<h2 id="пакеты-и-протоколы">Пакеты и протоколы<a class="headerlink" href="#пакеты-и-протоколы" title="Permanent link">&para;</a></h2>
+<p>Серверный parser (<code>dpkt</code>) принимает PCAP и ограниченный PCAPNG: одна секция,
+один интерфейс, Enhanced Packet Blocks. Поддержаны Ethernet/VLAN, raw IP,
+Linux SLL/SLL2, IPv4/IPv6. Усечённые кадры, IPv6-фрагментация и некоторые
+PCAPNG layouts приводят к ошибке файла. Файл сначала разбирается в список
+и сортируется в RAM: лимит 500 000 кадров не равен гарантии малого RSS.
+JSONL с hex-payload может быть существенно больше PCAP.</p>
+<p>IPv4-фрагменты и TCP-сегменты собираются между файлами. Прикладной decoder
+ограничен HTTP/1.x, HTTP Basic, FTP, TELNET, SMB/SMB2 Session Setup и SSH banners.
+TLS, HTTP/2, QUIC и зашифрованная SSH-аутентификация не анализируются на уровне
+содержимого. Байты до начала захвата восстановить нельзя.</p>
+<p>Ошибки reassembly/прикладных сообщений дают <code>DECODE_WARNING</code>, очищают
+состояние затронутого flow и сохраняют L3/L4-анализ. Это не подтверждение атаки.
+Статистика протоколов отражает классификацию parser на уровне транспорта,
+а не полный L7-разбор TShark; прочие категории попадают в <code>OTHER</code>.</p>
+<h2 id="качество-детектирования">Качество детектирования<a class="headerlink" href="#качество-детектирования" title="Permanent link">&para;</a></h2>
+<p>SSH greeting rate — возможный перебор, не число ошибок пароля. Пороговый
+DDoS может совпасть с легитимным всплеском. C2 считает интервалы пакетов пары
+IP, а не доказанные новые соединения с управляющим сервером. Для подтверждения
+нужны журналы сервисов, контекст нагрузки и исходный PCAP.</p>
+<p>При capture loss, односторонней видимости, NAT, offloading или рассинхронизации
+часов полнота анализа ограничена качеством входа. Heartbeat не содержит
+достоверного счётчика потерь dumpcap; зелёный статус не доказывает полноту захвата.</p>
+<p>При заполнении spool агент останавливает захват, сохраняя неподтверждённые
+файлы. Новые пакеты в период остановки не наблюдаются. Первый запуск capture
+требует соединения с сервером для регистрации потока; автономного старта нет.</p>
+<p>Следующие шаги — в <a href="../project/assessment.html">плане</a>.</p></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Документация создана с помощью <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script src="../js/bootstrap.bundle.min.js"></script>
+        <script>
+            var base_url = "..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../js/base.js"></script>
+        <script src="../search/main.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Поиск</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+            </div>
+            <div class="modal-body">
+                <p>Чтобы воспользоваться поиском по документам, введите поисковый запрос ниже.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Поиск..." id="mkdocs-search-query" title="Введите поисковый запрос">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="Ничего не найдено"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Сочетания клавиш</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Клавиши</th>
+                    <th>Действие</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Открыть справку</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Следующая страница</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Предыдущая страница</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Поиск</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

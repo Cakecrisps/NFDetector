@@ -2,7 +2,12 @@ __pycache__/
 *.py[cod]
 .pytest_cache/
 .venv/
+.venv-docs/
+.docs-build-*/
 .env
 .local/
 *.key
 *.pem
+*.pcap
+*.pcapng
+out/

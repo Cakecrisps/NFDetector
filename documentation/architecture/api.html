@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="ru" data-bs-theme="auto">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+
+        <link rel="shortcut icon" href="../img/favicon.ico">
+        <title>API и данные - NFDetector</title>
+        <link href="../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../css/fontawesome.min.css" rel="stylesheet">
+        <link href="../css/brands.min.css" rel="stylesheet">
+        <link href="../css/solid.min.css" rel="stylesheet">
+        <link href="../css/v4-font-face.min.css" rel="stylesheet">
+        <link href="../css/base.css" rel="stylesheet">
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="../index.html">NFDetector</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li class="nav-item">
+                                <a href="../index.html" class="nav-link">Начало</a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown"  aria-expanded="false">Установка</a>
+                                <ul class="dropdown-menu">
+
+<li>
+    <a href="../getting-started/server.html" class="dropdown-item">Сервер и TLS</a>
+</li>
+
+<li>
+    <a href="../getting-started/agent.html" class="dropdown-item">Агент</a>
+</li>
+
+<li>
+    <a href="../getting-started/local.html" class="dropdown-item">Локальный анализ</a>
+</li>
+                                </ul>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown"  aria-expanded="false">Работа с системой</a>
+                                <ul class="dropdown-menu">
+
+<li>
+    <a href="../guides/panel.html" class="dropdown-item">Панель</a>
+</li>
+
+<li>
+    <a href="../guides/configuration.html" class="dropdown-item">Настройки и детекторы</a>
+</li>
+
+<li>
+    <a href="../guides/incidents.html" class="dropdown-item">Инциденты</a>
+</li>
+
+<li>
+    <a href="../guides/operations.html" class="dropdown-item">Эксплуатация</a>
+</li>
+
+<li>
+    <a href="../guides/troubleshooting.html" class="dropdown-item">Диагностика</a>
+</li>
+                                </ul>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle active" aria-current="page" role="button" data-bs-toggle="dropdown"  aria-expanded="false">Архитектура</a>
+                                <ul class="dropdown-menu">
+
+<li>
+    <a href="overview.html" class="dropdown-item">Поток данных</a>
+</li>
+
+<li>
+    <a href="api.html" class="dropdown-item active" aria-current="page">API и данные</a>
+</li>
+
+<li>
+    <a href="limitations.html" class="dropdown-item">Ограничения</a>
+</li>
+                                </ul>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown"  aria-expanded="false">Состояние проекта</a>
+                                <ul class="dropdown-menu">
+
+<li>
+    <a href="../project/status.html" class="dropdown-item">Что реализовано</a>
+</li>
+
+<li>
+    <a href="../project/assessment.html" class="dropdown-item">Оценка и план</a>
+</li>
+
+<li>
+    <a href="../project/audit.html" class="dropdown-item">Проверка репозитория</a>
+</li>
+                                </ul>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown"  aria-expanded="false">Разработка</a>
+                                <ul class="dropdown-menu">
+
+<li>
+    <a href="../development/testing.html" class="dropdown-item">Тесты</a>
+</li>
+
+<li>
+    <a href="../development/performance.html" class="dropdown-item">Производительность</a>
+</li>
+
+<li>
+    <a href="../development/documentation.html" class="dropdown-item">Сборка документации</a>
+</li>
+
+<li>
+    <a href="../development/reference.html" class="dropdown-item">Справочник кода</a>
+</li>
+                                </ul>
+                            </li>
+                        </ul>
+
+                    <ul class="nav navbar-nav ms-md-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Поиск
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" href="overview.html" class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Назад
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="limitations.html" class="nav-link">
+                                    Вперед <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                            <li class="nav-item dropdown">
+                              <button id="theme-menu" aria-expanded="false" data-bs-toggle="dropdown" data-bs-display="static" aria-label="Toggle theme" class="nav-link dropdown-toggle">
+                                <i class="fa-solid fa-circle-half-stroke fa-fw"></i>
+                                <span class="d-lg-none ms-2">Toggle theme</span>
+                              </button>
+                              <ul class="dropdown-menu dropdown-menu-end">
+                                <li>
+                                  <button class="dropdown-item d-flex align-items-center" data-bs-theme-value="light" aria-pressed="false">
+                                    <i class="fa-solid fa-sun fa-fw"></i>
+                                    <span class="ms-2">Light</span>
+                                    <i class="fa-solid fa-check ms-auto d-none"></i>
+                                  </button>
+                                </li>
+                                <li>
+                                  <button class="dropdown-item d-flex align-items-center" data-bs-theme-value="dark" aria-pressed="false">
+                                    <i class="fa-solid fa-moon fa-fw"></i>
+                                    <span class="ms-2">Dark</span>
+                                    <i class="fa-solid fa-check ms-auto d-none"></i>
+                                  </button>
+                                </li>
+                                <li>
+                                  <button class="dropdown-item d-flex align-items-center" data-bs-theme-value="auto" aria-pressed="true">
+                                    <i class="fa-solid fa-circle-half-stroke fa-fw"></i>
+                                    <span class="ms-2">Auto</span>
+                                    <i class="fa-solid fa-check ms-auto"></i>
+                                  </button>
+                                </li>
+                              </ul>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <script src="../js/darkmode.js"></script>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#toc-collapse" title="Содержание">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
+        <ul class="nav flex-column">
+
+            <li class="nav-item" data-bs-level="1"><a href="#api-и-хранимые-данные" class="nav-link">API и хранимые данные</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-bs-level="2"><a href="#разделение-доступа" class="nav-link">Разделение доступа</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#агентский-контракт" class="nav-link">Агентский контракт</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#административный-api" class="nav-link">Административный API</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#таблицы-и-файлы" class="nav-link">Таблицы и файлы</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<h1 id="api-и-хранимые-данные">API и хранимые данные<a class="headerlink" href="#api-и-хранимые-данные" title="Permanent link">&para;</a></h1>
+<h2 id="разделение-доступа">Разделение доступа<a class="headerlink" href="#разделение-доступа" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Область</th>
+<th>Проверка</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>/</code>, <code>/assets/*</code></td>
+<td>Публичные файлы панели; данные запрашиваются отдельно</td>
+</tr>
+<tr>
+<td><code>/health</code></td>
+<td>Публичная проверка API/БД</td>
+</tr>
+<tr>
+<td><code>/install/agent.py</code>, <code>/install/agent.tar</code></td>
+<td>Публичный код без рабочих ключей</td>
+</tr>
+<tr>
+<td><code>POST /v1/enroll</code></td>
+<td><code>Authorization: Enrollment &lt;одноразовый код&gt;</code></td>
+</tr>
+<tr>
+<td>Остальные <code>/v1/*</code></td>
+<td><code>Authorization: Bearer &lt;индивидуальный ключ&gt;</code></td>
+</tr>
+<tr>
+<td><code>/admin/api/*</code></td>
+<td>Серверная веб-сессия; мутации дополнительно CSRF/Origin</td>
+</tr>
+</tbody>
+</table>
+<p>Агентский ключ не открывает административный доступ. Веб-cookie не заменяет
+ключ загрузки. Интерактивные Swagger/OpenAPI endpoints отключены.</p>
+<h2 id="агентский-контракт">Агентский контракт<a class="headerlink" href="#агентский-контракт" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Метод и путь</th>
+<th>Вход / результат</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>POST /v1/streams</code></td>
+<td>UUID, <code>interface</code>, <code>started_at</code> Unix seconds; регистрация epoch</td>
+</tr>
+<tr>
+<td><code>PUT /v1/streams/{id}/chunks/{sequence}</code></td>
+<td>Бинарный PCAP/PCAPNG; первый sequence = 0</td>
+</tr>
+<tr>
+<td><code>POST /v1/streams/{id}/seal</code></td>
+<td><code>last_sequence</code>, полная непрерывная последовательность обязательна</td>
+</tr>
+<tr>
+<td><code>GET /v1/streams/{id}/status</code></td>
+<td>Статусы файлов и обработанного префикса</td>
+</tr>
+<tr>
+<td><code>POST /v1/heartbeat</code></td>
+<td><code>capture_state</code>, <code>backlog_bytes/files</code>, <code>software_version</code>, <code>last_error</code></td>
+</tr>
+<tr>
+<td><code>GET /v1/events?limit=100</code></td>
+<td>Инциденты, связанные с потоками данного агента; limit 1–1000</td>
+</tr>
+</tbody>
+</table>
+<p>Upload требует <code>Content-Type: application/octet-stream</code>, <code>Content-Length</code>
+и <code>X-Content-SHA256</code> в lowercase hex. Ответ содержит <code>stream_id</code>, <code>sequence</code>,
+<code>sha256</code>, <code>stored</code>, <code>analysis_status</code>. HTTP <code>201</code> означает новый сохранённый
+файл, <code>200</code> — повтор того же содержимого. ACK не подтверждает анализ.</p>
+<p><code>409</code> — конфликт sequence/содержимого, закрытого потока или времени;
+<code>401</code> — недействительный ключ; чужой поток не раскрывается и даёт <code>404</code>;
+<code>413</code> — размер; <code>429</code> — квота; <code>503</code> — временно занятый домен при регистрации.
+Некорректное тело/поля могут дать <code>400</code>, <code>411</code>, <code>415</code>, <code>422</code>.
+Агент повторяет сетевые ошибки, <code>429</code>, <code>503</code>/<code>5xx</code> с backoff и jitter;
+он не реализует отдельное ожидание точного <code>Retry-After</code>.</p>
+<p>Для одного <code>(stream_id, sequence)</code> сервер проверяет хеш и размер, а не имя
+пользовательского файла. Идентичность агента определяется ключом. <code>/seal</code>
+не следует использовать для принудительного пропуска отсутствующих файлов.</p>
+<h2 id="административный-api">Административный API<a class="headerlink" href="#административный-api" title="Permanent link">&para;</a></h2>
+<p><code>/admin/api/session</code>, <code>/login</code>, <code>/logout</code>, <code>/password</code>, <code>/reauth</code> обслуживают
+сессию. <code>/agents</code> и операции <code>/agents/{id}/rotate</code>, <code>/revoke</code>, <code>/installation</code>
+управляют агентами. <code>/agents/{id}/streams</code> показывает потоки.
+<code>/overview?hours=...</code>, <code>/traffic?hours=...</code>, <code>/events</code>, <code>/audit</code> дают данные панели.
+Точные поля и проверки см. в <code>distributed/web.py</code>, <code>web_auth.py</code>, <code>web_metrics.py</code>.</p>
+<p>Сводки поддерживают <code>hours=1</code>, <code>24</code>, <code>168</code>. <code>/traffic</code> возвращает <code>period</code>,
+<code>summary</code>, <code>timeline</code>, <code>protocols</code>, <code>event_types</code> из одного read-only
+REPEATABLE READ снимка. Границы приёма <code>[start, end)</code>, время UTC-aware.
+Сохраняется имя поля <code>hour</code> в timeline даже при минутной детализации.</p>
+<h2 id="таблицы-и-файлы">Таблицы и файлы<a class="headerlink" href="#таблицы-и-файлы" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Данные</th>
+<th>Место</th>
+<th>Назначение</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Реестр агентов/потоков/файлов</td>
+<td><code>nf_agents</code>, <code>nf_streams</code>, <code>nf_chunks</code></td>
+<td>Идентичность, sequence, размер, пути и parser-статусы</td>
+</tr>
+<tr>
+<td>Состояние детекторов</td>
+<td><code>nf_domains</code></td>
+<td>Lease, generation, checkpoint, прогресс и ошибка</td>
+</tr>
+<tr>
+<td>Работники</td>
+<td><code>nf_workers</code></td>
+<td>Последняя связь процессов</td>
+</tr>
+<tr>
+<td>Первичные срабатывания</td>
+<td><code>nf_events</code></td>
+<td>Ссылка на пакет и связь с инцидентом</td>
+</tr>
+<tr>
+<td>Объединённые атаки</td>
+<td><code>nf_incidents</code>, <code>nf_incident_streams</code></td>
+<td>Длительность, правила, источники, участвующие потоки</td>
+</tr>
+<tr>
+<td>Очередь уведомлений</td>
+<td><code>nf_incident_outbox</code>, старый <code>nf_outbox</code></td>
+<td>Устойчивое намерение доставки; отправщика нет</td>
+</tr>
+<tr>
+<td>Веб-доступ</td>
+<td>Таблицы <code>nf_web_*</code></td>
+<td>Пароли, сессии, лимиты входа, audit</td>
+</tr>
+<tr>
+<td>Bootstrap</td>
+<td><code>nf_agent_installations</code></td>
+<td>Hash одноразового install-кода, срок, использование</td>
+</tr>
+<tr>
+<td>Принятые файлы</td>
+<td><code>/data/captures/</code></td>
+<td>Полный PCAP</td>
+</tr>
+<tr>
+<td>Результаты parser</td>
+<td><code>/data/parsed/</code></td>
+<td>JSONL с пакетами и payload для reducer</td>
+</tr>
+<tr>
+<td>Временный приём</td>
+<td><code>/data/incoming/</code></td>
+<td>Файлы ещё не опубликованной загрузки</td>
+</tr>
+</tbody>
+</table>
+<p>Схема-источник — <code>distributed/schema.sql</code>. Файлы и БД содержат чувствительные
+сетевые данные. Удаление/восстановление должны учитывать ссылки и checkpoints.</p></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Документация создана с помощью <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script src="../js/bootstrap.bundle.min.js"></script>
+        <script>
+            var base_url = "..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../js/base.js"></script>
+        <script src="../search/main.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Поиск</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+            </div>
+            <div class="modal-body">
+                <p>Чтобы воспользоваться поиском по документам, введите поисковый запрос ниже.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Поиск..." id="mkdocs-search-query" title="Введите поисковый запрос">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="Ничего не найдено"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Сочетания клавиш</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Клавиши</th>
+                    <th>Действие</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Открыть справку</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Следующая страница</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Предыдущая страница</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Поиск</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

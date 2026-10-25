@@ -1,0 +1,1376 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+          "DTD/xhtml1-strict.dtd">
+<html>
+
+
+  <head>
+
+    <title>general.streaming.StreamingDetector</title>
+    <meta name="generator" content="pydoctor 25.10.1">
+
+    </meta>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1 maximum-scale=1" />
+    <link rel="stylesheet" type="text/css" href="bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="apidocs.css" />
+    <link rel="stylesheet" type="text/css" href="extra.css" />
+
+</head>
+
+  <body>
+
+
+
+    <nav class="navbar navbar-default mainnavbar">
+
+
+  <div class="container-fluid">
+
+
+    <div class="navbar-header">
+
+      <div class="navlinks">
+        <span class="navbar-brand">
+          <a href="../index.html" class="projecthome">NFDetector</a> <a href="index.html">API Documentation</a>
+        </span>
+
+        <a href="moduleIndex.html">
+          Modules
+        </a>
+
+        <a href="classIndex.html">
+          Classes
+        </a>
+
+        <a href="nameIndex.html">
+          Names
+        </a>
+
+        <div id="search-box-container">
+          <div class="input-group">
+            <input id="search-box" type="search" name="search-query" placeholder="Search..." aria-label="Search" minlength="2" class="form-control" autocomplete="off" />
+
+            <span class="input-group-btn">
+              <a style="display: none;" class="btn btn-default" id="search-clear-button" title="Clear" onclick="clearSearch()"><img src="fonts/x-circle.svg" alt="Clear" /></a>
+              <a class="btn btn-default" id="apidocs-help-button" title="Help" href="apidocs-help.html"><img src="fonts/info.svg" alt="Help" /></a>
+            </span>
+          </div>
+        </div>
+
+      </div>
+
+      <div id="search-results-container" style="display: none;">
+
+        <div id="search-buttons">
+          <span class="label label-default" id="search-docstrings-button">
+          <label class="checkbox-inline">
+            <input type="checkbox" id="toggle-search-in-docstrings-checkbox" value="false" onclick="toggleSearchInDocstrings()">
+              search in docstrings
+            </input>
+          </label>
+          </span>
+
+        </div>
+
+        <noscript>
+            <h1>Cannot search: JavaScript is not supported/enabled in your browser.</h1>
+        </noscript>
+
+        <div id="search-status"> </div>
+
+        <div class="warning" id="search-warn-box" style="display: none;">
+          <p class="rst-last"><span id="search-warn"></span></p>
+        </div>
+
+        <table id="search-results">
+          <!-- Filled dynamically by JS -->
+        </table>
+
+        <div style="margin-top: 10px;">
+          <p>For more information on the search, visit the <a href="apidocs-help.html#rst-search">help page</a>.</p>
+        </div>
+      </div>
+
+    </div>
+
+
+  </div>
+</nav>
+
+    <div class="container-fluid">
+
+      <!-- Side navigation -->
+      <div class="sidebarcontainer" style="display: none;">
+
+        <div class="sidebar"><nav class="sidebar">
+
+
+  <div>
+
+      <div class="thingTitle">
+        <span>Class</span>
+        <code class="thisobject"><a href="general.streaming.StreamingDetector.html" class="internal-link" title="This class"><wbr></wbr>Streaming<wbr></wbr>Detector</a></code>
+      </div>
+
+      <div>
+
+
+
+
+
+
+
+
+        <div class="childrenKindTitle">Methods</div>
+        <ul>
+
+    <li class="">
+
+
+
+
+
+            <div class="itemName"><code><a href="#__init__" class="internal-link" title="general.streaming.StreamingDetector.__init__">__init__</a></code>
+            </div>
+
+
+    </li><li class="">
+
+
+
+
+
+            <div class="itemName"><code><a href="#process" class="internal-link" title="general.streaming.StreamingDetector.process">process</a></code>
+            </div>
+
+
+    </li><li class="private">
+
+
+
+
+
+            <div class="itemName"><code><a href="#_active" class="internal-link" title="general.streaming.StreamingDetector._active">_active</a></code>
+            </div>
+
+
+    </li><li class="private">
+
+
+
+
+
+            <div class="itemName"><code><a href="#_alarm" class="internal-link" title="general.streaming.StreamingDetector._alarm">_alarm</a></code>
+            </div>
+
+
+    </li><li class="private">
+
+
+
+
+
+            <div class="itemName"><code><a href="#_expire" class="internal-link" title="general.streaming.StreamingDetector._expire">_expire</a></code>
+            </div>
+
+
+    </li><li class="private">
+
+
+
+
+
+            <div class="itemName"><code><a href="#_multi_ready" class="internal-link" title="general.streaming.StreamingDetector._multi_ready">_multi<wbr></wbr>_ready</a></code>
+            </div>
+
+
+    </li><li class="private">
+
+
+
+
+
+            <div class="itemName"><code><a href="#_remove_syn" class="internal-link" title="general.streaming.StreamingDetector._remove_syn">_remove<wbr></wbr>_syn</a></code>
+            </div>
+
+
+    </li><li class="private">
+
+
+
+
+
+            <div class="itemName"><code><a href="#_syn" class="internal-link" title="general.streaming.StreamingDetector._syn">_syn</a></code>
+            </div>
+
+
+    </li>
+</ul>
+
+
+
+
+        <div class="childrenKindTitle">Attributes</div>
+        <ul>
+
+    <li class="">
+
+
+
+
+
+            <div class="itemName"><code><a href="#activity" class="internal-link" title="general.streaming.StreamingDetector.activity">activity</a></code>
+            </div>
+
+
+    </li><li class="">
+
+
+
+
+
+            <div class="itemName"><code><a href="#beacon_active" class="internal-link" title="general.streaming.StreamingDetector.beacon_active">beacon<wbr></wbr>_active</a></code>
+            </div>
+
+
+    </li><li class="">
+
+
+
+
+
+            <div class="itemName"><code><a href="#beacon_config" class="internal-link" title="general.streaming.StreamingDetector.beacon_config">beacon<wbr></wbr>_config</a></code>
+            </div>
+
+
+    </li><li class="">
+
+
+
+
+
+            <div class="itemName"><code><a href="#beacon_events" class="internal-link" title="general.streaming.StreamingDetector.beacon_events">beacon<wbr></wbr>_events</a></code>
+            </div>
+
+
+    </li><li class="">
+
+
+
+
+
+            <div class="itemName"><code><a href="#beacons" class="internal-link" title="general.streaming.StreamingDetector.beacons">beacons</a></code>
+            </div>
+
+
+    </li><li class="">
+
+
+
+
+
+            <div class="itemName"><code><a href="#last_timestamp" class="internal-link" title="general.streaming.StreamingDetector.last_timestamp">last<wbr></wbr>_timestamp</a></code>
+            </div>
+
+
+    </li><li class="">
+
+
+
+
+
+            <div class="itemName"><code><a href="#multi_active" class="internal-link" title="general.streaming.StreamingDetector.multi_active">multi<wbr></wbr>_active</a></code>
+            </div>
+
+
+    </li><li class="">
+
+
+
+
+
+            <div class="itemName"><code><a href="#multi_config" class="internal-link" title="general.streaming.StreamingDetector.multi_config">multi<wbr></wbr>_config</a></code>
+            </div>
+
+
+    </li><li class="">
+
+
+
+
+
+            <div class="itemName"><code><a href="#multi_events" class="internal-link" title="general.streaming.StreamingDetector.multi_events">multi<wbr></wbr>_events</a></code>
+            </div>
+
+
+    </li><li class="">
+
+
+
+
+
+            <div class="itemName"><code><a href="#multi_sources" class="internal-link" title="general.streaming.StreamingDetector.multi_sources">multi<wbr></wbr>_sources</a></code>
+            </div>
+
+
+    </li><li class="">
+
+
+
+
+
+            <div class="itemName"><code><a href="#multi_totals" class="internal-link" title="general.streaming.StreamingDetector.multi_totals">multi<wbr></wbr>_totals</a></code>
+            </div>
+
+
+    </li><li class="">
+
+
+
+
+
+            <div class="itemName"><code><a href="#pending_syns" class="internal-link" title="general.streaming.StreamingDetector.pending_syns">pending<wbr></wbr>_syns</a></code>
+            </div>
+
+
+    </li><li class="">
+
+
+
+
+
+            <div class="itemName"><code><a href="#protected" class="internal-link" title="general.streaming.StreamingDetector.protected">protected</a></code>
+            </div>
+
+
+    </li><li class="">
+
+
+
+
+
+            <div class="itemName"><code><a href="#rates" class="internal-link" title="general.streaming.StreamingDetector.rates">rates</a></code>
+            </div>
+
+
+    </li><li class="">
+
+
+
+
+
+            <div class="itemName"><code><a href="#rules" class="internal-link" title="general.streaming.StreamingDetector.rules">rules</a></code>
+            </div>
+
+
+    </li><li class="">
+
+
+
+
+
+            <div class="itemName"><code><a href="#stats" class="internal-link" title="general.streaming.StreamingDetector.stats">stats</a></code>
+            </div>
+
+
+    </li><li class="">
+
+
+
+
+
+            <div class="itemName"><code><a href="#suspicious" class="internal-link" title="general.streaming.StreamingDetector.suspicious">suspicious</a></code>
+            </div>
+
+
+    </li><li class="">
+
+
+
+
+
+            <div class="itemName"><code><a href="#syn_config" class="internal-link" title="general.streaming.StreamingDetector.syn_config">syn<wbr></wbr>_config</a></code>
+            </div>
+
+
+    </li><li class="">
+
+
+
+
+
+            <div class="itemName"><code><a href="#syn_counts" class="internal-link" title="general.streaming.StreamingDetector.syn_counts">syn<wbr></wbr>_counts</a></code>
+            </div>
+
+
+    </li><li class="">
+
+
+
+
+
+            <div class="itemName"><code><a href="#syn_events" class="internal-link" title="general.streaming.StreamingDetector.syn_events">syn<wbr></wbr>_events</a></code>
+            </div>
+
+
+    </li>
+</ul>
+
+
+
+
+      </div>
+  </div><div>
+
+      <div class="thingTitle">
+        <span>Module</span>
+        <code><a href="general.streaming.html" class="internal-link" title="The parent of this class">streaming</a></code>
+      </div>
+
+      <div>
+
+
+
+
+
+        <div class="childrenKindTitle">Classes</div>
+        <ul>
+
+    <li class="">
+
+
+
+
+
+            <div class="itemName"><code><a href="general.streaming.BeaconWindow.html" class="internal-link" title="general.streaming.BeaconWindow"><wbr></wbr>Beacon<wbr></wbr>Window</a></code>
+            </div>
+
+
+    </li><li class="">
+
+
+
+
+
+            <div class="itemName"><code><a href="general.streaming.CountWindow.html" class="internal-link" title="general.streaming.CountWindow"><wbr></wbr>Count<wbr></wbr>Window</a></code>
+            </div>
+
+
+    </li><li class=" thisobject">
+
+
+
+
+
+            <div class="itemName"><code><a href="general.streaming.StreamingDetector.html" class="internal-link" title="general.streaming.StreamingDetector"><wbr></wbr>Streaming<wbr></wbr>Detector</a></code>
+            </div>
+
+
+    </li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+      </div>
+  </div>
+
+</nav>
+        </div>
+        <div id="collapse-sidebar">
+          <a class="btn btn-link" onclick="toggleSideBarCollapse()" title="Toggle Sidebar Collapse">
+          </a>
+        </div>
+        <script src="sidebartoggle.js" type="text/javascript"></script>
+
+      </div>
+
+      <main class="">
+
+
+
+
+        <div class="page-header">
+          <h1 class="class"><code><code><a href="general.html" class="internal-link">general</a></code><wbr></wbr>.<code><a href="general.streaming.html" class="internal-link" title="general.streaming">streaming</a></code><wbr></wbr>.<code><a href="general.streaming.StreamingDetector.html" class="internal-link" title="general.streaming.StreamingDetector">StreamingDetector</a></code></code></h1>
+          <div id="show-private">
+            <button class="btn btn-link" onclick="togglePrivate()">Toggle Private API</button>
+          </div>
+        </div>
+
+        <div class="categoryHeader">
+          class documentation
+        </div>
+
+        <div class="extrasDocstring">
+          <p class="class-signature"><code><span class="py-keyword">class</span> <span class="py-defname">StreamingDetector</span>:</code></p><p>Constructor: <code><a href="#__init__" class="internal-link" title="general.streaming.StreamingDetector.__init__">StreamingDetector(analyzer)</a></code></p><p><a href="classIndex.html#general.streaming.StreamingDetector">View In Hierarchy</a></p>
+        </div>
+
+        <div class="moduleDocstring">
+          <div><p>One ordered capture stream. Emit rate alarms on threshold crossings.</p>
+<p>State is scoped to an observation domain. Disjoint sensor streams may be
+merged in event-time order upstream. Late packets are rejected before state
+is changed.</p>
+</div>
+        </div>
+
+        <div id="split-tables">
+          <table class="children sortable" id="id46">
+
+
+  <tr class="method">
+
+    <td>Method</td>
+    <td><code><a href="#__init__" class="internal-link" title="general.streaming.StreamingDetector.__init__">__init__</a></code></td>
+    <td><span class="rst-undocumented">Undocumented</span></td>
+  </tr><tr class="method">
+
+    <td>Method</td>
+    <td><code><a href="#process" class="internal-link" title="general.streaming.StreamingDetector.process">process</a></code></td>
+    <td><span class="rst-undocumented">Undocumented</span></td>
+  </tr><tr class="instancevariable">
+
+    <td>Instance Variable</td>
+    <td><code><a href="#activity" class="internal-link" title="general.streaming.StreamingDetector.activity">activity</a></code></td>
+    <td><span class="rst-undocumented">Undocumented</span></td>
+  </tr><tr class="instancevariable">
+
+    <td>Instance Variable</td>
+    <td><code><a href="#beacon_active" class="internal-link" title="general.streaming.StreamingDetector.beacon_active">beacon<wbr></wbr>_active</a></code></td>
+    <td><span class="rst-undocumented">Undocumented</span></td>
+  </tr><tr class="instancevariable">
+
+    <td>Instance Variable</td>
+    <td><code><a href="#beacon_config" class="internal-link" title="general.streaming.StreamingDetector.beacon_config">beacon<wbr></wbr>_config</a></code></td>
+    <td><span class="rst-undocumented">Undocumented</span></td>
+  </tr><tr class="instancevariable">
+
+    <td>Instance Variable</td>
+    <td><code><a href="#beacon_events" class="internal-link" title="general.streaming.StreamingDetector.beacon_events">beacon<wbr></wbr>_events</a></code></td>
+    <td><span class="rst-undocumented">Undocumented</span></td>
+  </tr><tr class="instancevariable">
+
+    <td>Instance Variable</td>
+    <td><code><a href="#beacons" class="internal-link" title="general.streaming.StreamingDetector.beacons">beacons</a></code></td>
+    <td><span class="rst-undocumented">Undocumented</span></td>
+  </tr><tr class="instancevariable">
+
+    <td>Instance Variable</td>
+    <td><code><a href="#last_timestamp" class="internal-link" title="general.streaming.StreamingDetector.last_timestamp">last<wbr></wbr>_timestamp</a></code></td>
+    <td><span class="rst-undocumented">Undocumented</span></td>
+  </tr><tr class="instancevariable">
+
+    <td>Instance Variable</td>
+    <td><code><a href="#multi_active" class="internal-link" title="general.streaming.StreamingDetector.multi_active">multi<wbr></wbr>_active</a></code></td>
+    <td><span class="rst-undocumented">Undocumented</span></td>
+  </tr><tr class="instancevariable">
+
+    <td>Instance Variable</td>
+    <td><code><a href="#multi_config" class="internal-link" title="general.streaming.StreamingDetector.multi_config">multi<wbr></wbr>_config</a></code></td>
+    <td><span class="rst-undocumented">Undocumented</span></td>
+  </tr><tr class="instancevariable">
+
+    <td>Instance Variable</td>
+    <td><code><a href="#multi_events" class="internal-link" title="general.streaming.StreamingDetector.multi_events">multi<wbr></wbr>_events</a></code></td>
+    <td><span class="rst-undocumented">Undocumented</span></td>
+  </tr><tr class="instancevariable">
+
+    <td>Instance Variable</td>
+    <td><code><a href="#multi_sources" class="internal-link" title="general.streaming.StreamingDetector.multi_sources">multi<wbr></wbr>_sources</a></code></td>
+    <td><span class="rst-undocumented">Undocumented</span></td>
+  </tr><tr class="instancevariable">
+
+    <td>Instance Variable</td>
+    <td><code><a href="#multi_totals" class="internal-link" title="general.streaming.StreamingDetector.multi_totals">multi<wbr></wbr>_totals</a></code></td>
+    <td><span class="rst-undocumented">Undocumented</span></td>
+  </tr><tr class="instancevariable">
+
+    <td>Instance Variable</td>
+    <td><code><a href="#pending_syns" class="internal-link" title="general.streaming.StreamingDetector.pending_syns">pending<wbr></wbr>_syns</a></code></td>
+    <td><span class="rst-undocumented">Undocumented</span></td>
+  </tr><tr class="instancevariable">
+
+    <td>Instance Variable</td>
+    <td><code><a href="#protected" class="internal-link" title="general.streaming.StreamingDetector.protected">protected</a></code></td>
+    <td><span class="rst-undocumented">Undocumented</span></td>
+  </tr><tr class="instancevariable">
+
+    <td>Instance Variable</td>
+    <td><code><a href="#rates" class="internal-link" title="general.streaming.StreamingDetector.rates">rates</a></code></td>
+    <td><span class="rst-undocumented">Undocumented</span></td>
+  </tr><tr class="instancevariable">
+
+    <td>Instance Variable</td>
+    <td><code><a href="#rules" class="internal-link" title="general.streaming.StreamingDetector.rules">rules</a></code></td>
+    <td><span class="rst-undocumented">Undocumented</span></td>
+  </tr><tr class="instancevariable">
+
+    <td>Instance Variable</td>
+    <td><code><a href="#stats" class="internal-link" title="general.streaming.StreamingDetector.stats">stats</a></code></td>
+    <td><span class="rst-undocumented">Undocumented</span></td>
+  </tr><tr class="instancevariable">
+
+    <td>Instance Variable</td>
+    <td><code><a href="#suspicious" class="internal-link" title="general.streaming.StreamingDetector.suspicious">suspicious</a></code></td>
+    <td><span class="rst-undocumented">Undocumented</span></td>
+  </tr><tr class="instancevariable">
+
+    <td>Instance Variable</td>
+    <td><code><a href="#syn_config" class="internal-link" title="general.streaming.StreamingDetector.syn_config">syn<wbr></wbr>_config</a></code></td>
+    <td><span class="rst-undocumented">Undocumented</span></td>
+  </tr><tr class="instancevariable">
+
+    <td>Instance Variable</td>
+    <td><code><a href="#syn_counts" class="internal-link" title="general.streaming.StreamingDetector.syn_counts">syn<wbr></wbr>_counts</a></code></td>
+    <td><span class="rst-undocumented">Undocumented</span></td>
+  </tr><tr class="instancevariable">
+
+    <td>Instance Variable</td>
+    <td><code><a href="#syn_events" class="internal-link" title="general.streaming.StreamingDetector.syn_events">syn<wbr></wbr>_events</a></code></td>
+    <td><span class="rst-undocumented">Undocumented</span></td>
+  </tr><tr class="method private">
+
+    <td>Method</td>
+    <td><code><a href="#_active" class="internal-link" title="general.streaming.StreamingDetector._active">_active</a></code></td>
+    <td><span class="rst-undocumented">Undocumented</span></td>
+  </tr><tr class="method private">
+
+    <td>Method</td>
+    <td><code><a href="#_alarm" class="internal-link" title="general.streaming.StreamingDetector._alarm">_alarm</a></code></td>
+    <td><span class="rst-undocumented">Undocumented</span></td>
+  </tr><tr class="method private">
+
+    <td>Method</td>
+    <td><code><a href="#_expire" class="internal-link" title="general.streaming.StreamingDetector._expire">_expire</a></code></td>
+    <td><span class="rst-undocumented">Undocumented</span></td>
+  </tr><tr class="method private">
+
+    <td>Method</td>
+    <td><code><a href="#_multi_ready" class="internal-link" title="general.streaming.StreamingDetector._multi_ready">_multi<wbr></wbr>_ready</a></code></td>
+    <td><span class="rst-undocumented">Undocumented</span></td>
+  </tr><tr class="method private">
+
+    <td>Method</td>
+    <td><code><a href="#_remove_syn" class="internal-link" title="general.streaming.StreamingDetector._remove_syn">_remove<wbr></wbr>_syn</a></code></td>
+    <td><span class="rst-undocumented">Undocumented</span></td>
+  </tr><tr class="method private">
+
+    <td>Method</td>
+    <td><code><a href="#_syn" class="internal-link" title="general.streaming.StreamingDetector._syn">_syn</a></code></td>
+    <td><span class="rst-undocumented">Undocumented</span></td>
+  </tr>
+</table>
+
+
+
+        </div>
+
+        <div id="child-list">
+          <div class="basemethod">
+
+
+  <a name="general.streaming.StreamingDetector.__init__">
+
+  </a>
+  <a name="__init__">
+
+  </a>
+  <div class="functionHeader">
+
+
+    <span class="py-keyword">def</span>&#160;<span class="py-defname">__init__</span><span class="function-signature">(<span class="rst-sig-param"><span class="rst-undocumented">self</span>, </span><span class="rst-sig-param">analyzer</span>):</span>
+
+    <a class="headerLink" href="#__init__" title="general.streaming.StreamingDetector.__init__">
+
+
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basemethod">
+
+
+  <a name="general.streaming.StreamingDetector.process">
+
+  </a>
+  <a name="process">
+
+  </a>
+  <div class="functionHeader">
+
+
+    <span class="py-keyword">def</span>&#160;<span class="py-defname">process</span><span class="function-signature">(<span class="rst-sig-param"><span class="rst-undocumented">self</span>, </span><span class="rst-sig-param">info, </span><span class="rst-sig-param">auth_protocol=<a href="https://docs.python.org/3.12//library/constants.html#None" class="intersphinx-link">None</a></span>):</span>
+
+    <a class="headerLink" href="#process" title="general.streaming.StreamingDetector.process">
+
+
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="baseinstancevariable">
+
+
+  <a name="general.streaming.StreamingDetector.activity">
+
+  </a>
+  <a name="activity">
+
+  </a>
+  <div class="functionHeader">
+
+    <span class="py-defname">activity</span>: <code><a href="https://docs.python.org/3.12//library/stdtypes.html#list" class="intersphinx-link">list</a></code> =
+
+    <a class="headerLink" href="#activity" title="general.streaming.StreamingDetector.activity">
+
+
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+
+    <div><p class="undocumented">Undocumented</p></div>
+
+  </div>
+</div><div class="baseinstancevariable">
+
+
+  <a name="general.streaming.StreamingDetector.beacon_active">
+
+  </a>
+  <a name="beacon_active">
+
+  </a>
+  <div class="functionHeader">
+
+    <span class="py-defname">beacon_active</span>: <code><a href="https://docs.python.org/3.12//library/stdtypes.html#set" class="intersphinx-link">set</a></code> =
+
+    <a class="headerLink" href="#beacon_active" title="general.streaming.StreamingDetector.beacon_active">
+
+
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+
+    <div><p class="undocumented">Undocumented</p></div>
+
+  </div>
+</div><div class="baseinstancevariable">
+
+
+  <a name="general.streaming.StreamingDetector.beacon_config">
+
+  </a>
+  <a name="beacon_config">
+
+  </a>
+  <div class="functionHeader">
+
+    <span class="py-defname">beacon_config</span>: <code><a href="https://docs.python.org/3.12//library/stdtypes.html#dict" class="intersphinx-link">dict</a></code> =
+
+    <a class="headerLink" href="#beacon_config" title="general.streaming.StreamingDetector.beacon_config">
+
+
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+
+    <div><p class="undocumented">Undocumented</p></div>
+
+  </div>
+</div><div class="baseinstancevariable">
+
+
+  <a name="general.streaming.StreamingDetector.beacon_events">
+
+  </a>
+  <a name="beacon_events">
+
+  </a>
+  <div class="functionHeader">
+
+    <span class="py-defname">beacon_events</span> =
+
+    <a class="headerLink" href="#beacon_events" title="general.streaming.StreamingDetector.beacon_events">
+
+
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+
+    <div><p class="undocumented">Undocumented</p></div>
+
+  </div>
+</div><div class="baseinstancevariable">
+
+
+  <a name="general.streaming.StreamingDetector.beacons">
+
+  </a>
+  <a name="beacons">
+
+  </a>
+  <div class="functionHeader">
+
+    <span class="py-defname">beacons</span>: <code><a href="https://docs.python.org/3.12//library/stdtypes.html#dict" class="intersphinx-link">dict</a></code> =
+
+    <a class="headerLink" href="#beacons" title="general.streaming.StreamingDetector.beacons">
+
+
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+
+    <div><p class="undocumented">Undocumented</p></div>
+
+  </div>
+</div><div class="baseinstancevariable">
+
+
+  <a name="general.streaming.StreamingDetector.last_timestamp">
+
+  </a>
+  <a name="last_timestamp">
+
+  </a>
+  <div class="functionHeader">
+
+    <span class="py-defname">last_timestamp</span> =
+
+    <a class="headerLink" href="#last_timestamp" title="general.streaming.StreamingDetector.last_timestamp">
+
+
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+
+    <div><p class="undocumented">Undocumented</p></div>
+
+  </div>
+</div><div class="baseinstancevariable">
+
+
+  <a name="general.streaming.StreamingDetector.multi_active">
+
+  </a>
+  <a name="multi_active">
+
+  </a>
+  <div class="functionHeader">
+
+    <span class="py-defname">multi_active</span>: <code><a href="https://docs.python.org/3.12//library/stdtypes.html#set" class="intersphinx-link">set</a></code> =
+
+    <a class="headerLink" href="#multi_active" title="general.streaming.StreamingDetector.multi_active">
+
+
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+
+    <div><p class="undocumented">Undocumented</p></div>
+
+  </div>
+</div><div class="baseinstancevariable">
+
+
+  <a name="general.streaming.StreamingDetector.multi_config">
+
+  </a>
+  <a name="multi_config">
+
+  </a>
+  <div class="functionHeader">
+
+    <span class="py-defname">multi_config</span> =
+
+    <a class="headerLink" href="#multi_config" title="general.streaming.StreamingDetector.multi_config">
+
+
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+
+    <div><p class="undocumented">Undocumented</p></div>
+
+  </div>
+</div><div class="baseinstancevariable">
+
+
+  <a name="general.streaming.StreamingDetector.multi_events">
+
+  </a>
+  <a name="multi_events">
+
+  </a>
+  <div class="functionHeader">
+
+    <span class="py-defname">multi_events</span> =
+
+    <a class="headerLink" href="#multi_events" title="general.streaming.StreamingDetector.multi_events">
+
+
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+
+    <div><p class="undocumented">Undocumented</p></div>
+
+  </div>
+</div><div class="baseinstancevariable">
+
+
+  <a name="general.streaming.StreamingDetector.multi_sources">
+
+  </a>
+  <a name="multi_sources">
+
+  </a>
+  <div class="functionHeader">
+
+    <span class="py-defname">multi_sources</span>: <code><a href="https://docs.python.org/3.12//library/stdtypes.html#dict" class="intersphinx-link">dict</a></code> =
+
+    <a class="headerLink" href="#multi_sources" title="general.streaming.StreamingDetector.multi_sources">
+
+
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+
+    <div><p class="undocumented">Undocumented</p></div>
+
+  </div>
+</div><div class="baseinstancevariable">
+
+
+  <a name="general.streaming.StreamingDetector.multi_totals">
+
+  </a>
+  <a name="multi_totals">
+
+  </a>
+  <div class="functionHeader">
+
+    <span class="py-defname">multi_totals</span> =
+
+    <a class="headerLink" href="#multi_totals" title="general.streaming.StreamingDetector.multi_totals">
+
+
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+
+    <div><p class="undocumented">Undocumented</p></div>
+
+  </div>
+</div><div class="baseinstancevariable">
+
+
+  <a name="general.streaming.StreamingDetector.pending_syns">
+
+  </a>
+  <a name="pending_syns">
+
+  </a>
+  <div class="functionHeader">
+
+    <span class="py-defname">pending_syns</span>: <code><a href="https://docs.python.org/3.12//library/stdtypes.html#dict" class="intersphinx-link">dict</a></code> =
+
+    <a class="headerLink" href="#pending_syns" title="general.streaming.StreamingDetector.pending_syns">
+
+
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+
+    <div><p class="undocumented">Undocumented</p></div>
+
+  </div>
+</div><div class="baseinstancevariable">
+
+
+  <a name="general.streaming.StreamingDetector.protected">
+
+  </a>
+  <a name="protected">
+
+  </a>
+  <div class="functionHeader">
+
+    <span class="py-defname">protected</span> =
+
+    <a class="headerLink" href="#protected" title="general.streaming.StreamingDetector.protected">
+
+
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+
+    <div><p class="undocumented">Undocumented</p></div>
+
+  </div>
+</div><div class="baseinstancevariable">
+
+
+  <a name="general.streaming.StreamingDetector.rates">
+
+  </a>
+  <a name="rates">
+
+  </a>
+  <div class="functionHeader">
+
+    <span class="py-defname">rates</span>: <code><a href="https://docs.python.org/3.12//library/stdtypes.html#dict" class="intersphinx-link">dict</a></code> =
+
+    <a class="headerLink" href="#rates" title="general.streaming.StreamingDetector.rates">
+
+
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+
+    <div><p class="undocumented">Undocumented</p></div>
+
+  </div>
+</div><div class="baseinstancevariable">
+
+
+  <a name="general.streaming.StreamingDetector.rules">
+
+  </a>
+  <a name="rules">
+
+  </a>
+  <div class="functionHeader">
+
+    <span class="py-defname">rules</span> =
+
+    <a class="headerLink" href="#rules" title="general.streaming.StreamingDetector.rules">
+
+
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+
+    <div><p class="undocumented">Undocumented</p></div>
+
+  </div>
+</div><div class="baseinstancevariable">
+
+
+  <a name="general.streaming.StreamingDetector.stats">
+
+  </a>
+  <a name="stats">
+
+  </a>
+  <div class="functionHeader">
+
+    <span class="py-defname">stats</span> =
+
+    <a class="headerLink" href="#stats" title="general.streaming.StreamingDetector.stats">
+
+
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+
+    <div><p class="undocumented">Undocumented</p></div>
+
+  </div>
+</div><div class="baseinstancevariable">
+
+
+  <a name="general.streaming.StreamingDetector.suspicious">
+
+  </a>
+  <a name="suspicious">
+
+  </a>
+  <div class="functionHeader">
+
+    <span class="py-defname">suspicious</span> =
+
+    <a class="headerLink" href="#suspicious" title="general.streaming.StreamingDetector.suspicious">
+
+
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+
+    <div><p class="undocumented">Undocumented</p></div>
+
+  </div>
+</div><div class="baseinstancevariable">
+
+
+  <a name="general.streaming.StreamingDetector.syn_config">
+
+  </a>
+  <a name="syn_config">
+
+  </a>
+  <div class="functionHeader">
+
+    <span class="py-defname">syn_config</span> =
+
+    <a class="headerLink" href="#syn_config" title="general.streaming.StreamingDetector.syn_config">
+
+
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+
+    <div><p class="undocumented">Undocumented</p></div>
+
+  </div>
+</div><div class="baseinstancevariable">
+
+
+  <a name="general.streaming.StreamingDetector.syn_counts">
+
+  </a>
+  <a name="syn_counts">
+
+  </a>
+  <div class="functionHeader">
+
+    <span class="py-defname">syn_counts</span> =
+
+    <a class="headerLink" href="#syn_counts" title="general.streaming.StreamingDetector.syn_counts">
+
+
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+
+    <div><p class="undocumented">Undocumented</p></div>
+
+  </div>
+</div><div class="baseinstancevariable">
+
+
+  <a name="general.streaming.StreamingDetector.syn_events">
+
+  </a>
+  <a name="syn_events">
+
+  </a>
+  <div class="functionHeader">
+
+    <span class="py-defname">syn_events</span> =
+
+    <a class="headerLink" href="#syn_events" title="general.streaming.StreamingDetector.syn_events">
+
+
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+
+    <div><p class="undocumented">Undocumented</p></div>
+
+  </div>
+</div><div class="basemethod private">
+
+
+  <a name="general.streaming.StreamingDetector._active">
+
+  </a>
+  <a name="_active">
+
+  </a>
+  <div class="functionHeader">
+
+
+    <span class="py-keyword">def</span>&#160;<span class="py-defname">_active</span><span class="function-signature">(<span class="rst-sig-param"><span class="rst-undocumented">self</span>, </span><span class="rst-sig-param">kind, </span><span class="rst-sig-param">target, </span><span class="rst-sig-param">source, </span><span class="rst-sig-param">service=<span class="rst-variable-quote">'</span><span class="rst-variable-string"></span><span class="rst-variable-quote">'</span></span>):</span>
+
+    <a class="headerLink" href="#_active" title="general.streaming.StreamingDetector._active">
+
+
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basemethod private">
+
+
+  <a name="general.streaming.StreamingDetector._alarm">
+
+  </a>
+  <a name="_alarm">
+
+  </a>
+  <div class="functionHeader">
+
+
+    <span class="py-keyword">def</span>&#160;<span class="py-defname">_alarm</span><span class="function-signature">(<span class="rst-sig-param"><span class="rst-undocumented">self</span>, </span><span class="rst-sig-param">alarms, </span><span class="rst-sig-param">category, </span><span class="rst-sig-param">reason, </span><span class="rst-sig-param">target, </span><span class="rst-sig-param">source</span>):</span>
+
+    <a class="headerLink" href="#_alarm" title="general.streaming.StreamingDetector._alarm">
+
+
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basemethod private">
+
+
+  <a name="general.streaming.StreamingDetector._expire">
+
+  </a>
+  <a name="_expire">
+
+  </a>
+  <div class="functionHeader">
+
+
+    <span class="py-keyword">def</span>&#160;<span class="py-defname">_expire</span><span class="function-signature">(<span class="rst-sig-param"><span class="rst-undocumented">self</span>, </span><span class="rst-sig-param">now</span>):</span>
+
+    <a class="headerLink" href="#_expire" title="general.streaming.StreamingDetector._expire">
+
+
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basemethod private">
+
+
+  <a name="general.streaming.StreamingDetector._multi_ready">
+
+  </a>
+  <a name="_multi_ready">
+
+  </a>
+  <div class="functionHeader">
+
+
+    <span class="py-keyword">def</span>&#160;<span class="py-defname">_multi_ready</span><span class="function-signature">(<span class="rst-sig-param"><span class="rst-undocumented">self</span>, </span><span class="rst-sig-param">target</span>):</span>
+
+    <a class="headerLink" href="#_multi_ready" title="general.streaming.StreamingDetector._multi_ready">
+
+
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basemethod private">
+
+
+  <a name="general.streaming.StreamingDetector._remove_syn">
+
+  </a>
+  <a name="_remove_syn">
+
+  </a>
+  <div class="functionHeader">
+
+
+    <span class="py-keyword">def</span>&#160;<span class="py-defname">_remove_syn</span><span class="function-signature">(<span class="rst-sig-param"><span class="rst-undocumented">self</span>, </span><span class="rst-sig-param">connection</span>):</span>
+
+    <a class="headerLink" href="#_remove_syn" title="general.streaming.StreamingDetector._remove_syn">
+
+
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basemethod private">
+
+
+  <a name="general.streaming.StreamingDetector._syn">
+
+  </a>
+  <a name="_syn">
+
+  </a>
+  <div class="functionHeader">
+
+
+    <span class="py-keyword">def</span>&#160;<span class="py-defname">_syn</span><span class="function-signature">(<span class="rst-sig-param"><span class="rst-undocumented">self</span>, </span><span class="rst-sig-param">info, </span><span class="rst-sig-param">alarms</span>):</span>
+
+    <a class="headerLink" href="#_syn" title="general.streaming.StreamingDetector._syn">
+
+
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div>
+        </div>
+
+      </main>
+    </div>
+
+    <footer class="navbar navbar-default">
+
+
+  <div class="container-fluid">
+    <a href="index.html">API Documentation</a> for <a href="../index.html" class="projecthome">NFDetector</a>,
+  generated by <a href="https://github.com/twisted/pydoctor/">pydoctor</a>
+    25.10.1 at 2026-10-25 18:55:52.
+  </div>
+
+  <!-- Search related scripts needs to be loaded at the end of HTML
+    parsing not to introduce overhead and display HTML data asap -->
+  <script src="ajax.js" type="text/javascript"></script>
+  <script src="searchlib.js" type="text/javascript"></script>
+  <script src="search.js" type="text/javascript"></script>
+
+</footer>
+
+    <script src="pydoctor.js" type="text/javascript"></script>
+
+  </body>
+</html>
