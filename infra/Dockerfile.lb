@@ -1,0 +1,5 @@
+FROM nginx:1.28-alpine
+RUN apk add --no-cache openssl
+COPY infra/nginx.conf /etc/nginx/nginx.conf
+COPY infra/lb-entrypoint.sh /nf-entrypoint.sh
+ENTRYPOINT ["/bin/sh", "/nf-entrypoint.sh"]

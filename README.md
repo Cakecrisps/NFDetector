@@ -33,10 +33,28 @@ NFDetect — это продвинутая система обнаружения
 - **Анализ C2-трафика и биконирования**
 - **Многоуровневые уведомления** (консоль, лог, внешние домены)
 
+Текущий монитор использует потоковые счётчики и очереди меток времени:
+пакет декодируется для детекторов один раз, полный обход окон на каждом пакете
+не выполняется. Оповещения о превышении порога повторно разрешаются после
+снижения счётчика ниже порога. PCAP читается одним проходом без сохранения
+всех объектов PyShark в памяти.
+
+- [Замеры и ограничения производительности](docs/performance.md)
+- [Проект архитектуры: агенты с ключами → PCAP → сервер](docs/agent-server.md)
+
+Распределённый режим реализован отдельно: [запуск Compose, выдача ключей и агент](docs/distributed.md).
+Файлы одного потока разбираются параллельно; события объединяются перед детектированием.
+Наружу опубликован только HTTPS-порт 443 у LB с одним сертификатом сервера.
+API, PostgreSQL и worker общаются в закрытой Docker-сети; отдельных сертификатов им не нужно.
+По тому же HTTPS-адресу доступна веб-панель: статистика, агенты, события и ключи.
+Первый вход — `root:root` с одноразовым кодом с сервера и обязательной сменой пароля.
+Команды ниже запускают локальный монитор. Потоковый анализ требует неубывающих временных меток пакетов.
+
 ## Требования
 
 - Python 3.8 или выше
 - Права администратора для live-захвата
+- Установленный TShark (`sudo apt install tshark` для Debian/Ubuntu)
 - Установленные зависимости:
 
 ```bash
@@ -59,24 +77,33 @@ cd NetFreak-Detector
 pip install -r requirements.txt
 ```
 
+## Проверка тестами
+
+```bash
+python -m pip install -r requirements-dev.txt
+python -m pytest -q
+```
+
+Тесты детекторов и монитора используют искусственные пакеты и не требуют TShark или прав администратора.
+
 ## Быстрый старт
 
 ### Мониторинг в реальном времени
 
 ```bash
-python nfddetect.py live -i eth0
+python nfdetect.py live -i eth0
 ```
 
 ### Анализ захваченного трафика
 
 ```bash
-python nfddetect.py file -f capture.pcap
+python nfdetect.py file -f capture.pcap
 ```
 
 ### Полный мониторинг с отладкой
 
 ```bash
-python nfddetect.py live -i eth0 -d --rules strict_rules.json --output daily_report
+python nfdetect.py live -i eth0 -d --rules strict_rules.json --output daily_report
 ```
 
 ## Детальное руководство
@@ -86,20 +113,20 @@ python nfddetect.py live -i eth0 -d --rules strict_rules.json --output daily_rep
 #### Просмотр доступных интерфейсов
 
 ```bash
-python nfddetect.py live
+python nfdetect.py live
 # Система покажет список доступных интерфейсов
 ```
 
 #### Базовый мониторинг
 
 ```bash
-python nfddetect.py live -i eth0
+python nfdetect.py live -i eth0
 ```
 
 #### Мониторинг с расширенными настройками
 
 ```bash
-python nfddetect.py live -i wlan0 \
+python nfdetect.py live -i wlan0 \
   -d \
   --rules custom_rules.json \
   --protected_ips ext/my_trusted_ips.txt \
@@ -112,21 +139,21 @@ python nfddetect.py live -i wlan0 \
 #### Анализ одиночного файла
 
 ```bash
-python nfddetect.py file -f /path/to/capture.pcap
+python nfdetect.py file -f /path/to/capture.pcap
 ```
 
 #### Пакетный анализ
 
 ```bash
 for pcap in captures/*.pcap; do
-  python nfddetect.py file -f "$pcap" --output "analysis_$(basename "$pcap" .pcap)"
+  python nfdetect.py file -f "$pcap" --output "analysis_$(basename "$pcap" .pcap)"
 done
 ```
 
 #### Анализ с кастомными правилами
 
 ```bash
-python nfddetect.py file -f incident.pcap \
+python nfdetect.py file -f incident.pcap \
   --rules incident_rules.json \
   --protected_ips ext/corporate_ips.txt
 ```
@@ -151,7 +178,7 @@ python nfddetect.py file -f incident.pcap \
       "request_limit_window": 1.0
     },
     "nip": {
-      "request_limit": 2.0,
+      "request_limit": 5000.0,
       "request_limit_window": 1.0,
       "display_ips": 10
     }
@@ -201,7 +228,7 @@ python nfddetect.py file -f incident.pcap \
   - `request_limit`: Максимальное количество запросов
   - `request_limit_window`: Временное окно (секунды)
 - **nip** (распределенная атака):
-  - `request_limit`: Лимит запросов с одного IP
+  - `request_limit`: Общий лимит пакетов от нескольких IP за временное окно
   - `request_limit_window`: Временное окно (секунды)
   - `display_ips`: Сколько IP показать в отчете
 
@@ -267,7 +294,7 @@ python nfddetect.py file -f incident.pcap \
 
 ### 2. DDoS Protection
 - **Одиночный источник**: >1000 запросов/сек
-- **Распределенная атака**: >2 запроса/сек с каждого IP
+- **Распределенная атака**: ≥5000 пакетов за окно от двух и более IP
 - **Отображение**: Топ-10 атакующих IP
 
 ### 3. Flood Prevention
@@ -322,7 +349,7 @@ cat out/log_2024-01-15_14-30-00.txt
 
 ```
 NetFreak-Detector/
-├── nfddetect.py          # Основной скрипт
+├── nfdetect.py          # Основной скрипт
 ├── rules.json           # Конфигурация правил
 ├── requirements.txt     # Зависимости Python
 ├── ext/                # Конфигурационные файлы
@@ -358,7 +385,7 @@ NetFreak-Detector/
 ### Пример 1: Мониторинг корпоративной сети
 
 ```bash
-sudo python nfddetect.py live -i enp3s0 \
+sudo python nfdetect.py live -i enp3s0 \
   --rules corporate_rules.json \
   --protected_ips ext/corporate_ips.txt \
   --output /var/log/nfdetect/daily \
@@ -368,7 +395,7 @@ sudo python nfddetect.py live -i enp3s0 \
 ### Пример 2: Анализ инцидента безопасности
 
 ```bash
-python nfddetect.py file -f incident_20240115.pcap \
+python nfdetect.py file -f incident_20240115.pcap \
   --rules forensic_rules.json \
   --protected_ips ext/trusted_assets.txt \
   --output incident_analysis \
@@ -389,7 +416,7 @@ python nfddetect.py file -f incident_20240115.pcap \
 ```
 
 ```bash
-python nfddetect.py live -i eth0 --rules siem_integration.json
+python nfdetect.py live -i eth0 --rules siem_integration.json
 ```
 
 ### Пример 4: Мониторинг веб-инфраструктуры
@@ -420,7 +447,7 @@ python nfddetect.py live -i eth0 --rules siem_integration.json
 
 ### Ошибка: "Permission denied"
 ```bash
-sudo python nfddetect.py live -i eth0
+sudo python nfdetect.py live -i eth0
 ```
 
 ### Ошибка: "Файл не найден"
@@ -434,7 +461,7 @@ cp rules.example.json rules.json
 ### Ошибка: "Interface not found"
 ```bash
 # Список доступных интерфейсов
-python nfddetect.py live
+python nfdetect.py live
 # или
 ip link show
 ```
@@ -450,7 +477,7 @@ ip link show
 ### Отладка модулей
 
 ```bash
-python nfddetect.py live -i eth0 -d 2> debug.log
+python nfdetect.py live -i eth0 -d 2> debug.log
 ```
 
 ## Производительность

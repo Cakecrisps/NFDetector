@@ -7,6 +7,7 @@
 """
 import json
 from typing import Dict, List, Tuple, Optional, Set
+from general.ip_lists import load_ip_list
 import time
 
 class TrafficAnalyzer:
@@ -43,7 +44,7 @@ class TrafficAnalyzer:
         
         try:
             with open(protectips, 'r', encoding='utf-8') as f:
-                self.protectips = [line.strip() for line in f if line.strip()]
+                self.protectips = list(load_ip_list(f))
         except FileNotFoundError:
             raise FileNotFoundError(f"Файл с защищаемыми IP не найден: {protectips}")
         
@@ -68,10 +69,7 @@ class TrafficAnalyzer:
             for filepath in susp_files:
                 try:
                     with open(filepath, 'r', encoding='utf-8') as f:
-                        for line in f:
-                            ip = line.strip()
-                            if ip and not ip.startswith('#'):
-                                self.suspicious_ips.add(ip)
+                        self.suspicious_ips.update(load_ip_list(f))
                 except FileNotFoundError:
                     print(f"Файл с подозрительными IP не найден: {filepath}")
         
@@ -133,8 +131,13 @@ class TrafficAnalyzer:
             is_syn_ack = False
             if hasattr(packet, 'tcp') and hasattr(packet.tcp, 'flags'):
                 tcp_flags = packet.tcp.flags
-                is_syn = 'SYN' in tcp_flags and 'ACK' not in tcp_flags
-                is_syn_ack = 'SYN' in tcp_flags and 'ACK' in tcp_flags
+                try:
+                    flags = int(str(tcp_flags), 0)
+                    is_syn = bool(flags & 0x02) and not bool(flags & 0x10)
+                    is_syn_ack = bool(flags & 0x02) and bool(flags & 0x10)
+                except ValueError:
+                    is_syn = 'SYN' in tcp_flags and 'ACK' not in tcp_flags
+                    is_syn_ack = 'SYN' in tcp_flags and 'ACK' in tcp_flags
             
             is_http = hasattr(packet, 'http')
             
@@ -258,7 +261,7 @@ class TrafficAnalyzer:
                     target_ips.add(dst_ip)
                     self.stats["total"] += 1
             
-            if total_protected_packets >= total_limit:
+            if len(src_counts) >= 2 and total_protected_packets >= total_limit:
                 sorted_ips = sorted(
                     src_counts.items(),
                     key=lambda x: x[1],
@@ -307,8 +310,9 @@ class TrafficAnalyzer:
             
             syn_config = flood_config["SYN"]
             syn_limit = syn_config.get("syn_only_limit", 50)
-            current_time = time.time()
-            timeout = 5.0
+            packet_infos = [self._get_packet_info(pkt) for pkt in window_packets]
+            current_time = max((info.get("timestamp", 0) for info in packet_infos), default=0)
+            timeout = syn_config.get("syn_only_window", 5.0)
             
             expired_syns = []
             for conn_id, syn_time in self.pending_syns.items():
@@ -318,8 +322,7 @@ class TrafficAnalyzer:
             for conn_id in expired_syns:
                 del self.pending_syns[conn_id]
             
-            for packet in window_packets:
-                packet_info = self._get_packet_info(packet)
+            for packet_info in packet_infos:
                 if not packet_info:
                     continue
                 
@@ -328,17 +331,17 @@ class TrafficAnalyzer:
                 src_port = packet_info.get("src_port")
                 dst_port = packet_info.get("dst_port")
                 
-                if dst_ip not in self.protectips:
+                if dst_ip not in self.protectips and src_ip not in self.protectips:
                     continue
                 
                 self.stats["total"] += 1
                 is_syn = packet_info.get("is_syn", False)
                 is_syn_ack = packet_info.get("is_syn_ack", False)
                 
-                if is_syn and src_port and dst_port:
+                if is_syn and dst_ip in self.protectips and src_port and dst_port:
                     conn_id = self._get_connection_id(src_ip, dst_ip, src_port, dst_port)
                     self.pending_syns[conn_id] = packet_info["timestamp"]
-                elif is_syn_ack and src_port and dst_port:
+                elif is_syn_ack and src_ip in self.protectips and src_port and dst_port:
                     conn_id = self._get_connection_id(dst_ip, src_ip, dst_port, src_port)
                     if conn_id in self.pending_syns:
                         del self.pending_syns[conn_id]

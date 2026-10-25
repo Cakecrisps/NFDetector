@@ -42,9 +42,9 @@ def parse_arguments():
         description='NFDetect - система детекции сетевых аномалий',
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="Примеры использования:\n"
-               "  Live режим:  python nfddetect.py live -i eth0\n"
-               "  Live режим с отладкой: python nfddetect.py live -i eth0 -d\n"
-               "  File режим:  python nfddetect.py file -f /path/to/pcap.pcap"
+               "  Live режим:  python nfdetect.py live -i eth0\n"
+               "  Live режим с отладкой: python nfdetect.py live -i eth0 -d\n"
+               "  File режим:  python nfdetect.py file -f /path/to/pcap.pcap"
     )
 
     parser.add_argument(
