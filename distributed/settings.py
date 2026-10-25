@@ -18,6 +18,8 @@ class Settings:
     max_streams: int = 16
     public_origin: str = ''
     trust_proxy_headers: bool = False
+    tls_public_cert: Path = Path('/run/nf-tls/server.crt')
+    agent_origin: str = ''
 
     @classmethod
     def from_env(cls):
@@ -33,6 +35,8 @@ class Settings:
             max_streams=int(os.environ.get('NF_MAX_STREAMS', 16)),
             public_origin=os.environ.get('NF_PUBLIC_URL', '').rstrip('/'),
             trust_proxy_headers=os.environ.get('NF_TRUST_PROXY_HEADERS', '0') == '1',
+            tls_public_cert=Path(os.environ.get('NF_TLS_PUBLIC_CERT', '/run/nf-tls/server.crt')),
+            agent_origin=os.environ.get('NF_AGENT_URL', '').rstrip('/'),
         )
 
     def prepare(self):

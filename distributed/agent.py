@@ -38,7 +38,7 @@ def capture_start(path):
 
 
 class Uploader:
-    def __init__(self, server, key_file, state_file, interface, ca=True, allow_http=False):
+    def __init__(self, server, key_file, state_file, interface, ca=True, allow_http=False, cert_sha256=None):
         parsed = urlparse(server)
         if parsed.scheme != 'https' and not (allow_http and parsed.scheme == 'http'):
             raise ValueError('HTTPS is required; --allow-http is for local testing only')
@@ -52,6 +52,11 @@ class Uploader:
             raise ValueError('Invalid key file')
         self.capture_state, self.last_error, self._heartbeat_due = 'idle', '', 0
         self.session = requests.Session()
+        if cert_sha256:
+            if parsed.scheme != 'https':
+                raise ValueError('Certificate pinning requires HTTPS')
+            from .tls import FingerprintAdapter
+            self.session.mount('https://', FingerprintAdapter(cert_sha256))
         self.session.headers['Authorization'] = f'Bearer {token}'
         self.server, self.ca = server.rstrip('/'), ca
         self.path, self.lock = Path(state_file), threading.RLock()
@@ -91,7 +96,8 @@ class Uploader:
             self.save()
 
     def request(self, method, route, **kwargs):
-        response = self.session.request(method, self.server + route, timeout=(10, 60), verify=self.ca, **kwargs)
+        response = self.session.request(method, self.server + route, timeout=(10, 60), verify=self.ca,
+                                        allow_redirects=False, **kwargs)
         if response.status_code in (429, 503) or response.status_code >= 500:
             raise requests.ConnectionError(f'Temporary server response {response.status_code}')
         if response.status_code >= 400:

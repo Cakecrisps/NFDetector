@@ -28,7 +28,9 @@ def main():
         command.add_argument('--key-file', required=True)
         command.add_argument('--state', required=True)
         command.add_argument('--interface', required=True)
-        command.add_argument('--ca')
+        tls = command.add_mutually_exclusive_group()
+        tls.add_argument('--ca')
+        tls.add_argument('--cert-sha256')
         command.add_argument('--allow-http', action='store_true')
         if name == 'upload':
             command.add_argument('files', nargs='+')
@@ -40,7 +42,8 @@ def main():
     logging.basicConfig(level=logging.INFO, format='%(asctime)s %(levelname)s %(message)s')
     if args.command in ('upload', 'capture'):
         from .agent import Uploader, run_capture
-        uploader = Uploader(args.server, args.key_file, args.state, args.interface, ca=args.ca or True, allow_http=args.allow_http)
+        uploader = Uploader(args.server, args.key_file, args.state, args.interface, ca=args.ca or True,
+                            allow_http=args.allow_http, cert_sha256=args.cert_sha256)
         if args.command == 'upload':
             uploader.upload_files(args.files)
             print('Uploaded and sealed stream:', uploader.state['stream_id'])

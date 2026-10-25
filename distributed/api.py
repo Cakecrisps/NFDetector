@@ -2,6 +2,7 @@
 import hashlib
 import os
 import re
+import secrets
 import uuid
 from contextlib import asynccontextmanager
 
@@ -77,6 +78,31 @@ def create_app(settings=None):
         with store.connect() as conn:
             conn.execute('SELECT 1')
         return {'status': 'ok'}
+
+    @app.post('/v1/enroll')
+    def enroll(request: Request):
+        scheme, _, token = request.headers.get('authorization', '').partition(' ')
+        if scheme != 'Enrollment' or not re.fullmatch(r'[A-Za-z0-9_-]{43}', token):
+            raise HTTPException(401, 'Invalid or expired installation code')
+        with store.connect() as conn:
+            digest = hashlib.sha256(token.encode()).hexdigest()
+            identity = conn.execute('SELECT agent_id FROM nf_agent_installations WHERE token_hash=%s', (digest,)).fetchone()
+            if not identity:
+                raise HTTPException(401, 'Invalid or expired installation code')
+            # All admin actions acquire agent -> grant locks in this order too.
+            agent = conn.execute('SELECT * FROM nf_agents WHERE id=%s FOR UPDATE', (identity['agent_id'],)).fetchone()
+            grant = conn.execute('''SELECT * FROM nf_agent_installations WHERE token_hash=%s
+                AND used_at IS NULL AND expires_at>clock_timestamp() FOR UPDATE''', (digest,)).fetchone()
+            if not grant or not agent or agent['revoked'] or grant['key_id'] != agent['key_id']:
+                raise HTTPException(401, 'Invalid or expired installation code')
+            # Fresh operational key: the bootstrap command never contains it.
+            key_id, secret = secrets.token_hex(8), secrets.token_urlsafe(32)
+            conn.execute('UPDATE nf_agents SET key_id=%s,key_hash=%s WHERE id=%s',
+                         (key_id, hashlib.sha256(secret.encode()).hexdigest(), grant['agent_id']))
+            conn.execute('UPDATE nf_agent_installations SET used_at=clock_timestamp() WHERE token_hash=%s',
+                         (grant['token_hash'],))
+            app.state.web_auth.audit(request, 'agent_installed', grant['agent_id'], actor='installer', conn=conn)
+        return dict(agent_id=str(grant['agent_id']), key=key_id + '.' + secret, server_url=grant['server_url'])
 
     @app.post('/v1/streams')
     def register(body: StreamRequest, agent=Depends(authenticate)):

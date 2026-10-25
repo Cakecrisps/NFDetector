@@ -49,7 +49,7 @@ def agents(store, query='', offset=0, limit=100):
     with store.connect() as conn:
         total = conn.execute('SELECT count(*) AS count FROM nf_agents WHERE name ILIKE %s OR domain ILIKE %s',
                              (pattern, pattern)).fetchone()['count']
-        rows = conn.execute('''SELECT a.id,a.name,a.domain,a.key_id,a.revoked,a.created_at,a.last_seen_at,a.last_heartbeat_at,
+        rows = conn.execute('''SELECT a.id,a.name,a.domain,a.key_id,a.revoked,a.server_url,a.created_at,a.last_seen_at,a.last_heartbeat_at,
             a.capture_state,a.backlog_bytes,a.backlog_files,a.software_version,a.last_error,
             CASE WHEN a.revoked THEN 'revoked' WHEN a.last_seen_at IS NULL THEN 'never_seen'
                 WHEN a.last_seen_at<clock_timestamp()-interval '60 seconds' THEN 'offline'

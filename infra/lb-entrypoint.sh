@@ -13,4 +13,9 @@ if [ ! -f /etc/nf/tls/server.crt ] || [ ! -s /etc/nf/tls/server.crt ] || \
         -addext "subjectAltName=DNS:${NF_TLS_HOST:-localhost},DNS:localhost,IP:127.0.0.1"
     chmod 600 /etc/nf/tls/server.key
 fi
+# Share only the public certificate with API. The private key remains on LB.
+mkdir -p /etc/nf/public
+cp /etc/nf/tls/server.crt /etc/nf/public/server.crt.tmp
+chmod 644 /etc/nf/public/server.crt.tmp
+mv /etc/nf/public/server.crt.tmp /etc/nf/public/server.crt
 exec nginx -g 'daemon off;'

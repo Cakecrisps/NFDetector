@@ -9,6 +9,7 @@ x-service: &service
     NF_RULES: /app/rules.json
     NF_PROTECTED_IPS: /app/ext/protectips.txt
     NF_PUBLIC_URL: ${NF_PUBLIC_URL:-}
+    NF_AGENT_URL: ${NF_AGENT_URL:-}
     NF_TRUST_PROXY_HEADERS: '1'
   volumes:
     - data:/data
@@ -41,6 +42,11 @@ services:
   api:
     <<: *service
     command: [api]
+    volumes:
+      - data:/data
+      - ./rules.json:/app/rules.json:ro
+      - ./ext:/app/ext:ro
+      - tls-public:/run/nf-tls:ro
     healthcheck:
       test: [CMD, python, -c, "import urllib.request; urllib.request.urlopen('http://localhost:8000/health', timeout=3)"]
       interval: 3s
@@ -65,6 +71,7 @@ services:
     networks: [edge, backend]
     volumes:
       - tls:/etc/nf/tls
+      - tls-public:/etc/nf/public
     depends_on:
       api:
         condition: service_healthy
@@ -72,6 +79,7 @@ volumes:
   database:
   data:
   tls:
+  tls-public:
 networks:
   edge:
     driver: bridge
