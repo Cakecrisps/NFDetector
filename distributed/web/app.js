@@ -94,7 +94,7 @@ function statusBadge(status, compact = false) { const values = {online: ['На �
 function table(headers) { const root = node('table'); const head = node('thead'); const line = node('tr'); for (const title of headers) line.append(node('th', '', title)); head.append(line); const body = node('tbody'); root.append(head, body); const scroll = node('div', 'table-scroll'); scroll.append(root); return {scroll, body}; }
 function cell(text, cls = '') { return node('td', cls, text); }
 function nameCell(agent) { const root = cell(); const inner = node('div', 'name-cell'); const device = node('span', 'device-icon'); device.append(icon('agents')); const name = node('div', 'primary-text', agent.name); name.append(node('span', 'secondary-text mono', agent.id.slice(0, 8))); inner.append(device, name); root.append(inner); return root; }
-function agentTable(items, compact = false) { if (!items.length) return empty('Агенты ещё не подключены', 'Выпустите ключ и запустите агент на наблюдаемом узле.'); const result = table(compact ? ['Агент', 'Состояние'] : ['Агент', 'Домен', 'Состояние', 'Трафик / пакеты', 'Очередь', 'Действия']); for (const agent of items) { if (compact) result.scroll.classList.add('compact-table'); const tr = node('tr'); const identity = nameCell(agent); if (compact) identity.querySelector('.secondary-text').textContent = relative(agent.last_seen_at); tr.append(identity); if (!compact) tr.append(cell(agent.domain, 'mono')); const status = cell(); status.append(statusBadge(agent.status, compact)); tr.append(status); if (!compact) { const traffic = cell(bytes(agent.received_bytes)); traffic.append(node('span', 'secondary-text', number(agent.packets) + ' пакетов')); const queue = cell(number(agent.queued) + ' файлов'); if (agent.failed) queue.append(node('span', 'secondary-text', number(agent.failed) + ' с ошибкой')); const actions = cell(); const group = node('div', 'row-actions'); group.append(button('Подробнее', '', () => agentDetails(agent)), button('Новый ключ', '', () => rotateDialog(agent))); if (!agent.revoked) group.append(button('Отозвать', 'destructive', () => revokeDialog(agent))); actions.append(group); tr.append(traffic, queue, actions); } result.body.append(tr); } return result.scroll; }
+function agentTable(items, compact = false) { if (!items.length) return empty('Агенты ещё не подключены', 'Выпустите ключ и запустите агент на наблюдаемом узле.'); const result = table(compact ? ['Агент', 'Состояние'] : ['Агент', 'Домен', 'Состояние', 'Трафик / пакеты', 'Очередь', 'Действия']); for (const agent of items) { if (compact) result.scroll.classList.add('compact-table'); const tr = node('tr'); const identity = nameCell(agent); if (compact) identity.querySelector('.secondary-text').textContent = relative(agent.last_seen_at); tr.append(identity); if (!compact) tr.append(cell(agent.domain, 'mono')); const status = cell(); status.append(statusBadge(agent.status, compact)); tr.append(status); if (!compact) { const traffic = cell(bytes(agent.received_bytes)); traffic.append(node('span', 'secondary-text', number(agent.packets) + ' пакетов')); const queue = cell(number(agent.queued) + ' файлов'); if (agent.failed) queue.append(node('span', 'secondary-text', number(agent.failed) + ' с ошибкой')); const actions = cell(); const group = node('div', 'row-actions'); group.append(button('Подробнее', '', () => agentDetails(agent)), button('Новый ключ', '', () => rotateDialog(agent))); if (!agent.revoked) group.append(button('Установить', '', () => installationDialog(agent)), button('Отозвать', 'destructive', () => revokeDialog(agent))); actions.append(group); tr.append(traffic, queue, actions); } result.body.append(tr); } return result.scroll; }
 function eventKind(reason) { return reason.split(':', 1)[0]; }
 function eventTitle(kind) { const labels = {DDOS: 'DDoS / flood', BRUTEFORCE_SSH_HANDSHAKES: 'Возможный перебор SSH', DDoS_SINGLE_IP: 'Высокая частота запросов', DDoS_MULTI_IP: 'Распределённая атака', SYN_FLOOD_HALF_OPEN: 'SYN flood', HTTP_FLOOD: 'HTTP flood', C2_BEACONING: 'Периодические соединения', SUSPICIOUS_SOURCE_IP: 'Подозрительный источник', SUSPICIOUS_DEST_IP: 'Подозрительная цель', DECODE_WARNING: 'Предупреждение разбора'}; return labels[kind] || (kind.startsWith('BRUTEFORCE_') ? 'Перебор · ' + kind.slice(11) : kind); }
 function eventBadge(kind) { if (kind === 'DECODE_WARNING') return badge('Разбор', 'blue'); if (kind.startsWith('BRUTEFORCE_') || kind.startsWith('SUSPICIOUS_')) return badge('Внимание', 'orange'); return badge('Высокий', 'red'); }
@@ -215,8 +215,58 @@ async function loadView() {
     }
   } finally { if (request === state.request) main.setAttribute('aria-busy', 'false'); }
 }
-function keyDialog(data) { const content = node('div'); content.append(node('p', 'dialog-intro', 'Агент «' + data.name + '». Сохраните ключ сейчас: повторно посмотреть его будет нельзя.')); const secret = node('code', 'key-box', data.key); content.append(secret, node('p', 'small muted', 'На машине агента храните файл ключа с правами 0600. При замене ключа предыдущий сразу перестаёт работать.')); const actions = node('div', 'dialog-actions'); actions.append(button('Копировать', 'button secondary', async () => { try { await navigator.clipboard.writeText(data.key); toast('Ключ скопирован'); } catch { toast('Копирование недоступно. Скачайте файл.', true); } }), button('Скачать .key', 'button', () => { const url = URL.createObjectURL(new Blob([data.key + '\n'], {type: 'application/octet-stream'})); const link = node('a'); link.href = url; link.download = 'agent-' + data.agent_id.slice(0, 8) + '.key'; link.click(); window.setTimeout(() => URL.revokeObjectURL(url), 1000); }, 'download')); content.append(actions); openDialog('Ключ агента готов', content); }
-function createAgentDialog() { const form = node('form', 'form'); form.append(node('p', 'dialog-intro', 'Создайте подключение для нового сенсора. Агенты одного домена участвуют в общей истории наблюдения.')); const name = field('Имя агента', 'name', 'text', 'Например, gateway-office'); const domain = field('Домен наблюдения', 'domain', 'text', 'Объединяйте сенсоры без дублирования одного трафика.', 'main'); const error = node('div', 'form-error'); const submit = node('button', 'button', 'Создать и выдать ключ'); submit.type = 'submit'; form.append(name.wrapper, domain.wrapper, error, submit); formHandler(form, submit, error, async () => { const result = await mutate('/agents', {name: name.input.value, domain: domain.input.value}); state.agentsOffset = 0; keyDialog(result); loadView(); }); openDialog('Добавить агента', form); name.input.focus(); }
+function installationPanel(agent, initial) {
+  const root = node('section', 'installation-panel');
+  root.append(node('h3', '', 'Автоматическая установка'));
+  root.append(node('p', 'small muted', 'Debian/Ubuntu или Fedora/RHEL, systemd, Python 3 и sudo. Вставьте команду на одном хосте. Интерфейс определяется автоматически.'));
+  const form = node('form', 'form');
+  const server = field('Адрес панели со стороны агента', 'server_url', 'text', 'IP или DNS-имя, доступные с хоста агента. Например: 192.168.122.1 или https://panel.example:8443.', initial?.server_url || state.session?.agent_install_url || window.location.origin);
+  server.input.maxLength = 512;
+  const network = field('Интерфейс захвата', 'interface', 'text', 'Оставьте пустым для автоматического выбора.', initial?.interface || '');
+  network.input.required = false; network.input.maxLength = 64;
+  const error = node('div', 'form-error');
+  const generate = node('button', 'button secondary', 'Обновить команду'); generate.type = 'submit';
+  const output = node('div', 'installation-output');
+  function render(data) {
+    output.replaceChildren();
+    if (!data?.command) { if (data?.unavailable) output.append(node('p', 'alert-box', data.unavailable)); return; }
+    const command = node('textarea', 'install-command'); command.readOnly = true; command.value = data.command; command.rows = 5;
+    command.setAttribute('aria-label', 'Команда установки агента'); command.spellcheck = false;
+    const copy = button('Копировать команду', 'button', async () => { try { await navigator.clipboard.writeText(command.value); toast('Команда скопирована'); } catch { command.focus(); command.select(); toast('Выделена команда — скопируйте её вручную', true); } });
+    output.append(command, copy, node('p', 'small muted', 'Одноразовый код действует до ' + time(data.expires_at) + '. После запуска постоянный ключ сохраняется только на хосте, ручной ключ заменяется. Служба: nfagent.service.'));
+  }
+  for (const input of [server.input, network.input]) input.addEventListener('input', () => { output.replaceChildren(node('p', 'small muted', 'Обновите команду для изменённых параметров.')); });
+  form.append(server.wrapper, network.wrapper, error, generate);
+  formHandler(form, generate, error, async () => render(await mutate('/agents/' + (agent.agent_id || agent.id) + '/installation', {server_url: server.input.value, interface: network.input.value})));
+  root.append(form, output); render(initial); return root;
+}
+function installationDialog(agent) { const content = node('div'); content.append(node('p', 'dialog-intro', 'Установка агента «' + agent.name + '». Запуск новой установки заменит его текущий ключ. Для второго хоста создайте отдельного агента.'), installationPanel(agent, {server_url: agent.server_url})); openDialog('Установить агента', content); }
+function keyDialog(data) {
+  const content = node('div');
+  content.append(node('p', 'dialog-intro', 'Агент «' + data.name + '» создан. Скопируйте команду установки или сохраните ключ для ручной настройки.'), installationPanel(data, data.installation));
+  const manual = node('details', 'manual-install'); manual.append(node('summary', '', 'Ключ для ручной настройки'));
+  const secret = node('code', 'key-box', data.key);
+  manual.append(node('p', 'small muted', 'Ключ показывается один раз. Храните файл с правами 0600. Автоматическая установка заменяет этот ключ.'), secret);
+  const actions = node('div', 'dialog-actions');
+  actions.append(button('Копировать ключ', 'button secondary', async () => { try { await navigator.clipboard.writeText(data.key); toast('Ключ скопирован'); } catch { toast('Копирование недоступно. Скачайте файл.', true); } }), button('Скачать .key', 'button secondary', () => { const url = URL.createObjectURL(new Blob([data.key + '\n'], {type: 'application/octet-stream'})); const link = node('a'); link.href = url; link.download = 'agent-' + data.agent_id.slice(0, 8) + '.key'; link.click(); window.setTimeout(() => URL.revokeObjectURL(url), 1000); }, 'download'));
+  manual.append(actions); content.append(manual); openDialog('Подключить агента', content);
+}
+function createAgentDialog() {
+  const form = node('form', 'form');
+  form.append(node('p', 'dialog-intro', 'Укажите адрес панели, доступный с хоста нового агента. Команда установки сразу будет использовать этот адрес.'));
+  const name = field('Имя агента', 'name', 'text', 'Например, gateway-office');
+  const domain = field('Домен наблюдения', 'domain', 'text', 'Объединяйте сенсоры без дублирования одного трафика.', 'main');
+  const server = field('Адрес панели со стороны агента', 'server_url', 'text', 'Например: 192.168.122.1 или https://panel.example:8443. Без схемы используется HTTPS.', state.session?.agent_install_url || window.location.origin);
+  server.input.maxLength = 512;
+  const error = node('div', 'form-error');
+  const submit = node('button', 'button', 'Создать агента'); submit.type = 'submit';
+  form.append(name.wrapper, domain.wrapper, server.wrapper, error, submit);
+  formHandler(form, submit, error, async () => {
+    const result = await mutate('/agents', {name: name.input.value, domain: domain.input.value, server_url: server.input.value});
+    state.agentsOffset = 0; keyDialog(result); loadView();
+  });
+  openDialog('Добавить агента', form); name.input.focus();
+}
 function rotateDialog(agent) { actionDialog('Заменить ключ агента?', 'Агент «' + agent.name + '». Старый ключ перестанет работать. История и потоки сохранятся. После замены обновите ключ на машине агента.', 'Выпустить новый ключ', async () => { const result = await mutate('/agents/' + agent.id + '/rotate'); keyDialog(result); loadView(); }); }
 function revokeDialog(agent) { actionDialog('Отозвать доступ агента?', 'Агент «' + agent.name + '» больше не сможет отправлять данные с этим ключом. Сохранённые данные останутся доступны.', 'Отозвать ключ', async () => { await mutate('/agents/' + agent.id + '/revoke'); dialog.close(); toast('Ключ агента отозван'); loadView(); }, true); }
 function actionDialog(title, text, label, action, danger = false) { const content = node('div'); content.append(node('p', 'dialog-intro', text)); const error = node('div', 'form-error'); const actions = node('div', 'dialog-actions'); const submit = button(label, danger ? 'button danger' : 'button', async () => { submit.disabled = true; try { await action(); } catch (issue) { error.textContent = issue.message; } finally { submit.disabled = false; } }); actions.append(button('Отмена', 'button secondary', () => dialog.close()), submit); content.append(error, actions); openDialog(title, content); }

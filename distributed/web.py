@@ -5,12 +5,13 @@ import uuid
 from pathlib import Path
 
 from fastapi import APIRouter, Depends, HTTPException, Request, Response
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, Response as BinaryResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
 
 from . import web_metrics
 from .web_auth import COOKIE, WebAuth
+from .installation import agent_package, installer_source, install_grant, server_origin
 
 
 class Login(BaseModel):
@@ -31,6 +32,12 @@ class PasswordConfirm(BaseModel):
 class AgentCreate(BaseModel):
     name: str = Field(min_length=1, max_length=128)
     domain: str = Field(min_length=1, max_length=128)
+    server_url: str = Field(default='', max_length=512)
+
+
+class InstallationCreate(BaseModel):
+    server_url: str = Field(min_length=1, max_length=512)
+    interface: str = Field(default='', max_length=64)
 
 
 def install_web(app, store):
@@ -43,6 +50,26 @@ def install_web(app, store):
     @app.get('/', include_in_schema=False)
     def index():
         return FileResponse(assets / 'index.html')
+
+    @app.get('/install/agent.py', include_in_schema=False)
+    def installer():
+        return BinaryResponse(installer_source(), media_type='text/plain')
+
+    @app.get('/install/agent.tar', include_in_schema=False)
+    def package():
+        return BinaryResponse(agent_package(), media_type='application/x-tar')
+
+    def agent_server(value, request):
+        value = value.strip() or store.settings.agent_origin or store.settings.public_origin or 'https://' + request.headers['host']
+        return server_origin(value if '://' in value else 'https://' + value)
+
+    def initial_installation(conn, identity, key_id, server):
+        try:
+            return install_grant(store, conn, identity, key_id, server)
+        except HTTPException as error:
+            if error.status_code != 503:
+                raise
+            return {'unavailable': error.detail, 'server_url': server}
 
     @router.get('/session')
     def session(request: Request, response: Response):
@@ -115,15 +142,17 @@ def install_web(app, store):
         name, domain = body.name.strip(), body.domain.strip()
         if not name or not domain:
             raise HTTPException(400, 'Укажите имя и домен наблюдения')
+        server = agent_server(body.server_url, request)
         # Keep key issuance and audit in the same transaction; return the secret only once.
         secret, key_id = secrets.token_urlsafe(32), secrets.token_hex(8)
         identity = uuid.uuid4()
         with store.connect() as conn:
             conn.execute('INSERT INTO nf_domains(id) VALUES (%s) ON CONFLICT DO NOTHING', (domain,))
-            conn.execute('INSERT INTO nf_agents(id,name,domain,key_id,key_hash) VALUES (%s,%s,%s,%s,%s)',
-                         (identity, name, domain, key_id, hashlib.sha256(secret.encode()).hexdigest()))
+            conn.execute('INSERT INTO nf_agents(id,name,domain,key_id,key_hash,server_url) VALUES (%s,%s,%s,%s,%s,%s)',
+                         (identity, name, domain, key_id, hashlib.sha256(secret.encode()).hexdigest(), server))
             auth.audit(request, 'agent_key_created', identity, conn=conn)
-        return dict(agent_id=str(identity), name=name, key=key_id + '.' + secret)
+            installation = initial_installation(conn, identity, key_id, server)
+        return dict(agent_id=str(identity), name=name, key=key_id + '.' + secret, installation=installation)
 
     @router.post('/agents/{agent_id}/rotate')
     def rotate(agent_id: uuid.UUID, request: Request, row=Depends(auth.mutation)):
@@ -131,11 +160,26 @@ def install_web(app, store):
         secret, key_id = secrets.token_urlsafe(32), secrets.token_hex(8)
         with store.connect() as conn:
             agent = conn.execute('''UPDATE nf_agents SET key_id=%s,key_hash=%s,revoked=false
-                WHERE id=%s RETURNING name''', (key_id, hashlib.sha256(secret.encode()).hexdigest(), agent_id)).fetchone()
+                WHERE id=%s RETURNING name,server_url''', (key_id, hashlib.sha256(secret.encode()).hexdigest(), agent_id)).fetchone()
             if not agent:
                 raise HTTPException(404, 'Агент не найден')
+            conn.execute('DELETE FROM nf_agent_installations WHERE agent_id=%s', (agent_id,))
             auth.audit(request, 'agent_key_rotated', agent_id, conn=conn)
-        return dict(agent_id=str(agent_id), name=agent['name'], key=key_id + '.' + secret)
+            installation = initial_installation(conn, agent_id, key_id, agent_server(agent['server_url'], request))
+        return dict(agent_id=str(agent_id), name=agent['name'], key=key_id + '.' + secret, installation=installation)
+
+    @router.post('/agents/{agent_id}/installation')
+    def installation(agent_id: uuid.UUID, body: InstallationCreate, request: Request, row=Depends(auth.mutation)):
+        auth.require_fresh(row)
+        with store.connect() as conn:
+            agent = conn.execute('SELECT * FROM nf_agents WHERE id=%s FOR UPDATE', (agent_id,)).fetchone()
+            if not agent or agent['revoked']:
+                raise HTTPException(404, 'Активный агент не найден')
+            server = agent_server(body.server_url, request)
+            result = install_grant(store, conn, agent_id, agent['key_id'], server, body.interface)
+            conn.execute('UPDATE nf_agents SET server_url=%s WHERE id=%s', (server, agent_id))
+            auth.audit(request, 'agent_installation_created', agent_id, conn=conn)
+        return result
 
     @router.post('/agents/{agent_id}/revoke')
     def revoke(agent_id: uuid.UUID, request: Request, row=Depends(auth.mutation)):
@@ -144,6 +188,7 @@ def install_web(app, store):
             result = conn.execute('UPDATE nf_agents SET revoked=true WHERE id=%s RETURNING id', (agent_id,)).fetchone()
             if not result:
                 raise HTTPException(404, 'Агент не найден')
+            conn.execute('DELETE FROM nf_agent_installations WHERE agent_id=%s', (agent_id,))
             auth.audit(request, 'agent_key_revoked', agent_id, conn=conn)
         return {'revoked': True}
 

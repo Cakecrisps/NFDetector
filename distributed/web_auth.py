@@ -108,10 +108,10 @@ class WebAuth:
         except (VerificationError, InvalidHashError):
             return False
 
-    @staticmethod
-    def public_session(row):
+    def public_session(self, row):
         return dict(authenticated=True, username=row['username'], must_change_password=row['must_change_password'],
-                    csrf_token=row['csrf_token'], expires_at=row['expires_at'])
+                    csrf_token=row['csrf_token'], expires_at=row['expires_at'],
+                    agent_install_url=self.settings.agent_origin or self.settings.public_origin)
 
     def session(self, request, required=True):
         token = request.cookies.get(COOKIE, '')

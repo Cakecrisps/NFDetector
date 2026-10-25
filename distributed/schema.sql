@@ -154,6 +154,7 @@ ALTER TABLE nf_agents ADD COLUMN IF NOT EXISTS backlog_bytes bigint NOT NULL DEF
 ALTER TABLE nf_agents ADD COLUMN IF NOT EXISTS backlog_files integer NOT NULL DEFAULT 0;
 ALTER TABLE nf_agents ADD COLUMN IF NOT EXISTS software_version text NOT NULL DEFAULT '';
 ALTER TABLE nf_agents ADD COLUMN IF NOT EXISTS last_error text NOT NULL DEFAULT '';
+ALTER TABLE nf_agents ADD COLUMN IF NOT EXISTS server_url text NOT NULL DEFAULT '';
 ALTER TABLE nf_chunks ADD COLUMN IF NOT EXISTS captured_bytes bigint;
 ALTER TABLE nf_chunks ADD COLUMN IF NOT EXISTS traffic_stats jsonb NOT NULL DEFAULT '{}';
 CREATE TABLE IF NOT EXISTS nf_workers (
@@ -161,3 +162,14 @@ CREATE TABLE IF NOT EXISTS nf_workers (
     kind text NOT NULL,
     last_seen_at timestamptz NOT NULL DEFAULT clock_timestamp()
 );
+
+-- Short-lived enrollment grants contain hashes only, never the operational key.
+CREATE TABLE IF NOT EXISTS nf_agent_installations (
+    token_hash text PRIMARY KEY,
+    agent_id uuid NOT NULL REFERENCES nf_agents(id),
+    key_id text NOT NULL,
+    server_url text NOT NULL,
+    expires_at timestamptz NOT NULL DEFAULT clock_timestamp()+interval '15 minutes',
+    used_at timestamptz
+);
+CREATE INDEX IF NOT EXISTS nf_agent_installations_agent ON nf_agent_installations(agent_id);

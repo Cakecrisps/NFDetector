@@ -19,6 +19,8 @@ class Settings:
     public_origin: str = ''
     trust_proxy_headers: bool = False
     incident_gap_seconds: int = 300
+    tls_public_cert: Path = Path('/run/nf-tls/server.crt')
+    agent_origin: str = ''
 
     @classmethod
     def from_env(cls):
@@ -35,6 +37,8 @@ class Settings:
             public_origin=os.environ.get('NF_PUBLIC_URL', '').rstrip('/'),
             incident_gap_seconds=int(os.environ.get('NF_INCIDENT_GAP_SECONDS', 300)),
             trust_proxy_headers=os.environ.get('NF_TRUST_PROXY_HEADERS', '0') == '1',
+            tls_public_cert=Path(os.environ.get('NF_TLS_PUBLIC_CERT', '/run/nf-tls/server.crt')),
+            agent_origin=os.environ.get('NF_AGENT_URL', '').rstrip('/'),
         )
 
     def prepare(self):

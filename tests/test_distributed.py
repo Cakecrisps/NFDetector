@@ -323,6 +323,7 @@ def test_agent_retains_file_until_ack_and_retries_lost_response(system, tmp_path
         def request(self, method, url, **kwargs):
             kwargs.pop('verify', None)
             kwargs.pop('timeout', None)
+            kwargs['follow_redirects'] = kwargs.pop('allow_redirects', False)
             data = kwargs.pop('data', None)
             kwargs['headers'] = dict(headers, **kwargs.get('headers', {}))
             if data is not None:

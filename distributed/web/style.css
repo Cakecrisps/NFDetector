@@ -14,3 +14,4 @@
 @media(max-width:520px){.breadcrumb>span:first-child{display:none}.period-note{margin-top:12px}.chart-wrap{padding-left:8px;padding-right:8px}.auth-main{padding-top:78px}.chart-tooltip{min-height:52px}}
 
 .install-command{background:var(--key-bg);color:var(--key-text);border-color:var(--key-border)}
+.installation-panel h3{font-size:14px;margin:3px 0 9px}.installation-output{margin-top:18px}.install-command{width:100%;resize:vertical;min-height:125px;max-height:320px;border:1px solid var(--key-border);background:var(--key-bg);border-radius:8px;padding:12px;color:var(--key-text);font-family:ui-monospace,monospace;font-size:11px;line-height:1.7;overflow-wrap:anywhere;word-break:break-all;margin-bottom:12px}.manual-install{margin-top:24px;border-top:1px solid var(--line);padding-top:17px}.manual-install summary{font-size:12px;cursor:pointer;color:var(--teal)}.dialog{max-height:calc(100vh - 40px);overflow:auto}
