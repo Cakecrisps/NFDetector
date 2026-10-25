@@ -18,6 +18,7 @@ class Settings:
     max_streams: int = 16
     public_origin: str = ''
     trust_proxy_headers: bool = False
+    incident_gap_seconds: int = 300
 
     @classmethod
     def from_env(cls):
@@ -32,6 +33,7 @@ class Settings:
             int(os.environ.get('NF_LEASE_SECONDS', 60)),
             max_streams=int(os.environ.get('NF_MAX_STREAMS', 16)),
             public_origin=os.environ.get('NF_PUBLIC_URL', '').rstrip('/'),
+            incident_gap_seconds=int(os.environ.get('NF_INCIDENT_GAP_SECONDS', 300)),
             trust_proxy_headers=os.environ.get('NF_TRUST_PROXY_HEADERS', '0') == '1',
         )
 
@@ -40,3 +42,5 @@ class Settings:
             (self.data_dir / name).mkdir(mode=0o700, parents=True, exist_ok=True)
         if min(self.max_upload, self.max_backlog, self.batch_size, self.lease_seconds, self.max_streams) <= 0:
             raise ValueError('Service limits must be positive')
+        if self.incident_gap_seconds <= 0:
+            raise ValueError('Incident inactivity gap must be positive')

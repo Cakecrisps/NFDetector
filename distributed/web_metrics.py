@@ -12,8 +12,8 @@ def overview(store):
             count(*) FILTER (WHERE status='error') AS failed,
             count(*) FILTER (WHERE status='ready' AND captured_bytes IS NULL) AS legacy_files FROM nf_chunks''').fetchone()
         alerts = conn.execute('''SELECT count(*) AS total,
-            count(*) FILTER (WHERE created_at>clock_timestamp()-interval '24 hours' AND reason NOT LIKE 'DECODE_WARNING:%') AS last_day,
-            count(*) FILTER (WHERE reason LIKE 'DECODE_WARNING:%') AS decode_warnings FROM nf_events''').fetchone()
+            count(*) FILTER (WHERE to_timestamp(last_seen)>clock_timestamp()-interval '24 hours' AND kind<>'DECODE_WARNING') AS last_day,
+            count(*) FILTER (WHERE kind='DECODE_WARNING') AS decode_warnings FROM nf_incidents''').fetchone()
         domains = conn.execute('''SELECT id,last_timestamp,error,
             owner IS NOT NULL AND lease_until>clock_timestamp() AS processing,
             work_version>completed_version AS pending FROM nf_domains ORDER BY id LIMIT 100''').fetchall()
@@ -38,8 +38,8 @@ def traffic(store, hours=24):
         protocols = conn.execute('''SELECT p.key AS protocol,sum(p.value::bigint) AS packets FROM nf_chunks c,
             LATERAL jsonb_each_text(COALESCE(c.traffic_stats->'protocols','{}'::jsonb)) p
             GROUP BY p.key ORDER BY packets DESC LIMIT 12''').fetchall()
-        event_types = conn.execute('''SELECT split_part(reason,':',1) AS kind,count(*) AS count
-            FROM nf_events WHERE created_at>clock_timestamp()-(%s*interval '1 hour')
+        event_types = conn.execute('''SELECT kind,count(*) AS count
+            FROM nf_incidents WHERE to_timestamp(last_seen)>clock_timestamp()-(%s*interval '1 hour')
             GROUP BY 1 ORDER BY count DESC LIMIT 20''', (hours,)).fetchall()
     return dict(timeline=timeline, protocols=protocols, event_types=event_types)
 
@@ -75,17 +75,26 @@ def streams(store, agent_id):
 
 
 def events(store, kind='', query='', offset=0, limit=50):
-    conditions = ['(%s=\'\' OR split_part(e.reason,\':\',1)=%s)',
-                  "(e.source ILIKE %s OR e.target ILIKE %s OR e.reason ILIKE %s OR a.name ILIKE %s)"]
+    conditions = ["(%s='' OR i.kind=%s OR %s=ANY(i.kinds))",
+        '''(i.source ILIKE %s OR i.target ILIKE %s OR i.reason ILIKE %s OR EXISTS (
+            SELECT 1 FROM nf_incident_streams p JOIN nf_streams ps ON ps.id=p.stream_id
+            JOIN nf_agents pa ON pa.id=ps.agent_id WHERE p.incident_id=i.id AND pa.name ILIKE %s)
+            OR EXISTS(SELECT 1 FROM unnest(i.sources) ip WHERE ip ILIKE %s))''']
     where = ' AND '.join(conditions)
     pattern = '%' + query + '%'
-    parameters = (kind, kind, pattern, pattern, pattern, pattern)
+    parameters = (kind, kind, kind, pattern, pattern, pattern, pattern, pattern)
     with store.connect() as conn:
-        total = conn.execute('''SELECT count(*) AS count FROM nf_events e JOIN nf_streams s ON s.id=e.stream_id
-            JOIN nf_agents a ON a.id=s.agent_id WHERE ''' + where, parameters).fetchone()['count']
-        rows = conn.execute('''SELECT e.id,e.timestamp,e.created_at,e.reason,e.source,e.target,e.stream_id,
-            e.sequence,e.packet_index,e.domain,a.name AS agent_name,a.id AS agent_id
-            FROM nf_events e JOIN nf_streams s ON s.id=e.stream_id JOIN nf_agents a ON a.id=s.agent_id
-            WHERE ''' + where + ' ORDER BY e.created_at DESC,e.id LIMIT %s OFFSET %s',
-                            (*parameters, limit, offset)).fetchall()
-    return dict(events=rows, total=total, offset=offset, limit=limit)
+        total = conn.execute('SELECT count(*) AS count FROM nf_incidents i WHERE ' + where, parameters).fetchone()['count']
+        rows = conn.execute('''SELECT i.id,i.first_seen AS timestamp,i.created_at,i.updated_at,i.reason,
+            COALESCE(NULLIF(i.source,''),i.sources[1],'') AS source,i.sources,i.sources_truncated,i.target,i.stream_id,
+            i.sequence,i.packet_index,i.domain,i.kind,i.kinds,i.service,i.first_seen,i.last_seen,
+            i.last_seen-i.first_seen AS duration_seconds,i.signal_count,i.closed_at,i.close_reason,
+            CASE WHEN i.closed_at IS NOT NULL THEN 'closed'
+                WHEN d.error IS NOT NULL OR to_timestamp(d.last_timestamp)<clock_timestamp()-(%s*interval '1 second')
+                THEN 'awaiting_data' ELSE 'active' END AS status,
+            a.name AS agent_name,a.id AS agent_id
+            FROM nf_incidents i JOIN nf_streams s ON s.id=i.stream_id JOIN nf_agents a ON a.id=s.agent_id
+            JOIN nf_domains d ON d.id=i.domain
+            WHERE ''' + where + ' ORDER BY i.last_seen DESC,i.id LIMIT %s OFFSET %s',
+                            (max(60, store.settings.incident_gap_seconds), *parameters, limit, offset)).fetchall()
+    return dict(events=rows, total=total, offset=offset, limit=limit, incident_gap_seconds=store.settings.incident_gap_seconds)

@@ -68,6 +68,45 @@ CREATE TABLE IF NOT EXISTS nf_outbox (
     delivered_at timestamptz
 );
 
+CREATE TABLE IF NOT EXISTS nf_incidents (
+    id text PRIMARY KEY,
+    incident_key text NOT NULL,
+    kind text NOT NULL,
+    domain text NOT NULL REFERENCES nf_domains(id),
+    stream_id uuid NOT NULL REFERENCES nf_streams(id),
+    sequence integer NOT NULL,
+    packet_index integer NOT NULL,
+    first_seen double precision NOT NULL,
+    last_seen double precision NOT NULL,
+    closed_at double precision,
+    close_reason text,
+    reason text NOT NULL,
+    target text NOT NULL,
+    source text NOT NULL,
+    service text NOT NULL DEFAULT '',
+    signal_count bigint NOT NULL DEFAULT 0,
+    sources text[] NOT NULL DEFAULT '{}',
+    sources_truncated boolean NOT NULL DEFAULT false,
+    kinds text[] NOT NULL DEFAULT '{}',
+    created_at timestamptz NOT NULL DEFAULT clock_timestamp(),
+    updated_at timestamptz NOT NULL DEFAULT clock_timestamp(),
+    CHECK (last_seen>=first_seen)
+);
+CREATE INDEX IF NOT EXISTS nf_incidents_key ON nf_incidents(incident_key,last_seen);
+CREATE INDEX IF NOT EXISTS nf_incidents_domain ON nf_incidents(domain,updated_at DESC);
+CREATE INDEX IF NOT EXISTS nf_incidents_open ON nf_incidents(domain,last_seen) WHERE closed_at IS NULL;
+ALTER TABLE nf_events ADD COLUMN IF NOT EXISTS incident_id text REFERENCES nf_incidents(id);
+CREATE INDEX IF NOT EXISTS nf_events_incident ON nf_events(incident_id);
+CREATE TABLE IF NOT EXISTS nf_incident_streams (
+    incident_id text NOT NULL REFERENCES nf_incidents(id),
+    stream_id uuid NOT NULL REFERENCES nf_streams(id),
+    PRIMARY KEY (incident_id,stream_id)
+);
+CREATE TABLE IF NOT EXISTS nf_incident_outbox (
+    incident_id text PRIMARY KEY REFERENCES nf_incidents(id),
+    delivered_at timestamptz
+);
+
 ALTER TABLE nf_streams ADD COLUMN IF NOT EXISTS processed_sequence integer NOT NULL DEFAULT -1;
 
 -- Web administration has separate credentials and sessions from sensor API keys.

@@ -15,6 +15,7 @@ from general.streaming import StreamingDetector
 from .capture import parse_capture, digest_file
 from .flows import FlowDecoder
 from .store import LeaseLost, Store
+from .incidents import IncidentBatch
 
 log = logging.getLogger(__name__)
 CHECKPOINT_VERSION = 2
@@ -107,7 +108,7 @@ def decode_state(data, settings):
     return state
 
 
-def reduce_batch(store, domain, state):
+def reduce_batch(store, domain, state, observations=None):
     """Merge ready file prefixes only up to every registered source's watermark.
 
     Each source must have non-overlapping timestamp ranges between consecutive
@@ -151,13 +152,21 @@ def reduce_batch(store, domain, state):
                 raise ValueError('Late event is below domain watermark; replay in a new domain is required')
             state['flows'].feed(event, stream_id)
             alarms = state['detector'].process(event) if event['src_ip'] else []
+            if observations is not None and event['src_ip']:
+                for activity in getattr(state['detector'], 'activity', []):
+                    observations.observe(dict(domain=domain, stream_id=stream_id, sequence=chunk['sequence'],
+                        packet_index=index, timestamp=timestamp, source=activity['source'], target=activity['target']),
+                        kind=activity['kind'], service=activity['service'])
             for warning in event.get('decode_warnings', []):
                 alarms.append(('DECODE_WARNING: ' + warning, event['dst_ip'] or '', event['src_ip'] or '', False))
             for sub_index, (reason, target, source, _) in enumerate(alarms):
                 identity = json.dumps([domain, stream_id, chunk['sequence'], index, sub_index, reason], separators=(',', ':'))
-                emitted.append(dict(id=hashlib.sha256(identity.encode()).hexdigest(), domain=domain,
+                signal = dict(id=hashlib.sha256(identity.encode()).hexdigest(), domain=domain,
                                     stream_id=stream_id, sequence=chunk['sequence'], packet_index=index,
-                                    timestamp=timestamp, reason=reason, target=target, source=source))
+                                    timestamp=timestamp, reason=reason, target=target, source=source)
+                emitted.append(signal)
+                if observations is not None:
+                    observations.observe(signal, evidence=True)
             state['last_timestamp'] = timestamp
             cursor['offset'] = handle.tell()
             processed += 1
@@ -182,10 +191,12 @@ def detector_once(store, owner):
             if job['config_hash'] and job['config_hash'] != signature:
                 raise ValueError('Rules changed: replay into a new domain or migrate checkpoint explicitly')
             state = decode_state(job['checkpoint'], store.settings)
-            events, processed, changed = reduce_batch(store, job['id'], state)
+            observations = IncidentBatch(store.settings.incident_gap_seconds)
+            events, processed, changed = reduce_batch(store, job['id'], state, observations)
             heartbeat.check()
             checkpoint = encode_state(state, store.settings.max_checkpoint) if changed or not job['checkpoint'] else job['checkpoint']
-            store.commit_domain(job, checkpoint, signature, events, state['last_timestamp'], idle=not (processed or changed), cursors=state['cursors'])
+            store.commit_domain(job, checkpoint, signature, events, state['last_timestamp'], idle=not (processed or changed),
+                                cursors=state['cursors'], observations=observations)
         if processed:
             log.info('Reduced domain=%s packets=%s alarms=%s owner=%s', job['id'], processed, len(events), owner)
         return bool(processed or changed)

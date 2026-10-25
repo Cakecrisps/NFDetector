@@ -203,7 +203,11 @@ def create_app(settings=None):
         if not 1 <= limit <= 1000:
             raise HTTPException(400, 'limit must be between 1 and 1000')
         with store.connect() as conn:
-            rows = conn.execute('SELECT e.* FROM nf_events e JOIN nf_streams s ON s.id=e.stream_id WHERE e.domain=%s AND s.agent_id=%s ORDER BY e.created_at DESC,e.id LIMIT %s', (agent['domain'], agent['id'], limit)).fetchall()
+            rows = conn.execute('''SELECT i.*,i.first_seen AS timestamp,i.last_seen-i.first_seen AS duration_seconds
+                FROM nf_incidents i WHERE i.domain=%s AND EXISTS (
+                    SELECT 1 FROM nf_incident_streams p JOIN nf_streams s ON s.id=p.stream_id
+                    WHERE p.incident_id=i.id AND s.agent_id=%s)
+                ORDER BY i.last_seen DESC,i.id LIMIT %s''', (agent['domain'], agent['id'], limit)).fetchall()
         return {'events': rows}
 
     return app

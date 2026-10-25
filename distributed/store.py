@@ -8,6 +8,7 @@ from pathlib import Path
 import psycopg
 from psycopg.rows import dict_row
 from psycopg.types.json import Jsonb
+from .incidents import IncidentBatch, persist, close_quiet
 
 
 class Conflict(Exception):
@@ -125,7 +126,7 @@ class Store:
         with self.connect() as conn:
             return conn.execute('SELECT * FROM nf_chunks WHERE stream_id=%s AND sequence=%s', (stream_id, sequence)).fetchone()
 
-    def commit_domain(self, job, checkpoint, config_hash, events, last_timestamp, idle=False, cursors=None):
+    def commit_domain(self, job, checkpoint, config_hash, events, last_timestamp, idle=False, cursors=None, observations=None):
         with self.connect() as conn:
             self.fence(conn, 'nf_domains', job)
             for event in events:
@@ -133,12 +134,39 @@ class Store:
                     VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s) ON CONFLICT DO NOTHING''',
                              tuple(event[name] for name in ('id', 'domain', 'stream_id', 'sequence', 'packet_index',
                                                            'timestamp', 'reason', 'target', 'source')))
-                conn.execute('INSERT INTO nf_outbox(event_id) VALUES (%s) ON CONFLICT DO NOTHING', (event['id'],))
+            if observations is None:
+                observations = IncidentBatch(self.settings.incident_gap_seconds)
+                for event in events:
+                    observations.observe(event, evidence=True)
+            persist(conn, observations, self.settings.incident_gap_seconds)
             for stream_id, cursor in (cursors or {}).items():
                 conn.execute('UPDATE nf_streams SET processed_sequence=GREATEST(processed_sequence,%s) WHERE id=%s',
                              (cursor['sequence'] - 1, stream_id))
+            finished = idle and conn.execute('''SELECT bool_and(s.last_sequence IS NOT NULL AND
+                s.processed_sequence>=s.last_sequence) AS done FROM nf_streams s JOIN nf_agents a ON a.id=s.agent_id
+                WHERE a.domain=%s''', (job['id'],)).fetchone()['done']
+            close_quiet(conn, job['id'], last_timestamp, self.settings.incident_gap_seconds, finished)
             conn.execute('''UPDATE nf_domains SET checkpoint=%s,config_hash=%s,last_timestamp=%s,owner=NULL,lease_until=NULL,
                 updated_at=clock_timestamp(),completed_version=CASE WHEN %s THEN %s ELSE completed_version END WHERE id=%s''', (checkpoint, config_hash, last_timestamp, idle, job['work_version'], job['id']))
+
+    def backfill_incidents(self, domain):
+        """Attach existing raw signals without deleting evidence or changing checkpoints."""
+        with self.connect() as conn:
+            job = conn.execute('''SELECT *,owner IS NOT NULL AND lease_until>clock_timestamp() AS busy
+                FROM nf_domains WHERE id=%s FOR UPDATE''', (domain,)).fetchone()
+            if not job or job['busy']:
+                raise Conflict('Domain is missing or a detector lease is active; stop the detector and wait for its lease')
+            total = 0
+            with conn.cursor(name='incident_backfill') as cursor:
+                cursor.execute('SELECT * FROM nf_events WHERE domain=%s AND incident_id IS NULL ORDER BY timestamp,id', (domain,))
+                while rows := cursor.fetchmany(1000):
+                    batch = IncidentBatch(self.settings.incident_gap_seconds)
+                    for event in rows:
+                        batch.observe(event, evidence=True)
+                    persist(conn, batch, self.settings.incident_gap_seconds)
+                    total += len(rows)
+            close_quiet(conn, domain, job['last_timestamp'], self.settings.incident_gap_seconds)
+            return total
 
     def worker_ping(self, identity, kind):
         with self.connect() as conn:

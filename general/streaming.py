@@ -115,6 +115,9 @@ class StreamingDetector:
         self.stats['alarms'][category] += 1
         alarms.append((reason, target, source, True))
 
+    def _active(self, kind, target, source, service=''):
+        self.activity.append(dict(kind=kind, target=target, source=source, service=service))
+
     def _multi_ready(self, target):
         return (len(self.multi_sources.get(target, {})) >= 2
                 and self.multi_totals[target] >= self.multi_config.get('request_limit', 5000))
@@ -169,6 +172,7 @@ class StreamingDetector:
         if self.last_timestamp is not None and now < self.last_timestamp:
             raise ValueError('Capture timestamps must be nondecreasing; use one detector per ordered source')
         self.last_timestamp = now
+        self.activity = []
         self._expire(now)
         self.stats['total'] += 1
         alarms = []
@@ -191,7 +195,12 @@ class StreamingDetector:
                 for proto, amount in amounts:
                     key = ((source, target, info['dst_port']) if name == 'ssh' else
                            (source, target, proto) if name == 'brute' else (source, target))
-                    if window.add(now, key, amount):
+                    crossing = window.add(now, key, amount)
+                    label = {'ddos': 'DDoS_SINGLE_IP', 'http': 'HTTP_FLOOD',
+                             'brute': f'BRUTEFORCE_{proto}', 'ssh': 'BRUTEFORCE_SSH_HANDSHAKES'}[name]
+                    if window.counts[key] >= window.limit:
+                        self._active(label, target, source, str(info['dst_port']) if name == 'ssh' else '')
+                    if crossing:
                         if name == 'ssh':
                             self._alarm(alarms, 'bruteforce',
                                         f'BRUTEFORCE_SSH_HANDSHAKES: {source} -> {target}:{info["dst_port"]} '
@@ -208,6 +217,8 @@ class StreamingDetector:
                 self.multi_events.append((now, target, source))
                 self.multi_sources.setdefault(target, Counter())[source] += 1
                 self.multi_totals[target] += 1
+                if self._multi_ready(target):
+                    self._active('DDoS_MULTI_IP', target, source)
                 if self._multi_ready(target) and target not in self.multi_active:
                     self.multi_active.add(target)
                     for attacker, count in nlargest(self.multi_config.get('display_ips', 10),
@@ -224,6 +235,7 @@ class StreamingDetector:
             state.add(now)
             self.beacon_events.append((now, pair))
             if state.matches(self.beacon_config):
+                self._active('C2_BEACONING', target, source)
                 if pair not in self.beacon_active:
                     self.beacon_active.add(pair)
                     average = state.interval_sum / len(state.intervals)
@@ -251,6 +263,8 @@ class StreamingDetector:
             self.pending_syns[connection] = info['timestamp']
             self.syn_events.append((info['timestamp'], connection))
             limit = self.syn_config.get('syn_only_limit', 50)
+            if self.syn_counts[pair] >= limit:
+                self._active('SYN_FLOOD_HALF_OPEN', target, source)
             if previous < limit <= self.syn_counts[pair]:
                 self._alarm(alarms, 'flood', f'SYN_FLOOD_HALF_OPEN: {source} has {self.syn_counts[pair]} half-open connections', target, source)
         elif info['is_syn_ack'] and source in self.protected:

@@ -22,6 +22,8 @@ def main():
     api.add_argument('--port', type=int, default=8000)
     commands.add_parser('parser-worker')
     commands.add_parser('detector-worker')
+    backfill = commands.add_parser('backfill-incidents')
+    backfill.add_argument('--domain', required=True)
     for name in ('upload', 'capture'):
         command = commands.add_parser(name)
         command.add_argument('--server', required=True)
@@ -64,7 +66,9 @@ def main():
         run_worker(settings, 'parser' if args.command == 'parser-worker' else 'detector')
     else:
         store.initialize()
-        if args.command == 'setup-code':
+        if args.command == 'backfill-incidents':
+            print('Historical signals attached:', store.backfill_incidents(args.domain))
+        elif args.command == 'setup-code':
             from .web_auth import WebAuth
             auth = WebAuth(store)
             auth.bootstrap()
