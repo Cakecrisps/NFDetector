@@ -1,6 +1,7 @@
 """Incident lifecycle using the actual PCAP queue, checkpoints and PostgreSQL."""
 import json
 import uuid
+from datetime import datetime, timezone
 
 from distributed.workers import detector_once, parser_once
 from distributed.web_metrics import events, overview
@@ -38,7 +39,7 @@ def test_repeated_crossings_across_files_are_one_incident(system):
     assert incidents(store)[0]['signal_count'] == 3
     result = events(store, kind='DDoS_SINGLE_IP', query='10.0.0.1')
     assert result['total'] == 1 and result['events'][0]['duration_seconds'] == 4
-    assert overview(store)['alerts']['total'] == 1
+    assert overview(store, as_of=datetime.fromtimestamp(1010, timezone.utc))['alerts']['total'] == 1
 
 
 def test_continuous_hour_extends_duration_without_new_threshold_alarms(system):

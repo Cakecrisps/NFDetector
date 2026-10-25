@@ -50,6 +50,7 @@ CREATE TABLE IF NOT EXISTS nf_chunks (
     UNIQUE(stream_id, sequence)
 );
 CREATE INDEX IF NOT EXISTS nf_chunks_work ON nf_chunks(status, lease_until, id);
+CREATE INDEX IF NOT EXISTS nf_chunks_received_at ON nf_chunks(created_at);
 CREATE TABLE IF NOT EXISTS nf_events (
     id text PRIMARY KEY,
     domain text NOT NULL REFERENCES nf_domains(id),
@@ -94,6 +95,7 @@ CREATE TABLE IF NOT EXISTS nf_incidents (
 );
 CREATE INDEX IF NOT EXISTS nf_incidents_key ON nf_incidents(incident_key,last_seen);
 CREATE INDEX IF NOT EXISTS nf_incidents_domain ON nf_incidents(domain,updated_at DESC);
+CREATE INDEX IF NOT EXISTS nf_incidents_activity ON nf_incidents(last_seen,first_seen);
 CREATE INDEX IF NOT EXISTS nf_incidents_open ON nf_incidents(domain,last_seen) WHERE closed_at IS NULL;
 ALTER TABLE nf_events ADD COLUMN IF NOT EXISTS incident_id text REFERENCES nf_incidents(id);
 CREATE INDEX IF NOT EXISTS nf_events_incident ON nf_events(incident_id);

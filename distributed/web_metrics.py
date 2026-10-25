@@ -1,47 +1,83 @@
-"""Bounded administrative views. Sensor credentials cannot access these queries."""
+"""Period statistics from one database snapshot; timestamps are UTC-aware."""
+from datetime import timedelta, timezone
+
+BUCKET_SECONDS = {1: 60, 24: 900, 168: 3600}
 
 
-def overview(store):
-    with store.connect() as conn:
-        agents = conn.execute('''SELECT count(*) AS total,
-            count(*) FILTER (WHERE NOT revoked AND last_seen_at>clock_timestamp()-interval '60 seconds') AS online,
-            count(*) FILTER (WHERE revoked) AS revoked FROM nf_agents''').fetchone()
-        traffic = conn.execute('''SELECT count(*) AS files,COALESCE(sum(size),0) AS received_bytes,
-            COALESCE(sum(frames),0) AS packets,COALESCE(sum(captured_bytes),0) AS captured_bytes,
-            count(*) FILTER (WHERE status IN ('pending','parsing')) AS queued,
-            count(*) FILTER (WHERE status='error') AS failed,
-            count(*) FILTER (WHERE status='ready' AND captured_bytes IS NULL) AS legacy_files FROM nf_chunks''').fetchone()
-        alerts = conn.execute('''SELECT count(*) AS total,
-            count(*) FILTER (WHERE to_timestamp(last_seen)>clock_timestamp()-interval '24 hours' AND kind<>'DECODE_WARNING') AS last_day,
-            count(*) FILTER (WHERE kind='DECODE_WARNING') AS decode_warnings FROM nf_incidents''').fetchone()
-        domains = conn.execute('''SELECT id,last_timestamp,error,
-            owner IS NOT NULL AND lease_until>clock_timestamp() AS processing,
-            work_version>completed_version AS pending FROM nf_domains ORDER BY id LIMIT 100''').fetchall()
-        workers = conn.execute('''SELECT kind,count(*) AS online FROM nf_workers
-            WHERE last_seen_at>clock_timestamp()-interval '30 seconds' GROUP BY kind''').fetchall()
-    return dict(agents=agents, traffic=traffic, alerts=alerts, domains=domains,
+def _period(conn, hours, as_of=None):
+    if hours not in BUCKET_SECONDS:
+        raise ValueError('Supported periods: 1, 24, 168 hours')
+    end = as_of or conn.execute('SELECT transaction_timestamp() AS value').fetchone()['value']
+    if end.tzinfo is None:
+        raise ValueError('Statistics reference time must include timezone')
+    end = end.astimezone(timezone.utc)
+    return dict(hours=hours, start=end - timedelta(hours=hours), end=end,
+                bucket_seconds=BUCKET_SECONDS[hours], basis='received_at')
+
+
+def _overview(conn, period):
+    start, end = period['start'], period['end']
+    agents = conn.execute('''SELECT count(*) AS total,
+        count(*) FILTER (WHERE NOT revoked AND last_seen_at>transaction_timestamp()-interval '60 seconds') AS online,
+        count(*) FILTER (WHERE revoked) AS revoked FROM nf_agents''').fetchone()
+    traffic = conn.execute('''SELECT count(*) AS files,COALESCE(sum(size),0) AS received_bytes,
+        COALESCE(sum(frames),0) AS packets,COALESCE(sum(captured_bytes),0) AS captured_bytes,
+        count(*) FILTER (WHERE status IN ('pending','parsing')) AS queued,
+        count(*) FILTER (WHERE status='error') AS failed,
+        count(*) FILTER (WHERE status='ready' AND captured_bytes IS NULL) AS legacy_files FROM nf_chunks
+        WHERE created_at>=%s AND created_at<%s''', (start, end)).fetchone()
+    alerts = conn.execute('''SELECT count(*) AS total,
+        count(*) FILTER (WHERE kind<>'DECODE_WARNING') AS security,
+        count(*) FILTER (WHERE kind<>'DECODE_WARNING') AS last_day,
+        count(*) FILTER (WHERE kind='DECODE_WARNING') AS decode_warnings FROM nf_incidents
+        WHERE first_seen<%s AND last_seen>=%s''', (end.timestamp(), start.timestamp())).fetchone()
+    domains = conn.execute('''SELECT id,last_timestamp,error,
+        owner IS NOT NULL AND lease_until>transaction_timestamp() AS processing,
+        work_version>completed_version AS pending FROM nf_domains ORDER BY id LIMIT 100''').fetchall()
+    workers = conn.execute('''SELECT kind,count(*) AS online FROM nf_workers
+        WHERE last_seen_at>transaction_timestamp()-interval '30 seconds' GROUP BY kind''').fetchall()
+    return dict(period=period, agents=agents, traffic=traffic, alerts=alerts, domains=domains,
                 workers={row['kind']: row['online'] for row in workers})
 
 
-def traffic(store, hours=24):
+def overview(store, hours=24, as_of=None):
     with store.connect() as conn:
-        timeline = conn.execute('''WITH hours AS (
-            SELECT generate_series(date_trunc('hour',clock_timestamp())-((%s-1)*interval '1 hour'),
-                date_trunc('hour',clock_timestamp()),interval '1 hour') AS hour
+        conn.execute('SET TRANSACTION ISOLATION LEVEL REPEATABLE READ READ ONLY')
+        return _overview(conn, _period(conn, hours, as_of))
+
+
+def traffic(store, hours=24, as_of=None):
+    with store.connect() as conn:
+        conn.execute('SET TRANSACTION ISOLATION LEVEL REPEATABLE READ READ ONLY')
+        period = _period(conn, hours, as_of)
+        start, end, step = period['start'], period['end'], period['bucket_seconds']
+        summary = _overview(conn, period)
+        timeline = conn.execute('''WITH buckets AS (
+            SELECT generate_series(0,%s-1) AS index
             ), arrivals AS (
-            SELECT date_trunc('hour',created_at) AS hour,sum(size) AS bytes,
-                COALESCE(sum(frames),0) AS packets,count(*) AS files FROM nf_chunks
-            WHERE created_at>date_trunc('hour',clock_timestamp())-((%s-1)*interval '1 hour') GROUP BY 1)
-            SELECT h.hour,COALESCE(a.bytes,0) AS bytes,COALESCE(a.packets,0) AS packets,
-                COALESCE(a.files,0) AS files FROM hours h LEFT JOIN arrivals a USING(hour) ORDER BY h.hour''',
-                                (hours, hours)).fetchall()
+            SELECT floor(extract(epoch FROM (created_at-%s::timestamptz))/%s)::int AS index,
+                sum(size) AS bytes,COALESCE(sum(frames),0) AS packets,
+                COALESCE(sum(captured_bytes),0) AS captured_bytes,count(*) AS files FROM nf_chunks
+            WHERE created_at>=%s AND created_at<%s GROUP BY 1)
+            SELECT %s::timestamptz+(b.index*%s)*interval '1 second' AS hour,
+                COALESCE(a.bytes,0) AS bytes,COALESCE(a.packets,0) AS packets,
+                COALESCE(a.captured_bytes,0) AS captured_bytes,COALESCE(a.files,0) AS files
+            FROM buckets b LEFT JOIN arrivals a USING(index) ORDER BY b.index''',
+                (hours * 3600 // step, start, step, start, end, start, step)).fetchall()
         protocols = conn.execute('''SELECT p.key AS protocol,sum(p.value::bigint) AS packets FROM nf_chunks c,
             LATERAL jsonb_each_text(COALESCE(c.traffic_stats->'protocols','{}'::jsonb)) p
-            GROUP BY p.key ORDER BY packets DESC LIMIT 12''').fetchall()
-        event_types = conn.execute('''SELECT kind,count(*) AS count
-            FROM nf_incidents WHERE to_timestamp(last_seen)>clock_timestamp()-(%s*interval '1 hour')
-            GROUP BY 1 ORDER BY count DESC LIMIT 20''', (hours,)).fetchall()
-    return dict(timeline=timeline, protocols=protocols, event_types=event_types)
+            WHERE c.created_at>=%s AND c.created_at<%s AND p.value::bigint>0
+            GROUP BY p.key ORDER BY packets DESC,protocol''', (start, end)).fetchall()
+        missing = summary['traffic']['packets'] - sum(row['packets'] for row in protocols)
+        if missing > 0:
+            protocols.append(dict(protocol='UNCLASSIFIED', packets=missing))
+        protocols.sort(key=lambda row: (-row['packets'], row['protocol']))
+        if len(protocols) > 12:
+            protocols = protocols[:11] + [dict(protocol='OTHER_PROTOCOLS', packets=sum(p['packets'] for p in protocols[11:]))]
+        event_types = conn.execute('''SELECT kind,count(*) AS count FROM nf_incidents
+            WHERE first_seen<%s AND last_seen>=%s GROUP BY kind ORDER BY count DESC,kind LIMIT 20''',
+                                  (end.timestamp(), start.timestamp())).fetchall()
+    return dict(period=period, summary=summary, timeline=timeline, protocols=protocols, event_types=event_types)
 
 
 def agents(store, query='', offset=0, limit=100):

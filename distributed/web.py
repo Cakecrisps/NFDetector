@@ -88,8 +88,10 @@ def install_web(app, store):
         return {'ok': True}
 
     @router.get('/overview')
-    def overview(row=Depends(auth.full_session)):
-        return web_metrics.overview(store)
+    def overview(hours: int = 24, row=Depends(auth.full_session)):
+        if hours not in (1, 24, 168):
+            raise HTTPException(400, 'Выберите период 1, 24 или 168 часов')
+        return web_metrics.overview(store, hours)
 
     @router.get('/traffic')
     def traffic(hours: int = 24, row=Depends(auth.full_session)):

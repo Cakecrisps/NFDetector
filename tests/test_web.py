@@ -210,7 +210,7 @@ def test_statistics_and_heartbeat_come_from_actual_agent_traffic(web):
     listing = client.get('/admin/api/agents').json()['agents'][0]
     assert listing['status'] == 'online' and listing['backlog_bytes'] == 1024 and listing['backlog_files'] == 1
     chart = client.get('/admin/api/traffic').json()
-    assert len(chart['timeline']) == 24
+    assert len(chart['timeline']) == 96
     assert chart['protocols'] == [{'protocol': 'TCP', 'packets': 2}]
     assert sum(point['bytes'] for point in chart['timeline']) == len(body)
 
